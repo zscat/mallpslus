@@ -8,5 +8,7 @@ package com.zscat.mallplus.bo;
 public class Rediskey {
     public static String menuTreesList = "menuTreesList:%s";
 
+    public static String permissionTreesList = "permissionTreesList:%s";
+
     public static String menuList = "menuList:%s";
 }

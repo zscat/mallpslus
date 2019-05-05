@@ -176,7 +176,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysPermission> getPermissionListByUserId(Long adminId) {
+    public List<SysPermission> listMenuByUserId(Long adminId) {
         if (!redisService.exists(String.format(Rediskey.menuTreesList,adminId))){
             List<SysPermission> list= permissionMapper.listMenuByUserId(adminId);
             redisService.set(String.format(Rediskey.menuTreesList,adminId),JsonUtil.objectToJson(list));
@@ -185,6 +185,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return JsonUtil.jsonToList(redisService.get(String.format(Rediskey.menuTreesList,adminId)),SysPermission.class);
         }
 
+    }
+    @Override
+    public List<SysPermission> getPermissionListByUserId(Long adminId) {
+        String listStr = redisService.get(String.format(Rediskey.permissionTreesList, adminId));
+        if (null == listStr) {
+            List<SysPermission> list = permissionMapper.getPermissionListByUserId(adminId);
+            listStr = JsonUtil.objectToJson(list);
+            redisService.set(String.format(Rediskey.permissionTreesList, adminId),JsonUtil.objectToJson(list));
+            return list;
+        } else {
+            return JsonUtil.jsonToList(listStr, SysPermission.class);
+        }
     }
 
     @Override
