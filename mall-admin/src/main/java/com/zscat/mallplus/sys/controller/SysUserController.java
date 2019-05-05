@@ -286,7 +286,7 @@ public class SysUserController extends ApiController {
     @RequestMapping(value = "/permission/{adminId}", method = RequestMethod.GET)
     @ResponseBody
     public Object getPermissionList(@PathVariable Long adminId) {
-        List<SysPermission> permissionList = sysUserService.getPermissionListByUserId(adminId);
+        List<SysPermission> permissionList = sysUserService.listMenuByUserId(adminId);
         return new CommonResult().success(permissionList);
     }
     @ApiOperation("修改显示状态")

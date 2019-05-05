@@ -1,9 +1,9 @@
 package com.zscat.mallplus.sys.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysRole;
 import com.zscat.mallplus.sys.entity.SysUser;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.vo.SmsCode;
 
 import java.util.List;
@@ -30,7 +30,10 @@ public interface ISysUserService extends IService<SysUser> {
 
     List<SysPermission> getPermissionListByUserId(Long adminId);
 
+    List<SysPermission> listMenuByUserId(Long adminId);
+
     boolean saves(SysUser entity);
+
     boolean updates(Long id, SysUser admin);
 
     List<SysPermission> listUserPerms(Long id);

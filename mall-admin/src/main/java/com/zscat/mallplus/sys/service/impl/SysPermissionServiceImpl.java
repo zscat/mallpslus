@@ -2,6 +2,7 @@ package com.zscat.mallplus.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.zscat.mallplus.bo.Tree;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysPermissionNode;
@@ -36,9 +37,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private ISysUserService userService;
     @Override
     public List<Tree<SysPermission>> getPermissionsByUserId(Long id) {
-        List<Tree<SysPermission>> trees = new ArrayList<Tree<SysPermission>>();
-      //  List<SysPermission> menuDOs = permissionMapper.listMenuByUserId(id);
-        List<SysPermission> menuDOs = userService.getPermissionListByUserId(id);
+        List<Tree<SysPermission>> trees = Lists.newArrayList();
+        List<SysPermission> menuDOs = userService.listMenuByUserId(id);
         for (SysPermission sysMenuDO : menuDOs) {
             Tree<SysPermission> tree = new Tree<SysPermission>();
             tree.setId(sysMenuDO.getId().toString());
