@@ -91,7 +91,7 @@ public class SingeCmsController extends ApiBaseAction {
     @SysLog(MODULE = "cms", REMARK = "创建文章")
     @ApiOperation(value = "创建文章")
     @PostMapping(value = "/createSubject")
-    public Object createSubject(CmsSubject subject, BindingResult result) {
+    public Object createSubject(@RequestBody CmsSubject subject, BindingResult result) {
         CommonResult commonResult;
         UmsMember member = this.getCurrentMember();
         if (member.getMemberLevelId()>0){

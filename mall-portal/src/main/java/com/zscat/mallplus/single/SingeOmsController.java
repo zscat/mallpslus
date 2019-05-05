@@ -50,8 +50,8 @@ public class SingeOmsController extends ApiBaseAction {
      */
     @ApiOperation("商品详情预览订单")
     @SysLog(MODULE = "order", REMARK = "商品详情预览订单")
-    @GetMapping(value = "/preOrder")
-    public Object preOrder(GroupAndOrderVo orderParam) {
+    @PostMapping(value = "/preOrder")
+    public Object preOrder(@RequestBody GroupAndOrderVo orderParam) {
         UmsMember member = this.getCurrentMember();
         orderParam.setMemberId(member.getId());
         orderParam.setName(member.getNickname());
@@ -65,7 +65,7 @@ public class SingeOmsController extends ApiBaseAction {
     @ApiOperation("商品详情生成订单")
     @SysLog(MODULE = "order", REMARK = "商品详情生成订单")
     @PostMapping(value = "/bookOrder")
-    public Object bookOrder(GroupAndOrderVo orderParam) {
+    public Object bookOrder(@RequestBody GroupAndOrderVo orderParam) {
         UmsMember member = this.getCurrentMember();
         return orderService.generateSingleOrder(orderParam,member);
     }

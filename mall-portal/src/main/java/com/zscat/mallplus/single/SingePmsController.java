@@ -143,7 +143,7 @@ public class SingePmsController extends ApiBaseAction {
             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
-        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
+        return new CommonResult().success(advertiseService.getHotProductList(1,1));
     }
 
     @SysLog(MODULE = "pms", REMARK = "查询商品列表")
@@ -154,12 +154,12 @@ public class SingePmsController extends ApiBaseAction {
             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
-        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
+        return new CommonResult().success(advertiseService.getRecommendSubjectList(1,1));
     }
     @ApiOperation("创建商品")
     @SysLog(MODULE = "pms", REMARK = "创建商品")
     @PostMapping(value = "/createGoods")
-    public Object createGoods(PmsProduct productParam) {
+    public Object createGoods(@RequestBody PmsProduct productParam) {
         CommonResult commonResult;
         UmsMember member = this.getCurrentMember();
         if (member.getMemberLevelId()>0){
