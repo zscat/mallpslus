@@ -53,7 +53,7 @@
         sys_user_role ur
         on rm.role_id =ur.role_id where ur.admin_id =  #{id}
         and
-        m.type in(0,1,2) and m.status=1
+        m.type in(0,1) and m.status=1
         order by
         m.sort
     </select>
