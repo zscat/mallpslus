@@ -92,7 +92,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     @Override
     public UmsMember getByUsername(String username) {
         UmsMember umsMember = new UmsMember();
-        umsMember.setUsername(username);
+        umsMember.setPhone(username);
 
         return memberMapper.selectOne(new QueryWrapper<>(umsMember));
     }
@@ -125,15 +125,15 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         //查询是否已有该用户
 
         UmsMember queryM = new UmsMember();
-        queryM.setUsername(user.getUsername());
+        queryM.setUsername(user.getPhone());
       //  queryM.setPassword(passwordEncoder.encode(user.getPassword()));
         UmsMember umsMembers = memberMapper.selectOne(new QueryWrapper<>(queryM));
         if (umsMembers!=null) {
-            return new CommonResult().failed("该用户已经存在");
+            return new CommonResult().failed("该手机号已经存在");
         }
         //没有该用户进行添加操作
         UmsMember umsMember = new UmsMember();
-        umsMember.setUsername(user.getUsername());
+        umsMember.setUsername(user.getPhone());
         umsMember.setPhone(user.getPhone());
         umsMember.setPassword(passwordEncoder.encode(user.getPassword()));
         umsMember.setCreateTime(new Date());
@@ -377,7 +377,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         Map<String, Object> tokenMap = new HashMap<>();
         String token = null;
         //密码需要客户端加密后传递
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), passwordEncoder.encode(user.getPassword()));
+      //  UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), passwordEncoder.encode(user.getPassword()));
         try {
 
            /* Authentication authentication = authenticationManager.authenticate(authenticationToken);
@@ -386,7 +386,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             UmsMember member = this.getByUsername(username);
             token = jwtTokenUtil.generateToken(userDetails);*/
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getPhone());
             if(!passwordEncoder.matches(user.getPassword(),userDetails.getPassword())){
                 throw new BadCredentialsException("密码不正确");
             }

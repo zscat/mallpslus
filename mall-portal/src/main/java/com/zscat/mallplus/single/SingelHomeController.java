@@ -87,8 +87,8 @@ public class SingelHomeController {
 
     @IgnoreAuth
     @ApiOperation(value = "登录以后返回token")
-    @GetMapping(value = "/login")
-    public Object login(UmsMember umsMember) {
+    @PostMapping(value = "/login")
+    public Object login(@RequestBody UmsMember umsMember) {
         if (umsMember==null){
             return new CommonResult().validateFailed("用户名或密码错误");
         }
@@ -111,11 +111,11 @@ public class SingelHomeController {
     @IgnoreAuth
     @ApiOperation("注册")
     @PostMapping(value = "/reg")
-    public Object register(UmsMember umsMember) {
+    public Object register(@RequestBody UmsMember umsMember) {
         if (umsMember==null){
             return new CommonResult().validateFailed("用户名或密码错误");
         }
-        return new CommonResult().success(memberService.register(umsMember));
+        return memberService.register(umsMember);
     }
     /**
      * 发送短信验证码
@@ -140,14 +140,14 @@ public class SingelHomeController {
         }
     }
 
-    @IgnoreAuth
+  /*  @IgnoreAuth
     @ApiOperation("获取验证码")
     @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
     @ResponseBody
     public Object getAuthCode(@RequestParam String telephone) {
         return memberService.generateAuthCode(telephone);
     }
-
+*/
     @ApiOperation("修改密码")
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
     @ResponseBody
