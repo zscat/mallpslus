@@ -103,15 +103,17 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public CommonResult register(String username, String password, String telephone, String authCode) {
+    public CommonResult register(String telephone, String password,String confimpassword, String authCode) {
 
         //没有该用户进行添加操作
         UmsMember umsMember = new UmsMember();
-        umsMember.setUsername(username);
+        umsMember.setUsername(telephone);
         umsMember.setPhone(telephone);
         umsMember.setPassword(password);
-        this.register(umsMember);
-        return new CommonResult().success("注册成功", null);
+        umsMember.setConfimpassword(confimpassword);
+        umsMember.setCode(authCode);
+        return this.register(umsMember);
+
     }
     @Override
     public CommonResult register(UmsMember user) {
@@ -372,6 +374,66 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
+    public Map<String,Object> loginByCode(String phone, String authCode){
+        Map<String, Object> tokenMap = new HashMap<>();
+        String token = null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
+
+            UmsMember member = this.getByUsername(phone);
+            //验证验证码
+            if (!verifyAuthCode(authCode, member.getPhone())) {
+                throw  new ApiMallPlusException("验证码错误");
+            }
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,null,userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+            tokenMap.put("userInfo",member);
+        } catch (AuthenticationException e) {
+            LOGGER.warn("登录异常:{}", e.getMessage());
+
+        }
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+
+        return tokenMap;
+    }
+
+    @Override
+    public Map<String, Object> login(String username, String password) {
+
+        Map<String, Object> tokenMap = new HashMap<>();
+        String token = null;
+        try {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if(!passwordEncoder.matches(password,userDetails.getPassword())){
+                throw new BadCredentialsException("密码不正确");
+            }
+            UmsMember member = this.getByUsername(username);
+            //验证验证码
+           /* if (!verifyAuthCode(user.getCode(), member.getPhone())) {
+                throw  new ApiMallPlusException("验证码错误");
+            }*/
+
+            //   Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,null,userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+            tokenMap.put("userInfo",member);
+        } catch (AuthenticationException e) {
+            LOGGER.warn("登录异常:{}", e.getMessage());
+
+        }
+
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+
+        return tokenMap;
+
+    }
+    @Override
     public Map<String, Object> login(UmsMember user) {
 
         Map<String, Object> tokenMap = new HashMap<>();
@@ -390,11 +452,11 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             if(!passwordEncoder.matches(user.getPassword(),userDetails.getPassword())){
                 throw new BadCredentialsException("密码不正确");
             }
-            UmsMember member = this.getByUsername(user.getUsername());
+            UmsMember member = this.getByUsername(user.getPhone());
             //验证验证码
-            if (!verifyAuthCode(user.getCode(), member.getPhone())) {
+           /* if (!verifyAuthCode(user.getCode(), member.getPhone())) {
                 throw  new ApiMallPlusException("验证码错误");
-            }
+            }*/
 
             //   Authentication authentication = authenticationManager.authenticate(authenticationToken);
             Authentication authentication = new UsernamePasswordAuthenticationToken(

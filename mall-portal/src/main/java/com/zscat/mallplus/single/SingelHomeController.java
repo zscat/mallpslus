@@ -9,7 +9,6 @@ import com.zscat.mallplus.marking.entity.SmsHomeAdvertise;
 import com.zscat.mallplus.marking.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
-import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
@@ -86,15 +85,19 @@ public class SingelHomeController {
 
 
     @IgnoreAuth
-    @ApiOperation(value = "登录以后返回token")
+    @ApiOperation(value = "手机号 密码登录")
     @PostMapping(value = "/login")
-    public Object login(@RequestBody UmsMember umsMember) {
-        if (umsMember==null){
+    public Object login(@RequestParam String phone,
+                        @RequestParam String password) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if ( password == null || "".equals( password)) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
         try {
 
-            Map<String, Object> token = memberService.login(umsMember);
+            Map<String, Object> token = memberService.login(phone,password);
             if (token.get("token") == null) {
                 return new CommonResult().validateFailed("用户名或密码错误");
             }
@@ -107,16 +110,55 @@ public class SingelHomeController {
         }
 
     }
+    @IgnoreAuth
+    @ApiOperation(value = "手机和验证码登录")
+    @PostMapping(value = "/loginByCode")
+    public Object loginByCode(@RequestParam String phone,
+                              @RequestParam String authCode) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if ( authCode == null || "".equals( authCode)) {
+            return new CommonResult().validateFailed("手机验证码为空");
+        }
+        try {
 
+            Map<String, Object> token = memberService.loginByCode(phone,authCode);
+            if (token.get("token") == null) {
+                return new CommonResult().validateFailed("用户名或密码错误");
+            }
+            return new CommonResult().success(token);
+        } catch (AuthenticationException e) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        catch (Exception e) {
+            return new CommonResult().validateFailed(e.getMessage());
+        }
+
+    }
     @IgnoreAuth
     @ApiOperation("注册")
     @PostMapping(value = "/reg")
-    public Object register(@RequestBody UmsMember umsMember) {
-        if (umsMember==null){
+    public Object register(@RequestParam String phone,
+                           @RequestParam String password,
+                           @RequestParam String confimpassword,
+                           @RequestParam String authCode) {
+        if (phone == null || "".equals(phone)) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
-        return memberService.register(umsMember);
+        if ( password == null || "".equals( password)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if ( confimpassword == null || "".equals( confimpassword)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (authCode == null || "".equals(authCode)) {
+            return new CommonResult().validateFailed("手机验证码为空");
+        }
+
+        return memberService.register(phone,password,confimpassword,authCode);
     }
+
     /**
      * 发送短信验证码
      *

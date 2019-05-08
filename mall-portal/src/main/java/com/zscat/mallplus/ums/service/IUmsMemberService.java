@@ -37,7 +37,7 @@ public interface IUmsMemberService extends IService<UmsMember> {
      * 用户注册
      */
     @Transactional
-    CommonResult register(String username, String password, String telephone, String authCode);
+    CommonResult register(String telephone, String password,String confimpassword, String authCode);
 
     /**
      * 生成验证码
@@ -72,5 +72,9 @@ public interface IUmsMemberService extends IService<UmsMember> {
 
 
     SmsCode generateCode(String phone);
+
+    Map<String,Object> login(String username, String password);
+
+    Map<String,Object> loginByCode(String phone, String authCode);
 }
 
