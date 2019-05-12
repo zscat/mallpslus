@@ -178,6 +178,7 @@ public class AppletMemberController extends ApiBaseAction {
             //获取秒杀活动商品
             //查询当前在线秒杀活动
             List<SmsFlashPromotionProducts> sms_flash_promotionProducts_List = null;
+            List<SmsFlashPromotionProducts> tempsmsFlashList = new ArrayList<>();
             String smsFlashPromotionProductJson = redisService.get(RedisKey.appletsmsFlashPromotionProductKey);
             if(smsFlashPromotionProductJson!=null){
                 sms_flash_promotionProducts_List = JsonUtil.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
@@ -208,8 +209,9 @@ public class AppletMemberController extends ApiBaseAction {
                         smsFlashPromotionProduct.setFlashPromotionLimit(item.getFlashPromotionLimit());
                         smsFlashPromotionProduct.setFlashPromotionPrice(item.getFlashPromotionPrice());
                         smsFlashPromotionProduct.setProduct(product);
-                        sms_flash_promotionProducts_List.add(smsFlashPromotionProduct);
+                        tempsmsFlashList.add(smsFlashPromotionProduct);
                     }
+                    sms_flash_promotionProducts_List = tempsmsFlashList;
                     redisService.set(RedisKey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(sms_flash_promotionProducts_List));
                     redisService.expire(RedisKey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
                 }
