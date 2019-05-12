@@ -1,16 +1,17 @@
-package ${package.Controller};
+package  ${package}.${module}.controller;
 
-import com.zscat.mallplus.dto.CommonResult;
-import ${package.Entity};
-
-import ${package.Service};
+import ${package}.${module}.entity.${Module}${className};
+import ${package}.${module}.service.I${Module}${className}Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import com.zscat.mallplus.annotation.SysLog;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,74 +26,109 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@Api(tags = "${entity}Controller", description = "$!{table.comment}管理")
-@RequestMapping("/${package.ModuleName}/${classname}")
-public class ${table.controllerName} {
+@Api(tags = "${Module}${className}Controller", description = "$!{table.comment}管理")
+@RequestMapping("/${module}/${classname}")
+public class ${Module}${className}Controller {
     @Resource
-    private ${table.serviceName} ${table.serviceName};
+    private I${Module}${className}Service I${Module}${className}Service;
 
-    @SysLog(MODULE = "${package.ModuleName}", REMARK = "添加$!{table.comment}")
-    @ApiOperation(value = "添加$!{table.comment}")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
-    @PreAuthorize("hasAuthority('${package.ModuleName}:${classname}:create')")
-    public Object create(@Validated @RequestBody ${Module}${entity} ${package.ModuleName}${entity}, BindingResult result) {
-        CommonResult commonResult;
-        int count = ${table.serviceName}.create${entity}(${package.ModuleName}${entity});
-        if (count == 1) {
-            commonResult = new CommonResult().success(count);
-        } else {
-            commonResult = new CommonResult().failed();
+    @SysLog(MODULE = "${module}", REMARK = "查询${tableName}表")
+    @ApiOperation("查询${tableName}表")
+    @GetMapping(value = "/list")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:read')")
+    public Object get${Module}${className}ByPage(${Module}${className} entity,
+                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+    ) {
+        try {
+            return new CommonResult().success(I${Module}${className}Service.page(new Page<${Module}${className}>(pageNum, pageSize), new QueryWrapper<>(entity)));
+        } catch (Exception e) {
+            log.error("分页获取${tableName}列表：%s", e.getMessage(), e);
         }
-        return commonResult;
+        return new CommonResult().failed();
     }
-    @SysLog(MODULE = "${package.ModuleName}", REMARK = "更新$!{table.comment}")
-    @ApiOperation(value = "更新$!{table.comment}")
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    @ResponseBody
-    @PreAuthorize("hasAuthority('${package.ModuleName}:${classname}:update')")
-    public Object update(@PathVariable("id") Long id,
-                         @Validated @RequestBody ${Module}${entity} ${package.ModuleName}${entity},
-                         BindingResult result) {
-        CommonResult commonResult;
-        int count = ${table.serviceName}.update${entity}(id, ${package.ModuleName}${entity});
-        if (count == 1) {
-            commonResult = new CommonResult().success(count);
-        } else {
-            commonResult = new CommonResult().failed();
+
+    @SysLog(MODULE = "${module}", REMARK = "保存${tableName}表")
+    @ApiOperation("保存${tableName}表")
+    @PostMapping(value = "/create")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:create')")
+    public Object save${className}(@RequestBody ${Module}${className} entity) {
+        try {
+            if (I${Module}${className}Service.save(entity)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            log.error("保存${tableName}表：%s", e.getMessage(), e);
+            return new CommonResult().failed();
         }
-        return commonResult;
+        return new CommonResult().failed();
     }
-    @SysLog(MODULE = "${package.ModuleName}", REMARK = "删除$!{table.comment}")
-    @ApiOperation(value = "删除$!{table.comment}")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+
+    @SysLog(MODULE = "${module}", REMARK = "更新${tableName}")
+    @ApiOperation("更新${tableName}")
+    @PostMapping(value = "/update/{id}")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:update')")
+    public Object update${className}(@RequestBody ${Module}${className} entity) {
+        try {
+            if (I${Module}${className}Service.updateById(entity)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            log.error("更新：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+    }
+    @SysLog(MODULE = "${module}", REMARK = "删除${tableName}数据")
+    @ApiOperation("删除${comments}数据")
+    @DeleteMapping(value = "/delete/{id}")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:delete')")
+    public Object deleteRole(@ApiParam("${comments}_id") @PathVariable Long id) {
+        try {
+            if (ValidatorUtils.empty(id)) {
+                return new CommonResult().paramFailed("${Module}${className}_id");
+            }
+            if (I${Module}${className}Service.removeById(id)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            log.error("删除${comments}数据：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+    }
+
+    @SysLog(MODULE = "${module}", REMARK = "根据ID查询${tableName}")
+    @ApiOperation("根据ID查询${tableName}")
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:read')")
+    public Object getRoleById(@ApiParam("${comments}_id") @PathVariable Long id) {
+        try {
+            if (ValidatorUtils.empty(id)) {
+                return new CommonResult().paramFailed("${Module}${className}_id");
+            }
+            ${Module}${className} ${module}${className} = I${Module}${className}Service.getById(id);
+            return new CommonResult().success(${module}${className});
+        } catch (Exception e) {
+            log.error("${tableName}表明细：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+
+    }
+
+    @ApiOperation(value = "批量删除${Module}${className}表")
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
-    @PreAuthorize("hasAuthority('${package.ModuleName}:${classname}:delete')")
-    public Object delete(@PathVariable("id") Long id) {
-        int count = ${table.serviceName}.delete${entity}(id);
-        if (count == 1) {
-            return new CommonResult().success(null);
+    @SysLog(MODULE = "${module}", REMARK = "批量删除${Module}${className}表")
+    @PreAuthorize("hasAuthority('${module}:${Module}${className}:delete')")
+    public Object deleteBatch(@RequestParam("ids") List<Long> ids) {
+        boolean count = I${Module}${className}Service.removeByIds(ids);
+        if (count) {
+            return new CommonResult().success(count);
         } else {
             return new CommonResult().failed();
         }
     }
-    @SysLog(MODULE = "${package.ModuleName}", REMARK = "根据$!{table.comment}分页获取$!{table.comment}列表")
-    @ApiOperation(value = "根据$!{table.comment}名称分页获取$!{table.comment}列表")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    @PreAuthorize("hasAuthority('${package.ModuleName}:${classname}:read')")
-    public Object getList(${Module}${entity} ${classname},
-                          @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                          @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-        return new CommonResult().pageSuccess(${table.serviceName}.list${entity}(${classname}, pageNum, pageSize));
-    }
-    @SysLog(MODULE = "${package.ModuleName}", REMARK = "根据编号查询$!{table.comment}信息")
-    @ApiOperation(value = "根据编号查询$!{table.comment}信息")
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    @PreAuthorize("hasAuthority('${package.ModuleName}:${classname}:read')")
-    public Object getItem(@PathVariable("id") Long id) {
-        return new CommonResult().success(${table.serviceName}.get${entity}(id));
-    }
+
 
 }

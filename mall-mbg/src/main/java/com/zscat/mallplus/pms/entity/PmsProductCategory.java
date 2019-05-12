@@ -57,6 +57,11 @@ public class PmsProductCategory implements Serializable {
      */
     @TableField("show_status")
     private Integer showStatus;
+    /**
+     * 是否是首页分类0-->不是，1-->是
+     */
+    @TableField("index_status")
+    private Integer indexStatus;
 
     private Integer sort;
 

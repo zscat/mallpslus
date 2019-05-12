@@ -29,10 +29,19 @@ public interface ISysUserService extends IService<SysUser> {
 
     List<SysPermission> getPermissionListByUserId(Long adminId);
 
+    List<SysPermission> listMenuByUserId(Long adminId);
+
     boolean saves(SysUser entity);
+
     boolean updates(Long id, SysUser admin);
 
     List<SysPermission> listUserPerms(Long id);
 
     void removePermissRedis(Long id);
+
+//    Object reg(SysUser entity);
+
+//    SmsCode generateCode(String phone);
+
+    int updateShowStatus(List<Long> ids, Integer showStatus);
 }

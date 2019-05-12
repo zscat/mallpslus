@@ -2,10 +2,10 @@ package com.zscat.mallplus.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zscat.mallplus.marking.entity.SmsGroup;
-import com.zscat.mallplus.marking.entity.SmsGroupMember;
-import com.zscat.mallplus.marking.mapper.SmsGroupMapper;
-import com.zscat.mallplus.marking.mapper.SmsGroupMemberMapper;
+import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
+import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
+import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.IPmsProductService;

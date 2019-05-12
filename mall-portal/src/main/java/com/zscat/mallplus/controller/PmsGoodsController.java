@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.constant.RedisKey;
-import com.zscat.mallplus.marking.service.ISmsHomeAdvertiseService;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsProductAttribute;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;

@@ -8,7 +8,11 @@ package com.zscat.mallplus.constant;
 public class RedisKey {
     public static String appletBannerKey = "appletBannerKey";
     public static String appletCategoryKey = "appletCategoryKey";
-
+    public static String appletNavIconKey = "appletNavIconKey";
+    public static String appletHotProductsKey = "appletHotProductsKey";
+    public static String appletNewProductsKey = "appletNewProductsKey";
+    public static String appletCateProductsKey = "appletCateProductsKey";
+    public static String appletsmsFlashPromotionProductKey = "appletsmsFlashPromotionProductKey";
     public static String HomeContentResult = "HomeContentResult";
     public static String PmsProductResult = "PmsProductResult";
     public static String orderDetailResult = "orderDetailResult";

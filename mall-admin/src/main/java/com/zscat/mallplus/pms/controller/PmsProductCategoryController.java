@@ -153,26 +153,54 @@ public class PmsProductCategoryController {
     @ApiOperation("修改导航栏显示状态")
     @RequestMapping(value = "/update/navStatus", method = RequestMethod.POST)
     @ResponseBody
-    @PreAuthorize("hasAuthority('pms:productCategory:update')")
-    public Object updateNavStatus(@RequestParam("ids") List<Long> ids, @RequestParam("navStatus") Integer navStatus) {
-        int count = IPmsProductCategoryService.updateNavStatus(ids, navStatus);
-        if (count > 0) {
-            return new CommonResult().success(count);
+    @PreAuthorize("hasAuthority('pms:PmsProductCategory:update')")
+    public Object updateNavStatus(@RequestParam("ids") Long ids, @RequestParam("navStatus") Integer navStatus) {
+        PmsProductCategory entity = new PmsProductCategory();
+        entity.setId(ids);
+        entity.setNavStatus(navStatus);
+
+        if (IPmsProductCategoryService.updateById(entity)) {
+            return new CommonResult().success();
+        } else {
+            return new CommonResult().failed();
+        }
+    }
+//    public Object updateNavStatus(@RequestParam("ids") List<Long> ids, @RequestParam("navStatus") Integer navStatus) {
+//        int count = IPmsProductCategoryService.updateNavStatus(ids, navStatus);
+//        if (count > 0) {
+//            return new CommonResult().success(count);
+//        } else {
+//            return new CommonResult().failed();
+//        }
+//    }
+
+    @ApiOperation("修改显示状态")
+    @RequestMapping(value = "/update/showStatus", method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:PmsProductCategory:update')")
+    public Object updateShowStatus(@RequestParam("ids") Long ids, @RequestParam("showStatus") Integer showStatus) {
+        PmsProductCategory entity = new PmsProductCategory();
+        entity.setId(ids);
+        entity.setShowStatus(showStatus);
+        if (IPmsProductCategoryService.updateById(entity)) {
+            return new CommonResult().success();
+        } else {
+            return new CommonResult().failed();
+        }
+    }
+    @ApiOperation("修改首页显示状态")
+    @RequestMapping(value = "/update/indexStatus", method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:PmsProductCategory:update')")
+    public Object updateIndexStatus(@RequestParam("ids") Long ids, @RequestParam("indexStatus") Integer indexStatus) {
+        PmsProductCategory entity = new PmsProductCategory();
+        entity.setId(ids);
+        entity.setIndexStatus(indexStatus);
+        if (IPmsProductCategoryService.updateById(entity)) {
+            return new CommonResult().success();
         } else {
             return new CommonResult().failed();
         }
     }
 
-    @ApiOperation("修改显示状态")
-    @RequestMapping(value = "/update/showStatus", method = RequestMethod.POST)
-    @ResponseBody
-    @PreAuthorize("hasAuthority('pms:productCategory:update')")
-    public Object updateShowStatus(@RequestParam("ids") List<Long> ids, @RequestParam("showStatus") Integer showStatus) {
-        int count = IPmsProductCategoryService.updateShowStatus(ids, showStatus);
-        if (count > 0) {
-            return new CommonResult().success(count);
-        } else {
-            return new CommonResult().failed();
-        }
-    }
 }

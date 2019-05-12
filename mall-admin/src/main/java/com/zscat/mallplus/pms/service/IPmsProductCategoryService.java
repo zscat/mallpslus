@@ -21,7 +21,7 @@ public interface IPmsProductCategoryService extends IService<PmsProductCategory>
     int updateNavStatus(List<Long> ids, Integer navStatus);
 
     int updateShowStatus(List<Long> ids, Integer showStatus);
-
+    int updateIndexStatus(List<Long> ids, Integer indexStatus);
     boolean updateAnd(PmsProductCategory entity);
 
     boolean saveAnd(PmsProductCategory entity);

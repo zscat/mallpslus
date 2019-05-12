@@ -12,6 +12,7 @@
         <result column="product_unit" property="productUnit" />
         <result column="nav_status" property="navStatus" />
         <result column="show_status" property="showStatus" />
+        <result column="index_status" property="indexStatus" />
         <result column="sort" property="sort" />
         <result column="icon" property="icon" />
         <result column="keywords" property="keywords" />
@@ -25,7 +26,7 @@
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, parent_id, name, level, product_count, product_unit, nav_status, show_status, sort, icon, keywords, description
+        id, parent_id, name, level, product_count, product_unit, nav_status, show_status, index_status,sort, icon, keywords, description
     </sql>
 
     <select id="listWithChildren" resultMap="listWithChildrenMap">

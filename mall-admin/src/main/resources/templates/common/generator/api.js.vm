@@ -17,7 +17,7 @@ export function create${className}(data) {
 export function delete${className}(id) {
     return request({
         url:'/${module}/${classname}/delete/'+id,
-        method:'get',
+        method:'delete',
     })
 }
 

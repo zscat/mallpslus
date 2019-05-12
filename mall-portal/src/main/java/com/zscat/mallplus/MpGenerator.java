@@ -59,9 +59,9 @@ public class MpGenerator {
                 return super.processTypeConvert(gc,fieldType);
             }
         });
-        dsc.setDriverName("com.mysql.jdbc.Driver");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root@123");
+        dsc.setPassword("ueit");
         dsc.setUrl("jdbc:mysql://127.0.0.1:3306/mallplus?characterEncoding=utf8");
         mpg.setDataSource(dsc);
 
@@ -128,11 +128,11 @@ public class MpGenerator {
                 "sms_home_recommend_subject","sms_red_packet","sms_user_red_packet"
                 }); */
 
-            strategy.setInclude(new String[] { "ums_collect","ums_member","ums_member_blance_log","ums_member_level",
-                    "ums_member_member_tag_relation","ums_member_product_category_relation",
-                    "ums_member_receive_address", "ums_member_rule_setting","ums_member_statistics_info","ums_member_tag",
-            "ums_member_task","ums_growth_change_history","ums_integration_change_history","ums_integration_consume_setting"}); // 需要生成的表
-
+//            strategy.setInclude(new String[] { "ums_collect","ums_member","ums_member_blance_log","ums_member_level",
+//                    "ums_member_member_tag_relation","ums_member_product_category_relation",
+//                    "ums_member_receive_address", "ums_member_rule_setting","ums_member_statistics_info","ums_member_tag",
+//            "ums_member_task","ums_growth_change_history","ums_integration_change_history","ums_integration_consume_setting"}); // 需要生成的表
+        strategy.setInclude(new String[]{"pms_small_navicon_category"});
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -157,7 +157,7 @@ public class MpGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.zscat.mallplus");
-        pc.setModuleName("ums");
+        pc.setModuleName("pms");
         mpg.setPackageInfo(pc);
 
 

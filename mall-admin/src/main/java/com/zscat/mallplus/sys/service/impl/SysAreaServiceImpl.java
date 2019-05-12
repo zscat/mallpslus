@@ -18,3 +18,5 @@ import org.springframework.stereotype.Service;
 public class SysAreaServiceImpl extends ServiceImpl<SysAreaMapper, SysArea> implements ISysAreaService {
 
 }
+
+

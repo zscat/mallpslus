@@ -2,7 +2,7 @@ package com.zscat.mallplus.controller;
 
 
 import com.zscat.mallplus.annotation.IgnoreAuth;
-import com.zscat.mallplus.marking.entity.UserFormId;
+import com.zscat.mallplus.sms.entity.UserFormId;
 import com.zscat.mallplus.single.ApiBaseAction;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;

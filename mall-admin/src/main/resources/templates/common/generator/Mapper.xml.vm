@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="${package}.${module}.mapper.${className}Mapper">
-    <resultMap id="BaseResultMap" type="${package}.${module}.model.${Module}${className}">
+<mapper namespace="${package}.${module}.mapper.${Module}${className}Mapper">
+    <resultMap id="BaseResultMap" type="${package}.${module}.entity.${Module}${className}">
         <id column="id" jdbcType="BIGINT" property="id"/>
 		#foreach($column in $columns)
 			#if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
@@ -22,7 +22,7 @@
 
 	<select id="list" resultMap="BaseResultMap">
 		select  <include refid="Base_Column_List"/> from ${tableName}
-        <where>  
+        <where>
 		  #foreach($column in $columns)
 		  <if test="$column.attrname != null and $column.attrname.trim() != ''"> and $column.columnName = #{$column.attrname} </if>
 		  #end
@@ -37,15 +37,15 @@
 			#end
         </where>
     </select>
-	 
-	<insert id="save" parameterType="${package}.${module}.model.${Module}${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+
+	<insert id="save" parameterType="${package}.${module}.entity.${Module}${className}"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
 		insert into ${tableName}
 		(
 #foreach($column in $columns)
 #if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
 			`$column.columnName`#if($velocityCount != $columns.size()), #end
 
-#end			
+#end
 #end
 		)
 		values
@@ -54,13 +54,13 @@
 #if($column.columnName != $pk.columnName || $pk.extra != 'auto_increment')
 			#{$column.attrname}#if($velocityCount != $columns.size()), #end
 
-#end			
+#end
 #end
 		)
 	</insert>
-	 
-	<update id="update" parameterType="${package}.${module}.model.${Module}${className}">
-		update ${tableName} 
+
+	<update id="update" parameterType="${package}.${module}.entity.${Module}${className}">
+		update ${tableName}
 		<set>
 #foreach($column in $columns)
 #if($column.columnName != $pk.columnName)
@@ -70,13 +70,13 @@
 		</set>
 		where ${pk.columnName} = #{${pk.attrname}}
 	</update>
-	
+
 	<delete id="remove">
 		delete from ${tableName} where ${pk.columnName} = #{value}
 	</delete>
-	
+
 	<delete id="batchRemove">
-		delete from ${tableName} where ${pk.columnName} in 
+		delete from ${tableName} where ${pk.columnName} in
 		<foreach item="${pk.attrname}" collection="array" open="(" separator="," close=")">
 			#{${pk.attrname}}
 		</foreach>

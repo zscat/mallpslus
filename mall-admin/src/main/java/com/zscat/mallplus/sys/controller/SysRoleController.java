@@ -8,6 +8,8 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.sys.entity.SysRole;
 import com.zscat.mallplus.sys.entity.SysRolePermission;
 import com.zscat.mallplus.sys.service.ISysRoleService;
+import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.ums.service.impl.RedisServiceImpl;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;

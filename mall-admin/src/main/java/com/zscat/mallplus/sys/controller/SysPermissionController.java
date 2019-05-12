@@ -48,7 +48,8 @@ public class SysPermissionController extends BaseController{
                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ) {
         try {
-            return new CommonResult().success(ISysPermissionService.page(new Page<SysPermission>(pageNum, pageSize), new QueryWrapper<>(entity)));
+            Object data = ISysPermissionService.list(new QueryWrapper<>(entity));
+            return new CommonResult().success(data);
         } catch (Exception e) {
             log.error("根据条件查询所有后台用户权限表列表：%s", e.getMessage(), e);
         }
@@ -80,6 +81,25 @@ public class SysPermissionController extends BaseController{
     @PreAuthorize("hasAuthority('sys:SysPermission:update')")
     public Object updateRole(@RequestBody SysPermission entity) {
         try {
+            if (ISysPermissionService.updateById(entity)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            log.error("更新后台用户权限表：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+    }
+
+    @SysLog(MODULE = "sys", REMARK = "更新后台用户权限表")
+    @ApiOperation("更新后台用户权限表")
+    @PostMapping(value = "/update/showStatus")
+    @PreAuthorize("hasAuthority('sys:SysPermission:update')")
+    public Object updateRoleStatus(@RequestParam("ids") Long ids,@RequestParam("showStatus") Integer showStatus) {
+        try {
+            SysPermission entity = new SysPermission();
+            entity.setId(ids);
+            entity.setStatus(showStatus);
             if (ISysPermissionService.updateById(entity)) {
                 return new CommonResult().success();
             }

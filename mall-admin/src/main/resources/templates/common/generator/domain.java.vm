@@ -2,39 +2,36 @@ package ${package}.${module}.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
+import lombok.Data;
+import com.baomidou.mybatisplus.annotation.*;
+import io.swagger.annotations.ApiModelProperty;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
 #end
 
 
 /**
- * ${comments}
+ * @Description:${comments}
  * 
  * @author ${author}
  * @email ${email}
  * @date ${datetime}
  */
+@Data
+@TableName("${tableName}")
 public class ${Module}${className} implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 #foreach ($column in $columns)
-	//$column.comments
+
+@ApiModelProperty(value = "$column.comments")
+#if($column.columnName == $pk.columnName)
+@TableId(value = "$column.columnName", type = IdType.AUTO)
+#end
+#if($column.columnName != $pk.columnName)
+@TableField("$column.columnName")
+#end
 	private $column.attrType $column.attrname;
 #end
 
-#foreach ($column in $columns)
-	/**
-	 * 设置：${column.comments}
-	 */
-	public void set${column.attrName}($column.attrType $column.attrname) {
-		this.$column.attrname = $column.attrname;
-	}
-	/**
-	 * 获取：${column.comments}
-	 */
-	public $column.attrType get${column.attrName}() {
-		return $column.attrname;
-	}
-#end
 }

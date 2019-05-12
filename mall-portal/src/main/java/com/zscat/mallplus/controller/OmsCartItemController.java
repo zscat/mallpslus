@@ -52,7 +52,7 @@ public class OmsCartItemController {
             cartItem.setProductSkuCode(pmsSkuStock.getSkuCode());
             cartItem.setQuantity(count);
             cartItem.setProductSkuId(id);
-            cartItem.setProductAttr(pmsSkuStock.getMeno1());
+//            cartItem.setProductAttr(pmsSkuStock.getMeno1());
             cartItem.setProductPic(pmsSkuStock.getPic());
             cartItem.setSp1(pmsSkuStock.getSp1());
             cartItem.setSp2(pmsSkuStock.getSp2());

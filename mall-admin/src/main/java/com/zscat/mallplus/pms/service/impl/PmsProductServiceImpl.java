@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -141,7 +142,6 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         productFullReductionMapper.delete(new QueryWrapper<>(new PmsProductFullReduction()).eq("product_id",id));
         relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), id);
         //修改sku库存信息
-
         skuStockMapper.delete(new QueryWrapper<>(new PmsSkuStock()).eq("product_id",id));
         handleSkuStockCode(productParam.getSkuStockList(), id);
         relateAndInsertList(skuStockDao, productParam.getSkuStockList(), id);
@@ -249,7 +249,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
                 Method setProductId = item.getClass().getMethod("setProductId", Long.class);
                 setProductId.invoke(item, productId);
             }
-            Method insertList = dao.getClass().getMethod("saveBatch", List.class);
+            Method insertList = dao.getClass().getMethod("saveBatch", Collection.class);
             insertList.invoke(dao, dataList);
         } catch (Exception e) {
             log.warn("创建产品出错:{}", e.getMessage());

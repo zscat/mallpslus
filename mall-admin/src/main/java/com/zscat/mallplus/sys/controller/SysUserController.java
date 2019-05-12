@@ -5,13 +5,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysRole;
 import com.zscat.mallplus.sys.entity.SysUser;
+import com.zscat.mallplus.sys.mapper.SysPermissionMapper;
 import com.zscat.mallplus.sys.service.ISysPermissionService;
 import com.zscat.mallplus.sys.service.ISysRoleService;
 import com.zscat.mallplus.sys.service.ISysUserService;
 import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -53,6 +56,8 @@ public class SysUserController extends ApiController {
     private ISysRoleService roleService;
     @Resource
     private ISysPermissionService permissionService;
+    @Resource
+    private SysPermissionMapper permissionMapper;
     @Resource
     private RedisService redisService;
 
@@ -200,6 +205,13 @@ public class SysUserController extends ApiController {
                              @RequestParam("roleIds") List<Long> roleIds) {
         int count = sysUserService.updateUserRole(adminId, roleIds);
         if (count >= 0) {
+            //更新，删除时候，如果redis里有权限列表，重置
+            if (!redisService.exists(String.format(Rediskey.menuList,adminId))){
+                List<SysPermission> list= permissionMapper.listUserPerms(adminId);
+                String key =String.format(Rediskey.menuList,adminId);
+                redisService.set(key, JsonUtil.objectToJson(list));
+                return list;
+            }
             return new CommonResult().success(count);
         }
         return new CommonResult().failed();

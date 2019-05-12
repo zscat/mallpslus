@@ -2,6 +2,7 @@ package com.zscat.mallplus.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.zscat.mallplus.bo.Tree;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysPermissionNode;
@@ -36,9 +37,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private ISysUserService userService;
     @Override
     public List<Tree<SysPermission>> getPermissionsByUserId(Long id) {
-        List<Tree<SysPermission>> trees = new ArrayList<Tree<SysPermission>>();
-      //  List<SysPermission> menuDOs = permissionMapper.listMenuByUserId(id);
-        List<SysPermission> menuDOs = userService.listUserPerms(id);
+        List<Tree<SysPermission>> trees = Lists.newArrayList();
+        List<SysPermission> menuDOs = userService.listMenuByUserId(id);
         for (SysPermission sysMenuDO : menuDOs) {
             Tree<SysPermission> tree = new Tree<SysPermission>();
             tree.setId(sysMenuDO.getId().toString());
@@ -57,12 +57,20 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public List<SysPermissionNode> treeList() {
-        List<SysPermission> permissionList = permissionMapper.selectList(new QueryWrapper<>());
+        List<SysPermission> permissionList = permissionMapper.selectList(new QueryWrapper<SysPermission>().orderByAsc("sort"));
         List<SysPermissionNode> result = permissionList.stream()
                 .filter(permission -> permission.getPid().equals(0L))
                 .map(permission -> covert(permission, permissionList)).collect(Collectors.toList());
         return result;
     }
+
+    public int updateShowStatus(List<Long> ids, Integer showStatus) {
+        SysPermission productCategory = new SysPermission();
+        productCategory.setStatus(showStatus);
+        return permissionMapper.update(productCategory, new QueryWrapper<SysPermission>().eq("id",ids));
+
+    }
+
     /**
      * 将权限转换为带有子级的权限对象
      * 当找不到子级权限的时候map操作不会再递归调用covert

@@ -2,11 +2,11 @@ package com.zscat.mallplus.controller;
 
 
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.marking.entity.SmsCoupon;
-import com.zscat.mallplus.marking.entity.SmsCouponHistory;
-import com.zscat.mallplus.marking.service.ISmsCouponService;
-import com.zscat.mallplus.marking.service.ISmsHomeAdvertiseService;
-import com.zscat.mallplus.marking.vo.SmsCouponHistoryDetail;
+import com.zscat.mallplus.sms.entity.SmsCoupon;
+import com.zscat.mallplus.sms.entity.SmsCouponHistory;
+import com.zscat.mallplus.sms.service.ISmsCouponService;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
+import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.oms.service.IOmsCartItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.CartPromotionItem;

@@ -59,14 +59,19 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
     }
 
     @Override
+    public int updateIndexStatus(List<Long> ids, Integer indexStatus) {
+        PmsProductCategory productCategory = new PmsProductCategory();
+        productCategory.setIndexStatus(indexStatus);
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id",ids));
+    }
+
+    @Override
     public boolean updateAnd(PmsProductCategory entity) {
         PmsProductCategory productCategory = new PmsProductCategory();
-        productCategory.setId(entity.getId());
-
-        setCategoryLevel(productCategory);
+        setCategoryLevel(entity);
         //更新商品分类时要更新商品中的名称
         PmsProduct product = new PmsProduct();
-        product.setProductCategoryName(productCategory.getName());
+        product.setProductCategoryName(entity.getName());
 
         productMapper.update(product, new QueryWrapper<PmsProduct>().eq("product_category_id",entity.getId()));
         //同时更新筛选属性的信息
@@ -78,7 +83,7 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
             productCategoryAttributeRelationMapper.delete(new QueryWrapper<>(new PmsProductCategoryAttributeRelation()).eq("product_category_id",entity.getId()));
 
         }
-         categoryMapper.updateById(productCategory);
+         categoryMapper.updateById(entity);
         return true;
     }
 

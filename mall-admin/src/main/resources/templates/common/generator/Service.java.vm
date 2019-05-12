@@ -1,9 +1,7 @@
 package ${package}.${module}.service;
 
-import ${package}.${module}.model.${Module}${className};
-
-
-import java.util.List;
+import ${package}.${module}.entity.${Module}${className};
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * ${comments}
@@ -12,20 +10,7 @@ import java.util.List;
  * @email ${email}
  * @date ${datetime}
  */
-public interface ${className}Service {
 
+public interface I${Module}${className}Service extends IService<${Module}${className}> {
 
-    int create${className}(${Module}${className} ${classname});
-    
-    int update${className}(Long id, ${Module}${className} ${classname});
-
-    int delete${className}(Long id);
-
-
-
-    List<${Module}${className}> list${className}(${Module}${className} ${classname}, int pageNum, int pageSize);
-
-    ${Module}${className} get${className}(Long id);
-
-   
 }

@@ -24,7 +24,6 @@ import java.util.List;
  * <p>
  * 商品信息
  * </p>
- *
  * @author zscat
  * @since 2019-04-19
  */
@@ -145,7 +144,7 @@ public class PmsProductController {
     @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "根据商品id获取商品编辑信息")
-    @PreAuthorize("hasAuthority('pms:product:read')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:read')")
     public Object getUpdateInfo(@PathVariable Long id) {
         PmsProductResult productResult = IPmsProductService.getUpdateInfo(id);
         return new CommonResult().success(productResult);
@@ -164,7 +163,7 @@ public class PmsProductController {
     @RequestMapping(value = "/update/verifyStatus")
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量修改审核状态")
-    @PreAuthorize("hasAuthority('pms:product:update')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:update')")
     public Object updateVerifyStatus(@RequestParam("ids") Long ids,
                                      @RequestParam("verifyStatus") Integer verifyStatus,
                                      @RequestParam("detail") String detail) {
@@ -180,7 +179,7 @@ public class PmsProductController {
     @RequestMapping(value = "/update/publishStatus", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量上下架")
-    @PreAuthorize("hasAuthority('pms:product:update')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:update')")
     public Object updatePublishStatus(@RequestParam("ids") List<Long> ids,
                                       @RequestParam("publishStatus") Integer publishStatus) {
         int count = IPmsProductService.updatePublishStatus(ids, publishStatus);
@@ -195,7 +194,7 @@ public class PmsProductController {
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量推荐商品")
-    @PreAuthorize("hasAuthority('pms:product:update')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:update')")
     public Object updateRecommendStatus(@RequestParam("ids") List<Long> ids,
                                         @RequestParam("recommendStatus") Integer recommendStatus) {
         int count = IPmsProductService.updateRecommendStatus(ids, recommendStatus);
@@ -210,7 +209,7 @@ public class PmsProductController {
     @RequestMapping(value = "/update/newStatus", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量设为新品")
-    @PreAuthorize("hasAuthority('pms:product:update')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:update')")
     public Object updateNewStatus(@RequestParam("ids") List<Long> ids,
                                   @RequestParam("newStatus") Integer newStatus) {
         int count = IPmsProductService.updateNewStatus(ids, newStatus);
@@ -225,7 +224,7 @@ public class PmsProductController {
     @RequestMapping(value = "/update/deleteStatus", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量修改删除状态")
-    @PreAuthorize("hasAuthority('pms:product:delete')")
+    @PreAuthorize("hasAuthority('pms:PmsProduct:delete')")
     public Object updateDeleteStatus(@RequestParam("ids") List<Long> ids,
                                      @RequestParam("deleteStatus") Integer deleteStatus) {
         int count = IPmsProductService.updateDeleteStatus(ids, deleteStatus);

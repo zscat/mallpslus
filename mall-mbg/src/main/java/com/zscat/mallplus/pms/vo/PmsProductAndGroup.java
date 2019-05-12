@@ -1,7 +1,7 @@
 package com.zscat.mallplus.pms.vo;
 
 
-import com.zscat.mallplus.marking.entity.SmsGroupMember;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import lombok.Data;
 

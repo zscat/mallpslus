@@ -39,6 +39,7 @@ public class GenUtils {
         templates.add("templates/common/generator/add.vue.vm");
         templates.add("templates/common/generator/index.vue.vm");
         templates.add("templates/common/generator/api.js.vm");
+        templates.add("templates/common/generator/path.js.vm");
         templates.add("templates/common/generator/update.vue.vm");
 
         templates.add("templates/common/generator/BrandDetail.vue.vm");
@@ -136,7 +137,7 @@ public class GenUtils {
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             } catch (IOException e) {
-                throw new ApiMallPlusException("渲染模板失败，表名：" + tableDO.getTableName(), e);
+                throw new ApiMallPlusException("渲染模板失败，表名：" +tableDO.getTableName(), e);
             }
         }
     }
@@ -177,7 +178,7 @@ public class GenUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String module, String template, String classname, String className, String packageName, String Nodule) {
+    public static String getFileName(String module, String template, String classname, String className, String packageName, String Module) {
         String packagePath = "main" + File.separator + "java" + File.separator;
         //String modulesname=config.getString("packageName");
         if (StringUtils.isNotBlank(packageName)) {
@@ -185,11 +186,11 @@ public class GenUtils {
         }
 
         if (template.contains("domain.java.vm")) {
-            return Nodule + className + ".java";
+            return Module + className + ".java";
         }
 
         if (template.contains("Dao.java.vm")) {
-            return className + "Mapper.java";
+            return Module + className + "Mapper.java";
         }
 
 //		if(template.contains("Mapper.java.vm")){
@@ -197,25 +198,28 @@ public class GenUtils {
 //		}
         // templates.add("templates/common/generator/menu.sql.vm");
         if (template.contains("menu.sql.vm")) {
-            return className + "menu.sql";
+            return Module + className + "menu.sql";
         }
         if (template.contains("Service.java.vm")) {
-            return className + "Service.java";
+            return "I"+Module + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
-            return className + "ServiceImpl.java";
+            return Module + className + "ServiceImpl.java";
         }
 
         if (template.contains("Controller.java.vm")) {
-            return className + "Controller.java";
+            return Module + className + "Controller.java";
         }
 
         if (template.contains("Mapper.xml.vm")) {
-            return className + "Mapper.xml";
+            return Module + className + "Mapper.xml";
         }
         if (template.contains("api.js.vm")) {
             return classname + ".js";
+        }
+        if (template.contains("path.js.vm")) {
+            return classname+"path" + ".js";
         }
         if (template.contains("add.vue.vm")) {
             return classname + File.separator + "add.vue";
@@ -228,7 +232,7 @@ public class GenUtils {
             return classname + File.separator + "update.vue";
         }
         if (template.contains("BrandDetail.vue.vm")) {
-            return classname + File.separator + "components" + File.separator + className + "Detail.vue";
+                return classname + File.separator + "components" + File.separator + className + "Detail.vue";
         }
 
         return null;
