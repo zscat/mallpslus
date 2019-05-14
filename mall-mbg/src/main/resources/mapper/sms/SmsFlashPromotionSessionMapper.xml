@@ -20,7 +20,9 @@
     <select id="getCurrentDang" resultType="com.zscat.mallplus.sms.vo.SmsFlashSessionInfo">
         SELECT
         id,
-        name
+        name,
+        start_time,
+        end_time
         from
         sms_flash_promotion_session
         where

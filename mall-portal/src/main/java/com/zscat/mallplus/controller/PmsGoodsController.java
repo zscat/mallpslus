@@ -7,11 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.constant.RedisKey;
+import com.zscat.mallplus.pms.entity.*;
+import com.zscat.mallplus.pms.mapper.PmsCommentMapper;
+import com.zscat.mallplus.pms.mapper.PmsProductAttributeMapper;
+import com.zscat.mallplus.pms.vo.PmsProductAttr;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
-import com.zscat.mallplus.pms.entity.PmsProduct;
-import com.zscat.mallplus.pms.entity.PmsProductAttribute;
-import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
-import com.zscat.mallplus.pms.entity.PmsProductConsult;
 import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.ConsultTypeCount;
 import com.zscat.mallplus.pms.vo.PmsProductCategoryWithChildrenItem;
@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class PmsGoodsController {
     private IPmsProductConsultService pmsProductConsultService;
     @Autowired
     private RedisService redisService;
+
+    @Resource
+    private PmsProductAttributeMapper pmsProductAttributeMapper;
+    @Resource
+    private PmsCommentMapper pmsCommentMapper;
 
 
     @IgnoreAuth
@@ -117,8 +123,19 @@ public class PmsGoodsController {
     @GetMapping(value = "/product/queryProductDetail")
     @ApiOperation(value = "查询商品详情信息")
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        PmsProductResult productResult = pmsProductService.getUpdateInfo(id);
-        UmsMember umsMember = memberService.getCurrentMember();
+        PmsProductResult productResult =new PmsProductResult();
+
+        //获取商品基础属性
+        PmsProduct product = pmsProductService.getById(id);
+        //获取商品其他属性值
+        List<PmsProductAttr> attrList = pmsProductAttributeMapper.getProductAttrById(id,0);//获取规格数据
+        //获取商品评价
+        List<PmsComment> pmsCommentList = pmsCommentMapper.getByProductId(id);
+        productResult.setProduct(product);
+        productResult.setPmsProductAttrList(attrList);
+        productResult.setPmsComments(pmsCommentList);
+
+//        UmsMember umsMember = memberService.getCurrentMember();与用户关联再议
         /*if (umsMember != null && umsMember.getId() != null && productResult != null) {
             MemberProductCollection findCollection = productCollectionRepository.findByMemberIdAndProductId(
                     umsMember.getId(), id);

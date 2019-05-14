@@ -5,8 +5,10 @@ import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
 import com.zscat.mallplus.sms.entity.*;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
+import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 import com.zscat.mallplus.vo.pms.CateProduct;
+import com.zscat.mallplus.vo.sms.SmsFlashPromotionProducts;
 import lombok.Data;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class IndexData {
     private List<SmsHomeAdvertise> banner_list;
     private List<PmsSmallNaviconCategory> nav_icon_list;
     private List<PmsProductAttributeCategory> cat_list;
-    private List<SmsFlashPromotionProducts> sms_flash_promotionProducts_List;
+    private HomeFlashPromotion homeFlashPromotion;
     private List<HomeProductAttr> new_products;
     private List<HomeProductAttr> hot_products;
     private List<CateProduct> cate_products;

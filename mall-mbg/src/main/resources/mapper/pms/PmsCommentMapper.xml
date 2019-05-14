@@ -25,5 +25,9 @@
     <sql id="Base_Column_List">
         id, product_id, member_nick_name, product_name, star, member_ip, create_time, show_status, product_attribute, collect_couont, read_count, content, pics, member_icon, replay_count
     </sql>
+    <select id="getByProductId" resultType="com.zscat.mallplus.pms.entity.PmsComment">
+        select id, product_id, member_nick_name, product_name, star, member_ip, create_time, show_status, product_attribute, collect_couont, read_count, content, pics, member_icon, replay_count
+        from pms_comment where product_id = #{productId}
+    </select>
 
 </mapper>

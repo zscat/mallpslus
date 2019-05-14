@@ -23,6 +23,7 @@ import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.single.ApiBaseAction;
+import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import com.zscat.mallplus.ums.entity.UmsMember;
@@ -33,6 +34,7 @@ import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.*;
 import com.zscat.mallplus.vo.pms.CateProduct;
+import com.zscat.mallplus.vo.sms.SmsFlashPromotionProducts;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -44,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -177,17 +180,21 @@ public class AppletMemberController extends ApiBaseAction {
             //获取分类结束
             //获取秒杀活动商品
             //查询当前在线秒杀活动
-            List<SmsFlashPromotionProducts> sms_flash_promotionProducts_List = null;
-            List<SmsFlashPromotionProducts> tempsmsFlashList = new ArrayList<>();
-            String smsFlashPromotionProductJson = redisService.get(RedisKey.appletsmsFlashPromotionProductKey);
-            if(smsFlashPromotionProductJson!=null){
-                sms_flash_promotionProducts_List = JsonUtil.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
-            }
-            if(smsFlashPromotionProductJson==null||sms_flash_promotionProducts_List.size()<=0){
+            HomeFlashPromotion homeFlashPromotion = null;
+            HomeFlashPromotion tempsmsFlashList = new HomeFlashPromotion();
+//            String smsFlashPromotionProductJson = redisService.get(RedisKey.appletsmsFlashPromotionProductKey);
+//            if(smsFlashPromotionProductJson!=null){
+//                homeFlashPromotion = JsonUtil.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
+//            }
+//            if(smsFlashPromotionProductJson==null||homeFlashPromotion.size()<=0){
                 SmsFlashPromotion queryS = new SmsFlashPromotion();
                 queryS.setIsIndex(1);
                 SmsFlashPromotion indexFlashPromotion = smsFlashPromotionService.getOne(new QueryWrapper<>(queryS));
-                Long flashPromotionId = indexFlashPromotion.getId();
+                 Long flashPromotionId = 0L;
+                 //数据库中有当前秒杀活动时赋值
+                if(indexFlashPromotion!=null){
+                flashPromotionId = indexFlashPromotion.getId();
+                }
                 //首页秒杀活动数据
 
                 //根据时间计算当前点档
@@ -195,27 +202,33 @@ public class AppletMemberController extends ApiBaseAction {
                 String formatNow = DateFormatUtils.format(now,"HH:mm:ss");
 
                 SmsFlashSessionInfo smsFlashSessionInfo = smsFlashPromotionSessionMapper.getCurrentDang(formatNow);
-                if(smsFlashSessionInfo!=null){
+                if(smsFlashSessionInfo!=null && flashPromotionId!=0L){//当前时间有秒杀档，并且有秒杀活动时，获取数据
                     Long smsFlashSessionId = smsFlashSessionInfo.getId();
+                    //秒杀活动点档信息存储
+                    tempsmsFlashList.setId(smsFlashSessionId);
+                    tempsmsFlashList.setFlashName(smsFlashSessionInfo.getName());
+                    tempsmsFlashList.setStartTime(smsFlashSessionInfo.getStartTime());
+                    tempsmsFlashList.setEndTime(smsFlashSessionInfo.getEndTime());
                     SmsFlashPromotionProductRelation querySMP = new SmsFlashPromotionProductRelation();
                     querySMP.setFlashPromotionId(flashPromotionId);
                     querySMP.setFlashPromotionSessionId(smsFlashSessionId);
                     List<SmsFlashPromotionProductRelation> smsFlashPromotionProductRelationlist = smsFlashPromotionProductRelationService.list(new QueryWrapper<>(querySMP));
+                    List<HomeProductAttr> productAttrs = new ArrayList<>();
                     for (SmsFlashPromotionProductRelation item:smsFlashPromotionProductRelationlist) {
-                        PmsProduct product = pmsProductService.getById(item.getProductId());
-                        SmsFlashPromotionProducts smsFlashPromotionProduct = new SmsFlashPromotionProducts();
-                        smsFlashPromotionProduct.setId(item.getId());
-                        smsFlashPromotionProduct.setFlashPromotionCount(item.getFlashPromotionCount());
-                        smsFlashPromotionProduct.setFlashPromotionLimit(item.getFlashPromotionLimit());
-                        smsFlashPromotionProduct.setFlashPromotionPrice(item.getFlashPromotionPrice());
-                        smsFlashPromotionProduct.setProduct(product);
-                        tempsmsFlashList.add(smsFlashPromotionProduct);
+                        PmsProduct tempproduct = pmsProductService.getById(item.getProductId());
+                        HomeProductAttr product = new HomeProductAttr();
+                        product.setProductId(tempproduct.getId());
+                        product.setProductImg(tempproduct.getPic());
+                        product.setProductName(tempproduct.getName());
+                        product.setProductPrice(tempproduct.getPromotionPrice()!=null?tempproduct.getPromotionPrice():BigDecimal.ZERO);
+                        productAttrs.add(product);
                     }
-                    sms_flash_promotionProducts_List = tempsmsFlashList;
-                    redisService.set(RedisKey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(sms_flash_promotionProducts_List));
-                    redisService.expire(RedisKey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
+                    tempsmsFlashList.setProductList(productAttrs);
+                    homeFlashPromotion = tempsmsFlashList;
+//                    redisService.set(RedisKey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(homeFlashPromotion));
+//                    redisService.expire(RedisKey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
                 }
-            }
+//            }
             //获取秒杀活动结束
             //获取首页分类商品列表
             List<CateProduct> cateProductList = null;
@@ -234,11 +247,23 @@ public class AppletMemberController extends ApiBaseAction {
                     PmsProduct queryProduct = new PmsProduct();
                     queryProduct.setProductCategoryId(item.getId());
                     List<PmsProduct> pmsProductList = pmsProductService.list(new QueryWrapper<>(queryProduct));//商品列表
+                    List<HomeProductAttr> temphomeProductattr = new ArrayList<>();
+
+                    for (PmsProduct pmsProduct: pmsProductList
+                         ) {
+                        HomeProductAttr productAttr = new HomeProductAttr();
+                        productAttr.setProductId(pmsProduct.getId());
+                        productAttr.setProductName(pmsProduct.getName());
+                        productAttr.setProductImg(pmsProduct.getPic());
+                        productAttr.setProductPrice(pmsProduct.getPrice()!=null?pmsProduct.getPrice():BigDecimal.ZERO);
+                        temphomeProductattr.add(productAttr);
+                    }
+
                     CateProduct cateProduct = new CateProduct();
                     cateProduct.setCategoryId(item.getId());
                     cateProduct.setCategoryName(item.getName());
                     cateProduct.setCategoryImage(item.getIcon());
-                    cateProduct.setPmsProductList(pmsProductList);
+                    cateProduct.setPmsProductList(temphomeProductattr);
                     //存入分类+商品对象vo
                     temp.add(cateProduct);
                 }
@@ -309,7 +334,7 @@ public class AppletMemberController extends ApiBaseAction {
             data.setNav_icon_list(nav_icon_list);
             data.setBanner_list(bannerList);
             data.setCoupon_list(couponList);
-            data.setSms_flash_promotionProducts_List(sms_flash_promotionProducts_List);
+            data.setHomeFlashPromotion(homeFlashPromotion);
             data.setCate_products(cateProductList);
             data.setHot_products(hot_productList);
             data.setNew_products(new_productList);

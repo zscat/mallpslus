@@ -36,7 +36,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     @Resource
     private SmsGroupMemberMapper groupMemberMapper;
     @Override
-    public PmsProductAndGroup getProductAndGroup(Long id) {
+    public PmsProductAndGroup getProductAndGroup(Long id){
         PmsProduct goods = productMapper.selectById(id);
         PmsProductAndGroup vo = new PmsProductAndGroup();
         try {
