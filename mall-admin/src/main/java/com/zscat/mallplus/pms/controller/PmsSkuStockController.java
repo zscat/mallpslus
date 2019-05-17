@@ -85,7 +85,7 @@ public class PmsSkuStockController {
     @ApiOperation("删除sku的库存")
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsSkuStock:delete')")
-    public Object deletePmsSkuStock(@ApiParam(name="pid",value="sku的库存id",required = true) @PathVariable Long id) {
+    public Object deletePmsSkuStock(@ApiParam(name = "pid", value = "sku的库存id", required = true) @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
                 return new CommonResult().paramFailed("sku的库存id");
@@ -131,6 +131,7 @@ public class PmsSkuStockController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "pms", REMARK = "根据商品编号及编号模糊搜索sku库存")
     @ApiOperation("根据商品编号及编号模糊搜索sku库存")
     @RequestMapping(value = "/{pid}", method = RequestMethod.GET)

@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sms.mapper;
 
-import com.zscat.mallplus.sms.entity.SmsHomeRecommendProduct;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sms.entity.SmsHomeRecommendProduct;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 
 import java.util.List;
@@ -15,5 +15,5 @@ import java.util.List;
  * @since 2019-04-19
  */
 public interface SmsHomeRecommendProductMapper extends BaseMapper<SmsHomeRecommendProduct> {
-  List<HomeProductAttr> queryList();
+    List<HomeProductAttr> queryList();
 }

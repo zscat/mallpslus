@@ -4,12 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.config.WxAppletProperties;
 import com.zscat.mallplus.exception.ApiMallPlusException;
-import com.zscat.mallplus.sms.service.ISmsCouponHistoryService;
-import com.zscat.mallplus.sms.service.ISmsCouponService;
-import com.zscat.mallplus.sms.service.ISmsGroupMemberService;
-import com.zscat.mallplus.sms.service.ISmsGroupService;
-import com.zscat.mallplus.sms.entity.*;
-import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
@@ -24,6 +18,12 @@ import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsSkuStock;
 import com.zscat.mallplus.pms.mapper.PmsSkuStockMapper;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sms.entity.*;
+import com.zscat.mallplus.sms.service.ISmsCouponHistoryService;
+import com.zscat.mallplus.sms.service.ISmsCouponService;
+import com.zscat.mallplus.sms.service.ISmsGroupMemberService;
+import com.zscat.mallplus.sms.service.ISmsGroupService;
+import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.ums.entity.UmsIntegrationConsumeSetting;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberReceiveAddress;
@@ -106,7 +106,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     @Override
     public int payOrder(TbThanks tbThanks) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time=sdf.format(new Date());
+        String time = sdf.format(new Date());
         tbThanks.setTime(time);
         tbThanks.setDate(new Date());
         /*TbMember tbMember=tbMemberMapper.selectByPrimaryKey(Long.valueOf(tbThanks.getUserId()));
@@ -118,15 +118,15 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         }*/
 
         //设置订单为已付款
-        OmsOrder tbOrder=orderMapper.selectById(tbThanks.getOrderId());
-        if (tbOrder==null){
+        OmsOrder tbOrder = orderMapper.selectById(tbThanks.getOrderId());
+        if (tbOrder == null) {
             throw new ApiMallPlusException("订单不存在");
         }
         tbOrder.setStatus(1);
         tbOrder.setPayType(tbThanks.getPayType());
         tbOrder.setPaymentTime(new Date());
         tbOrder.setModifyTime(new Date());
-        if(orderMapper.updateById(tbOrder)!=1){
+        if (orderMapper.updateById(tbOrder) != 1) {
             throw new ApiMallPlusException("更新订单失败");
         }
         //恢复所有下单商品的锁定库存，扣减真实库存
@@ -136,12 +136,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
         int count = orderMapper.updateSkuStock(list);
         //发送通知确认邮件
-        String tokenName= UUID.randomUUID().toString();
-        String token= UUID.randomUUID().toString();
+        String tokenName = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
 
         // emailUtil.sendEmailDealThank(EMAIL_SENDER,"【mallcloud商城】支付待审核处理",tokenName,token,tbThanks);
         return count;
     }
+
     @Override
     public void sendDelayMessageCancelOrder(Long orderId) {
         //获取订单超时时间
@@ -152,22 +153,21 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     }
 
     /**
-     *
      * @return
      */
     @Override
     public ConfirmOrderResult submitPreview(OrderParam orderParam) {
 
-        String type =orderParam.getType();
+        String type = orderParam.getType();
 
         UmsMember currentMember = UserUtils.getCurrentMember();
-        List<CartPromotionItem> cartPromotionItemList =new ArrayList<>();
-        if ("3".equals(type)){ // 1 商品详情 2 勾选购物车 3全部购物车的商品
-            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(),null);
+        List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
+        if ("3".equals(type)) { // 1 商品详情 2 勾选购物车 3全部购物车的商品
+            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), null);
         }
-        if( "1".equals(type)) {
+        if ("1".equals(type)) {
             String cartId = orderParam.getCartId();
-            if (org.apache.commons.lang.StringUtils.isBlank(cartId)){
+            if (org.apache.commons.lang.StringUtils.isBlank(cartId)) {
                 throw new ApiMallPlusException("参数为空");
             }
             OmsCartItem omsCartItem = cartItemService.selectById(Long.valueOf(cartId));
@@ -176,17 +176,17 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             if (!CollectionUtils.isEmpty(list)) {
                 cartPromotionItemList = cartItemService.calcCartPromotion(list);
             }
-        }else if ("2".equals(type)){
-            String cart_id_list1 =orderParam.getCartIds();
-            if (org.apache.commons.lang.StringUtils.isBlank(cart_id_list1)){
+        } else if ("2".equals(type)) {
+            String cart_id_list1 = orderParam.getCartIds();
+            if (org.apache.commons.lang.StringUtils.isBlank(cart_id_list1)) {
                 throw new ApiMallPlusException("参数为空");
             }
-            String[] ids1 =cart_id_list1.split(",");
+            String[] ids1 = cart_id_list1.split(",");
             List<Long> resultList = new ArrayList<>(ids1.length);
             for (String s : ids1) {
                 resultList.add(Long.valueOf(s));
             }
-            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(),resultList);
+            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), resultList);
         }
         ConfirmOrderResult result = new ConfirmOrderResult();
         //获取购物车信息
@@ -213,12 +213,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         return result;
 
     }
+
     @Override
     public ConfirmOrderResult generateConfirmOrder() {
         ConfirmOrderResult result = new ConfirmOrderResult();
         //获取购物车信息
         UmsMember currentMember = UserUtils.getCurrentMember();
-        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(),null);
+        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), null);
         result.setCartPromotionItemList(cartPromotionItemList);
         //获取用户收货地址列表
         UmsMemberReceiveAddress queryU = new UmsMemberReceiveAddress();
@@ -242,13 +243,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
     @Override
     public CommonResult generateOrder(OrderParam orderParam) {
 
-        String type =orderParam.getType();
+        String type = orderParam.getType();
         UmsMember currentMember = UserUtils.getCurrentMember();
-        List<CartPromotionItem> cartPromotionItemList =new ArrayList<>();
-        if ("3".equals(type)){ // 1 商品详情 2 勾选购物车 3全部购物车的商品
-            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(),null);
+        List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
+        if ("3".equals(type)) { // 1 商品详情 2 勾选购物车 3全部购物车的商品
+            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), null);
         }
-        if( "1".equals(type)) {
+        if ("1".equals(type)) {
             Long cartId = Long.valueOf(orderParam.getCartId());
             OmsCartItem omsCartItem = cartItemService.selectById(cartId);
             List<OmsCartItem> list = new ArrayList<>();
@@ -256,20 +257,20 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             if (!CollectionUtils.isEmpty(list)) {
                 cartPromotionItemList = cartItemService.calcCartPromotion(list);
             }
-        }else if ("2".equals(type)){
-            String cart_id_list1 =orderParam.getCartIds();
-            String[] ids1 =cart_id_list1.split(",");
+        } else if ("2".equals(type)) {
+            String cart_id_list1 = orderParam.getCartIds();
+            String[] ids1 = cart_id_list1.split(",");
             List<Long> resultList = new ArrayList<>(ids1.length);
             for (String s : ids1) {
                 resultList.add(Long.valueOf(s));
             }
-            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(),resultList);
+            cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), resultList);
         }
 
 
         List<OmsOrderItem> orderItemList = new ArrayList<>();
         //获取购物车及优惠信息
-        String name="";
+        String name = "";
 
         for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
             //生成下单商品信息
@@ -411,8 +412,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         result.put("orderItemList", orderItemList);
 
         String platform = orderParam.getPlatform();
-        if("1".equals(platform)){
-            push(currentMember,order,orderParam.getPage(),orderParam.getFormId(),name);
+        if ("1".equals(platform)) {
+            push(currentMember, order, orderParam.getPage(), orderParam.getFormId(), name);
         }
         return new CommonResult().success("下单成功", result);
     }
@@ -435,12 +436,11 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
     /**
      * 推送消息
-     *
      */
-    public void push(UmsMember umsMember, OmsOrder order,String page,String formId,String name) {
-        log.info("发送模版消息：userId="+umsMember.getId()+",orderId="+order.getId()+",formId="+formId);
+    public void push(UmsMember umsMember, OmsOrder order, String page, String formId, String name) {
+        log.info("发送模版消息：userId=" + umsMember.getId() + ",orderId=" + order.getId() + ",formId=" + formId);
         if (StringUtils.isEmpty(formId)) {
-            log.error("发送模版消息：userId="+umsMember.getId()+",orderId="+order.getId()+",formId="+formId);
+            log.error("发送模版消息：userId=" + umsMember.getId() + ",orderId=" + order.getId() + ",formId=" + formId);
         }
         String accessToken = null;
         try {
@@ -448,15 +448,15 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
             String templateId = wxAppletProperties.getTemplateId();
             Map<String, TemplateData> param = new HashMap<String, TemplateData>();
-            param.put("keyword1", new TemplateData(DateUtils.format(order.getCreateTime(),"yyyy-MM-dd"), "#EE0000"));
+            param.put("keyword1", new TemplateData(DateUtils.format(order.getCreateTime(), "yyyy-MM-dd"), "#EE0000"));
 
             param.put("keyword2", new TemplateData(name, "#EE0000"));
             param.put("keyword3", new TemplateData(order.getOrderSn(), "#EE0000"));
-            param.put("keyword3", new TemplateData(order.getPayAmount()+"", "#EE0000"));
+            param.put("keyword3", new TemplateData(order.getPayAmount() + "", "#EE0000"));
 
             JSONObject jsonObject = JSONObject.fromObject(param);
             //调用发送微信消息给用户的接口    ********这里写自己在微信公众平台拿到的模板ID
-            WX_TemplateMsgUtil.sendWechatMsgToUser(umsMember.getWeixinOpenid(), templateId, page+"?id="+order.getId(),
+            WX_TemplateMsgUtil.sendWechatMsgToUser(umsMember.getWeixinOpenid(), templateId, page + "?id=" + order.getId(),
                     formId, jsonObject, accessToken);
 
         } catch (Exception e) {
@@ -465,6 +465,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
 
     }
+
     @Override
     public CommonResult cancelTimeOutOrder() {
         OmsOrderSetting orderSetting = orderSettingMapper.selectById(1L);
@@ -516,6 +517,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             }
         }
     }
+
     @Override
     public Object preSingelOrder(GroupAndOrderVo orderParam) {
         ConfirmOrderResult result = new ConfirmOrderResult();
@@ -530,6 +532,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         result.setAddress(address);
         return result;
     }
+
     /**
      * 推送消息
      */
@@ -564,7 +567,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
     @Transactional
     @Override
-    public Object generateSingleOrder(GroupAndOrderVo orderParam,UmsMember member) {
+    public Object generateSingleOrder(GroupAndOrderVo orderParam, UmsMember member) {
         String type = orderParam.getType();
         orderParam.setMemberId(member.getId());
         orderParam.setName(member.getIcon());
@@ -623,7 +626,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         //生成订单号
         order.setOrderSn(generateOrderSn(order));
         SmsGroup group = groupService.getById(orderParam.getGroupId());
-        if (group!=null){
+        if (group != null) {
             order.setPayAmount(group.getGroupPrice());
         }
         // TODO: 2018/9/3 bill_*,delivery_*
@@ -639,7 +642,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             sm.setGroupId(orderParam.getGroupId());
             sm.setMemberId(orderParam.getMemberId());
             List<SmsGroupMember> smsGroupMemberList = groupMemberService.list(new QueryWrapper<>(sm));
-            if (smsGroupMemberList!=null && smsGroupMemberList.size()>0){
+            if (smsGroupMemberList != null && smsGroupMemberList.size() > 0) {
                 return new CommonResult().failed("你已经参加此拼团");
             }
 
@@ -696,6 +699,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         sb.append(order.getMemberId());
         return sb.toString();
     }
+
     /**
      * 计算总金额
      */
@@ -790,13 +794,15 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
      * @param useStatus 0->未使用；1->已使用
      */
     private void updateCouponStatus(Long couponId, Long memberId, Integer useStatus) {
-        if (couponId == null) {return;}
+        if (couponId == null) {
+            return;
+        }
         //查询第一张优惠券
-        SmsCouponHistory queryC= new SmsCouponHistory();
+        SmsCouponHistory queryC = new SmsCouponHistory();
         queryC.setCouponId(couponId);
-        if (useStatus == 0){
+        if (useStatus == 0) {
             queryC.setUseStatus(1);
-        }else {
+        } else {
             queryC.setUseStatus(0);
         }
         List<SmsCouponHistory> couponHistoryList = couponHistoryService.list(new QueryWrapper<>(queryC));

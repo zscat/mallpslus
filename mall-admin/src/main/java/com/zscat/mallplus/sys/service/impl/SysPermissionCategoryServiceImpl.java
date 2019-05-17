@@ -1,9 +1,9 @@
 package com.zscat.mallplus.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.sys.entity.SysPermissionCategory;
 import com.zscat.mallplus.sys.mapper.SysPermissionCategoryMapper;
 import com.zscat.mallplus.sys.service.ISysPermissionCategoryService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +15,5 @@ import org.springframework.stereotype.Service;
  * @since 2019-04-14
  */
 @Service
-    public class SysPermissionCategoryServiceImpl extends ServiceImpl<SysPermissionCategoryMapper, SysPermissionCategory> implements ISysPermissionCategoryService {
+public class SysPermissionCategoryServiceImpl extends ServiceImpl<SysPermissionCategoryMapper, SysPermissionCategory> implements ISysPermissionCategoryService {
 }

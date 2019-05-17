@@ -60,6 +60,7 @@ public class PmsProductCategoryController {
         entity.setParentId(parentId);
         return new CommonResult().success(IPmsProductCategoryService.page(new Page<PmsProductCategory>(pageNum, pageSize), new QueryWrapper<>(entity)));
     }
+
     @SysLog(MODULE = "pms", REMARK = "保存产品分类")
     @ApiOperation("保存产品分类")
     @PostMapping(value = "/create")
@@ -142,6 +143,7 @@ public class PmsProductCategoryController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("查询所有一级分类及子分类")
     @RequestMapping(value = "/list/withChildren", method = RequestMethod.GET)
     @ResponseBody
@@ -188,6 +190,7 @@ public class PmsProductCategoryController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("修改首页显示状态")
     @RequestMapping(value = "/update/indexStatus", method = RequestMethod.POST)
     @ResponseBody

@@ -63,7 +63,7 @@ public class SmsHomeAdvertiseController {
             entity.setOrderCount(0);
             if (ISmsHomeAdvertiseService.save(entity)) {
                 //保存时清空缓存
-                redisService.set(Rediskey.appletBannerKey+"2","[]");
+                redisService.set(Rediskey.appletBannerKey + "2", "[]");
                 return new CommonResult().success();
             }
         } catch (Exception e) {
@@ -139,6 +139,7 @@ public class SmsHomeAdvertiseController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sms", REMARK = "修改上下线状态")
     @ApiOperation("修改上下线状态")
     @RequestMapping(value = "/update/status/{id}", method = RequestMethod.POST)
@@ -150,7 +151,6 @@ public class SmsHomeAdvertiseController {
         return ISmsHomeAdvertiseService.updateById(record);
 
     }
-
 
 
     @ApiOperation("修改推荐排序")

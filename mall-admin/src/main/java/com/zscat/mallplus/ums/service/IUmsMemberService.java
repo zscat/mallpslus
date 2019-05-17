@@ -1,7 +1,7 @@
 package com.zscat.mallplus.ums.service;
 
-import com.zscat.mallplus.ums.entity.UmsMember;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.ums.entity.UmsMember;
 
 /**
  * <p>

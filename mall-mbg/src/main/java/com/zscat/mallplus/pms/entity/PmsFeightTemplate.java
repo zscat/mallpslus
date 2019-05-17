@@ -1,11 +1,12 @@
 package com.zscat.mallplus.pms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -122,14 +123,14 @@ public class PmsFeightTemplate implements Serializable {
     @Override
     public String toString() {
         return "PmsFeightTemplate{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", chargeType=" + chargeType +
-        ", firstWeight=" + firstWeight +
-        ", firstFee=" + firstFee +
-        ", continueWeight=" + continueWeight +
-        ", continmeFee=" + continmeFee +
-        ", dest=" + dest +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", chargeType=" + chargeType +
+                ", firstWeight=" + firstWeight +
+                ", firstFee=" + firstFee +
+                ", continueWeight=" + continueWeight +
+                ", continmeFee=" + continmeFee +
+                ", dest=" + dest +
+                "}";
     }
 }

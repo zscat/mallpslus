@@ -22,6 +22,7 @@ public class JedisConfig extends CachingConfigurerSupport {
      * redis-cli config set notify-keyspace-events Egx
      * 如果你的Redis不是你自己维护的，比如你是使用阿里云的Redis数据库，你不能够更改它的配置，那么可以使用如下方法：在applicationContext.xml中配置
      * <util:constant static-field="org.springframework.session.data.redis.config.ConfigureRedisAction.NO_OP"/>
+     *
      * @return
      */
 
@@ -50,22 +51,22 @@ public class JedisConfig extends CachingConfigurerSupport {
     private String password;
 
     @Bean
-    public JedisPool redisPoolFactory(){
+    public JedisPool redisPoolFactory() {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(maxIdle);
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         jedisPoolConfig.setMaxTotal(maxActive);
         jedisPoolConfig.setMinIdle(minIdle);
         JedisPool jedisPool = null;
-        if (StringUtils.isEmpty(password)){
-            jedisPool = new JedisPool(jedisPoolConfig,host,port,timeout);
-        }else {
-            jedisPool = new JedisPool(jedisPoolConfig,host,port,timeout,password);
+        if (StringUtils.isEmpty(password)) {
+            jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout);
+        } else {
+            jedisPool = new JedisPool(jedisPoolConfig, host, port, timeout, password);
         }
 
         logger.info("JedisPool注入成功！");
         logger.info("redis地址：" + host + ":" + port);
-        return  jedisPool;
+        return jedisPool;
     }
 
 }

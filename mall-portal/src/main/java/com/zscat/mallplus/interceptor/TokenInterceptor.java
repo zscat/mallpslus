@@ -50,6 +50,7 @@ import java.util.Map;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
+    public static final String LOGIN_TOKEN_KEY = "Mall-Token";
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenInterceptor.class);
     @Autowired
     private UserDetailsService userDetailsService;
@@ -59,7 +60,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-    public static final String LOGIN_TOKEN_KEY = "Mall-Token";
+
     /**
      * After completion.
      *
@@ -73,7 +74,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) throws Exception {
         if (ex != null) {
             log.error("<== afterCompletion . ex={}", ex.getMessage(), ex);
-          //  this.handleException(response);
+            //  this.handleException(response);
         }
     }
 
@@ -100,21 +101,25 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         long startTime, endTime;
-        Map<String,String[]> params = new HashMap<String,String[]>(request.getParameterMap());
+        Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
 
         StringBuffer sbParams = new StringBuffer();
         sbParams.append("?");
 
         for (String key : params.keySet()) {
-            if(null == key || null == params.get(key) || null == params.get(key)[0]){  continue;}
+            if (null == key || null == params.get(key) || null == params.get(key)[0]) {
+                continue;
+            }
             sbParams.append(key).append("=").append(params.get(key)[0]).append("&");
         }
 
-        if(sbParams.length() > 1) {sbParams = sbParams.delete(sbParams.length() - 1, sbParams.length());}
+        if (sbParams.length() > 1) {
+            sbParams = sbParams.delete(sbParams.length() - 1, sbParams.length());
+        }
 
-        String fullUrl = ((HttpServletRequest)request).getRequestURL().toString();
-        String token = getToken((HttpServletRequest)request);
-        String requestType = ((HttpServletRequest)request).getMethod();
+        String fullUrl = ((HttpServletRequest) request).getRequestURL().toString();
+        String token = getToken((HttpServletRequest) request);
+        String requestType = ((HttpServletRequest) request).getMethod();
 
         String uri = request.getRequestURI();
         IgnoreAuth annotation;
@@ -129,13 +134,13 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
         String authHeader = request.getHeader(this.tokenHeader);
         //如果header中不存在token，则从参数中获取token
-        if (StringUtils.isBlank(authHeader) ||  "undefined".equals(authHeader.toLowerCase())) {
+        if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             authHeader = request.getParameter(LOGIN_TOKEN_KEY);
         }
 //前置条件：token为空情况处理
-        if(StringUtils.isBlank(authHeader) ||  "undefined".equals(authHeader.toLowerCase())) {
+        if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             log.info(formMapKey(null, "token is null url=" + fullUrl, requestType,
-                    IpAddressUtil.getIpAddr((HttpServletRequest)request), sbParams.toString(), "null")
+                    IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), "null")
                     + ",\"cost\":\"" + 0 + "ms\"");
             throw new ApiMallPlusException("请先登录", 401);
         }
@@ -147,7 +152,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 log.info(formMapKey(username, fullUrl, requestType,
-                        IpAddressUtil.getIpAddr((HttpServletRequest)request), sbParams.toString(), token)
+                        IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
                         + ",\"cost\":\"" + 0 + "ms\"");
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -155,12 +160,12 @@ public class TokenInterceptor implements HandlerInterceptor {
                     LOGGER.info("authenticated user:{}", username);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            }else {
+            } else {
                 log.info(formMapKey("wu", fullUrl, requestType,
                         IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
                         + ",\"cost\":\"" + 0 + "ms\"");
             }
-        }else {
+        } else {
             throw new ApiMallPlusException("请先登录", 401);
         }
         log.info("<== preHandle - 权限拦截器.  url={}", uri);
@@ -178,6 +183,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         res.getWriter().write("{\"code\":100009 ,\"message\" :\"解析token失败\"}");
         res.flushBuffer();
     }
+
     private String formMapKey(Object userId, String mothedName, String requestType,
                               String ip, String params, String token) {
         return "\"time\"" + ":\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS").format(new Date())
@@ -200,10 +206,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private String getToken(HttpServletRequest request) {
         String token = request.getHeader(CommonConstant.AJAX_REQUEST_TOKEN_KEY);
-        if(StringUtils.isNotBlank(token)){
+        if (StringUtils.isNotBlank(token)) {
             //Bearer xxxxxx  (xxxxxx 是 token)
             String[] temp = token.split(" ");
-            if(temp.length > 1){
+            if (temp.length > 1) {
                 return temp[1];
             }
         }

@@ -53,7 +53,7 @@ public class OmsPortalOrderController extends ApiBaseAction {
                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         queryParam.setMemberId(umsMemberService.getCurrentMember().getId());
         List<OmsOrder> orderList = orderService.list(new QueryWrapper<>(queryParam));
-        for (OmsOrder order : orderList){
+        for (OmsOrder order : orderList) {
             OmsOrderItem query = new OmsOrderItem();
             query.setOrderId(queryParam.getId());
             List<OmsOrderItem> orderItemList = orderItemService.list(new QueryWrapper<>(query));
@@ -67,40 +67,40 @@ public class OmsPortalOrderController extends ApiBaseAction {
     @ResponseBody
     public Object detail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         OmsOrder orderDetailResult = null;
-        String bannerJson = redisService.get(RedisKey.PmsProductResult+id);
-        if(bannerJson!=null){
-            orderDetailResult = JsonUtil.jsonToPojo(bannerJson,OmsOrderDetail.class);
-        }else {
+        String bannerJson = redisService.get(RedisKey.PmsProductResult + id);
+        if (bannerJson != null) {
+            orderDetailResult = JsonUtil.jsonToPojo(bannerJson, OmsOrderDetail.class);
+        } else {
             orderDetailResult = orderService.getById(id);
             OmsOrderItem query = new OmsOrderItem();
             query.setOrderId(id);
             List<OmsOrderItem> orderItemList = orderItemService.list(new QueryWrapper<>(query));
             orderDetailResult.setOrderItemList(orderItemList);
-            redisService.set(RedisKey.PmsProductResult+id,JsonUtil.objectToJson(orderDetailResult));
-            redisService.expire(RedisKey.PmsProductResult+id,10*60);
+            redisService.set(RedisKey.PmsProductResult + id, JsonUtil.objectToJson(orderDetailResult));
+            redisService.expire(RedisKey.PmsProductResult + id, 10 * 60);
         }
 
         return new CommonResult().success(orderDetailResult);
     }
 
 
-
-
     @ResponseBody
     @GetMapping("/submitPreview")
-    public Object submitPreview(OrderParam orderParam){
+    public Object submitPreview(OrderParam orderParam) {
         try {
             ConfirmOrderResult result = orderService.submitPreview(orderParam);
             return new CommonResult().success(result);
-        }catch(ApiMallPlusException e){
+        } catch (ApiMallPlusException e) {
             return new CommonResult().failed(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      * 提交订单
+     *
      * @param orderParam
      * @return
      */
@@ -115,8 +115,8 @@ public class OmsPortalOrderController extends ApiBaseAction {
     @RequestMapping(value = "/payOrder")
     @ApiOperation(value = "支付订单")
     @ResponseBody
-    public Object payOrder(TbThanks tbThanks){
-        int result=orderService.payOrder(tbThanks);
+    public Object payOrder(TbThanks tbThanks) {
+        int result = orderService.payOrder(tbThanks);
         return new CommonResult().success(result);
     }
 
@@ -145,14 +145,14 @@ public class OmsPortalOrderController extends ApiBaseAction {
         try {
             UmsMember member = this.getCurrentMember();
             OmsOrder order = orderService.getById(orderId);
-            if(order==null){
-               return null;
+            if (order == null) {
+                return null;
             }
             if (!order.getMemberId().equals(member.getId())) {
                 return new CommonResult().success("非当前用户订单");
             }
 
-        //    ExpressInfoModel expressInfoModel = orderService.queryExpressInfo(orderId);
+            //    ExpressInfoModel expressInfoModel = orderService.queryExpressInfo(orderId);
             return new CommonResult().success(null);
         } catch (Exception e) {
             log.error("get waybillInfo error. error=" + e.getMessage(), e);

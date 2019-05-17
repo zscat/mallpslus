@@ -1,9 +1,9 @@
 package com.zscat.mallplus.cms.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.cms.service.ICmsPrefrenceAreaProductRelationService;
 import com.zscat.mallplus.pms.entity.CmsPrefrenceAreaProductRelation;
 import com.zscat.mallplus.pms.mapper.CmsPrefrenceAreaProductRelationMapper;
-import com.zscat.mallplus.cms.service.ICmsPrefrenceAreaProductRelationService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

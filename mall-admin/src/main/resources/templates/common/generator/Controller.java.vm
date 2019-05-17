@@ -1,20 +1,10 @@
-package  ${package}.${module}.controller;
+package
 
-import ${package}.${module}.entity.${Module}${className};
-import ${package}.${module}.service.I${Module}${className}Service;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.utils.CommonResult;
-import com.zscat.mallplus.utils.ValidatorUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import javax.annotation.Resource;
-import java.util.List;
+    ${package}.${
+
+module }.controller;
+    ${package}.${module}.entity.${Module}${className};
+    ${package}.${module}.service.  {Module}${className}Service;
 
 /**
  * <p>
@@ -37,8 +27,8 @@ public class ${Module}${className}Controller {
     @GetMapping(value = "/list")
     @PreAuthorize("hasAuthority('${module}:${Module}${className}:read')")
     public Object get${Module}${className}ByPage(${Module}${className} entity,
-                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+                                                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                       @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ) {
         try {
             return new CommonResult().success(I${Module}${className}Service.page(new Page<${Module}${className}>(pageNum, pageSize), new QueryWrapper<>(entity)));
@@ -79,6 +69,7 @@ public class ${Module}${className}Controller {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "${module}", REMARK = "删除${tableName}数据")
     @ApiOperation("删除${comments}数据")
     @DeleteMapping(value = "/delete/{id}")
@@ -107,7 +98,7 @@ public class ${Module}${className}Controller {
             if (ValidatorUtils.empty(id)) {
                 return new CommonResult().paramFailed("${Module}${className}_id");
             }
-            ${Module}${className} ${module}${className} = I${Module}${className}Service.getById(id);
+            ${Module}${className} ${module}${className} =I${Module}${className}Service.getById(id);
             return new CommonResult().success(${module}${className});
         } catch (Exception e) {
             log.error("${tableName}表明细：%s", e.getMessage(), e);

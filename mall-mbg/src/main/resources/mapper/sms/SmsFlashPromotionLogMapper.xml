@@ -4,13 +4,13 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsFlashPromotionLog">
-        <id column="id" property="id" />
-        <result column="member_id" property="memberId" />
-        <result column="product_id" property="productId" />
-        <result column="member_phone" property="memberPhone" />
-        <result column="product_name" property="productName" />
-        <result column="subscribe_time" property="subscribeTime" />
-        <result column="send_time" property="sendTime" />
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="product_id" property="productId"/>
+        <result column="member_phone" property="memberPhone"/>
+        <result column="product_name" property="productName"/>
+        <result column="subscribe_time" property="subscribeTime"/>
+        <result column="send_time" property="sendTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

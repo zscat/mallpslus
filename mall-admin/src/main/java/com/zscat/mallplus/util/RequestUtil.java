@@ -12,26 +12,6 @@ import java.util.Map;
 public class RequestUtil {
 
     /**
-     * 移除request指定参数
-     */
-    public String removeParam(HttpServletRequest request, String paramName) {
-        String queryString = "";
-        Enumeration keys = request.getParameterNames();
-        while (keys.hasMoreElements()) {
-            String key = (String) keys.nextElement();
-            if (key.equals(paramName)) {
-                continue;
-            }
-            if ("".equals(queryString)) {
-                queryString = key + "=" + request.getParameter(key);
-            } else {
-                queryString += "&" + key + "=" + request.getParameter(key);
-            }
-        }
-        return queryString;
-    }
-
-    /**
      * 获取请求basePath
      */
     public static String getBasePath(HttpServletRequest request) {
@@ -61,6 +41,26 @@ public class RequestUtil {
             result.put(parameterName, request.getParameter(parameterName));
         }
         return result;
+    }
+
+    /**
+     * 移除request指定参数
+     */
+    public String removeParam(HttpServletRequest request, String paramName) {
+        String queryString = "";
+        Enumeration keys = request.getParameterNames();
+        while (keys.hasMoreElements()) {
+            String key = (String) keys.nextElement();
+            if (key.equals(paramName)) {
+                continue;
+            }
+            if ("".equals(queryString)) {
+                queryString = key + "=" + request.getParameter(key);
+            } else {
+                queryString += "&" + key + "=" + request.getParameter(key);
+            }
+        }
+        return queryString;
     }
 
 }

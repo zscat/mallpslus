@@ -37,8 +37,6 @@ import java.util.*;
  * @date 2017年6月6日  下午5:05:03
  */
 public class WechatUtil {
-    private static Logger logger = LoggerFactory.getLogger(WechatUtil.class);
-
     /**
      * 充值客户端类型--微信公众号
      */
@@ -47,6 +45,7 @@ public class WechatUtil {
      * 充值客户端类型--app
      */
     public static Integer CLIENTTYPE_APP = 1;
+    private static Logger logger = LoggerFactory.getLogger(WechatUtil.class);
 
     /**
      * 方法描述：微信退款逻辑
@@ -105,7 +104,7 @@ public class WechatUtil {
      * ResourceUtil.getConfigByName("wx.refundUrl")
      * 请求微信https
      **/
-    public static String sendSSLPostToWx(String mapToXml, SSLConnectionSocketFactory sslcsf,String refundUrl) {
+    public static String sendSSLPostToWx(String mapToXml, SSLConnectionSocketFactory sslcsf, String refundUrl) {
         logger.info("*******退款（WX Request：" + mapToXml);
         HttpPost httPost = new HttpPost(refundUrl);
         httPost.addHeader("Connection", "keep-alive");
@@ -124,63 +123,6 @@ public class WechatUtil {
             String xmlStr = EntityUtils.toString(entity, "UTF-8");
             logger.info("*******退款（WX Response：" + xmlStr);
             return xmlStr;
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return null;
-        } finally {
-            try {
-                if (response != null) {
-                    response.close();
-                }
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
-    }
-
-    /**
-     * 方法描述：微信查询退款逻辑
-     * 创建时间：2017年4月12日  上午11:04:25
-     * 作者： xubo
-     *
-     * @param
-     * @return
-     */
-
-
-    public Map<String, Object> wxRefundquery(String out_trade_no, String out_refund_no) {
-        Map<Object, Object> params = new HashMap<Object, Object>();
-        //微信分配的公众账号ID（企业号corpid即为此appId）
-        params.put("appid", "xx");
-        //微信支付分配的商户号
-        params.put("mch_id", "xx");
-        //随机字符串，不长于32位。推荐随机数生成算法
-        params.put("nonce_str", CharUtil.getRandomString(16));
-        //商户侧传给微信的订单号
-        params.put("out_trade_no", out_trade_no);
-        //签名前必须要参数全部写在前面
-        //签名
-        params.put("sign", arraySign(params, "wx.paySignKey"));
-        String mapToXml = MapUtils.convertMap2Xml(params);
-        HttpPost httPost = new HttpPost("refundqueryUrl");
-        httPost.addHeader("Connection", "keep-alive");
-        httPost.addHeader("Accept", "*/*");
-        httPost.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        httPost.addHeader("Host", "api.mch.weixin.qq.com");
-        httPost.addHeader("X-Requested-With", "XMLHttpRequest");
-        httPost.addHeader("Cache-Control", "max-age=0");
-        httPost.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
-        httPost.setEntity(new StringEntity(mapToXml, "UTF-8"));
-        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(WechatConfig.getSslcsf()).build();
-        CloseableHttpResponse response = null;
-        try {
-            response = httpClient.execute(httPost);
-            HttpEntity entity = response.getEntity();
-            String xmlStr = EntityUtils.toString(entity, "UTF-8");
-            System.out.println(xmlStr);
-            Map<String, Object> result = XmlUtil.xmlStrToMap(xmlStr);//.xmlStrToBean(xmlStr, WechatRefundApiResult.class);
-            return result;
-            //将信息保存到数据库
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return null;
@@ -294,5 +236,62 @@ public class WechatUtil {
         logger.info("请求结果:" + reusltObj);
         return reusltObj;
 
+    }
+
+    /**
+     * 方法描述：微信查询退款逻辑
+     * 创建时间：2017年4月12日  上午11:04:25
+     * 作者： xubo
+     *
+     * @param
+     * @return
+     */
+
+
+    public Map<String, Object> wxRefundquery(String out_trade_no, String out_refund_no) {
+        Map<Object, Object> params = new HashMap<Object, Object>();
+        //微信分配的公众账号ID（企业号corpid即为此appId）
+        params.put("appid", "xx");
+        //微信支付分配的商户号
+        params.put("mch_id", "xx");
+        //随机字符串，不长于32位。推荐随机数生成算法
+        params.put("nonce_str", CharUtil.getRandomString(16));
+        //商户侧传给微信的订单号
+        params.put("out_trade_no", out_trade_no);
+        //签名前必须要参数全部写在前面
+        //签名
+        params.put("sign", arraySign(params, "wx.paySignKey"));
+        String mapToXml = MapUtils.convertMap2Xml(params);
+        HttpPost httPost = new HttpPost("refundqueryUrl");
+        httPost.addHeader("Connection", "keep-alive");
+        httPost.addHeader("Accept", "*/*");
+        httPost.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        httPost.addHeader("Host", "api.mch.weixin.qq.com");
+        httPost.addHeader("X-Requested-With", "XMLHttpRequest");
+        httPost.addHeader("Cache-Control", "max-age=0");
+        httPost.addHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0) ");
+        httPost.setEntity(new StringEntity(mapToXml, "UTF-8"));
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(WechatConfig.getSslcsf()).build();
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httPost);
+            HttpEntity entity = response.getEntity();
+            String xmlStr = EntityUtils.toString(entity, "UTF-8");
+            System.out.println(xmlStr);
+            Map<String, Object> result = XmlUtil.xmlStrToMap(xmlStr);//.xmlStrToBean(xmlStr, WechatRefundApiResult.class);
+            return result;
+            //将信息保存到数据库
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return null;
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 }

@@ -20,9 +20,10 @@ import org.springframework.stereotype.Service;
 public class SmsFlashPromotionProductRelationServiceImpl extends ServiceImpl<SmsFlashPromotionProductRelationMapper, SmsFlashPromotionProductRelation> implements ISmsFlashPromotionProductRelationService {
     @Autowired
     private SmsFlashPromotionProductRelationMapper relationMapper;
+
     @Override
     public int getCount(Long flashPromotionId, Long flashPromotionSessionId) {
-        return this.count(new QueryWrapper<>(new SmsFlashPromotionProductRelation()).eq("flash_promotion_id",flashPromotionId)
-        .eq("flash_promotion_session_id",flashPromotionSessionId));
+        return this.count(new QueryWrapper<>(new SmsFlashPromotionProductRelation()).eq("flash_promotion_id", flashPromotionId)
+                .eq("flash_promotion_session_id", flashPromotionSessionId));
     }
 }

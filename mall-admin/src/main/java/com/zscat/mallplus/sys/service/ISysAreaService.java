@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sys.service;
 
-import com.zscat.mallplus.sys.entity.SysArea;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.sys.entity.SysArea;
 
 /**
  * <p>

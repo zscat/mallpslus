@@ -2,7 +2,6 @@ package com.zscat.mallplus.pms.vo;
 
 import com.zscat.mallplus.pms.entity.PmsComment;
 import com.zscat.mallplus.pms.entity.PmsProduct;
-import com.zscat.mallplus.pms.entity.PmsSkuStock;
 import lombok.Data;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 public class PmsProductResult extends PmsProductParam {
     //商品所选分类的父id
     private Long cateParentId;
-    private  int  is_favorite ;// 1 已收藏 2 未收藏
+    private int is_favorite;// 1 已收藏 2 未收藏
     private List<PmsProductAttr> pmsProductAttrList;
     private PmsProduct product;
     private List<PmsComment> pmsComments;

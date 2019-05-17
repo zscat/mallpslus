@@ -1,7 +1,7 @@
 package com.zscat.mallplus.oms.mapper;
 
-import com.zscat.mallplus.oms.entity.OmsOrderReturnApply;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.oms.entity.OmsOrderReturnApply;
 
 /**
  * <p>

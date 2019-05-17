@@ -22,9 +22,9 @@ public class MallPortalApplicationTests {
 
     @Test
     public void contextLoads() {
-        String ids ="1,2,3,4";
+        String ids = "1,2,3,4";
         List<UmsMember> ll = (List<UmsMember>) sysAdminLogMapper.listByIds(Arrays.asList(ids.split(",")));
-        for (UmsMember log : ll){
+        for (UmsMember log : ll) {
             System.out.println(log.getUsername());
         }
     }

@@ -27,7 +27,7 @@ public class OmsOrderReturnReasonServiceImpl extends ServiceImpl<OmsOrderReturnR
         }
         OmsOrderReturnReason record = new OmsOrderReturnReason();
         record.setStatus(status);
-         this.update(record, new QueryWrapper<>(record).in("id",ids));
-         return 1;
+        this.update(record, new QueryWrapper<>(record).in("id", ids));
+        return 1;
     }
 }

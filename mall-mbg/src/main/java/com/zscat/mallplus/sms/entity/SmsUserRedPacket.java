@@ -1,12 +1,13 @@
 package com.zscat.mallplus.sms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -121,13 +122,13 @@ public class SmsUserRedPacket implements Serializable {
     @Override
     public String toString() {
         return "SmsUserRedPacket{" +
-        ", id=" + id +
-        ", redPacketId=" + redPacketId +
-        ", adminId=" + adminId +
-        ", userId=" + userId +
-        ", amount=" + amount +
-        ", grabTime=" + grabTime +
-        ", note=" + note +
-        "}";
+                ", id=" + id +
+                ", redPacketId=" + redPacketId +
+                ", adminId=" + adminId +
+                ", userId=" + userId +
+                ", amount=" + amount +
+                ", grabTime=" + grabTime +
+                ", note=" + note +
+                "}";
     }
 }

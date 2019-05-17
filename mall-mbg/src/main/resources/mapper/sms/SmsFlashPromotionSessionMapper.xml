@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsFlashPromotionSession">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="start_time" property="startTime" />
-        <result column="end_time" property="endTime" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -28,7 +28,7 @@
         where
         status = 1
         and
-         #{current_time} &gt; start_time
+        #{current_time} &gt; start_time
         and
         #{current_time} &lt; end_time
     </select>

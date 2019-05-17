@@ -1,11 +1,12 @@
 package com.zscat.mallplus.ums.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -127,14 +128,14 @@ public class UmsIntegrationChangeHistory implements Serializable {
     @Override
     public String toString() {
         return "UmsIntegrationChangeHistory{" +
-        ", id=" + id +
-        ", memberId=" + memberId +
-        ", createTime=" + createTime +
-        ", changeType=" + changeType +
-        ", changeCount=" + changeCount +
-        ", operateMan=" + operateMan +
-        ", operateNote=" + operateNote +
-        ", sourceType=" + sourceType +
-        "}";
+                ", id=" + id +
+                ", memberId=" + memberId +
+                ", createTime=" + createTime +
+                ", changeType=" + changeType +
+                ", changeCount=" + changeCount +
+                ", operateMan=" + operateMan +
+                ", operateNote=" + operateNote +
+                ", sourceType=" + sourceType +
+                "}";
     }
 }

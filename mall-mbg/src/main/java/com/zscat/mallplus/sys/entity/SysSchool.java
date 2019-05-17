@@ -1,13 +1,14 @@
 package com.zscat.mallplus.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -163,17 +164,17 @@ public class SysSchool implements Serializable {
     @Override
     public String toString() {
         return "SysSchool{" +
-        ", id=" + id +
-        ", longitude=" + longitude +
-        ", latitude=" + latitude +
-        ", name=" + name +
-        ", province=" + province +
-        ", city=" + city +
-        ", region=" + region +
-        ", address=" + address +
-        ", hot=" + hot +
-        ", is211=" + is211 +
-        ", is985=" + is985 +
-        "}";
+                ", id=" + id +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", name=" + name +
+                ", province=" + province +
+                ", city=" + city +
+                ", region=" + region +
+                ", address=" + address +
+                ", hot=" + hot +
+                ", is211=" + is211 +
+                ", is985=" + is985 +
+                "}";
     }
 }

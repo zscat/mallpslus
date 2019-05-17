@@ -51,6 +51,24 @@ public class Tree<T> {
      */
     private boolean hasChildren = false;
 
+    public Tree(String id, String text, Map<String, Object> state, boolean checked, Map<String, Object> attributes,
+                List<Tree<T>> children, boolean isParent, boolean isChildren, String parentID) {
+        super();
+        this.id = id;
+        this.title = text;
+        this.state = state;
+        this.checked = checked;
+        this.meta = attributes;
+        this.children = children;
+        this.hasParent = isParent;
+        this.hasChildren = isChildren;
+        this.parentId = parentID;
+    }
+
+    public Tree() {
+        super();
+    }
+
     public String getId() {
         return id;
     }
@@ -95,6 +113,10 @@ public class Tree<T> {
         return children;
     }
 
+    public void setChildren(boolean isChildren) {
+        this.hasChildren = isChildren;
+    }
+
     public void setChildren(List<Tree<T>> children) {
         this.children = children;
     }
@@ -111,34 +133,12 @@ public class Tree<T> {
         return hasChildren;
     }
 
-    public void setChildren(boolean isChildren) {
-        this.hasChildren = isChildren;
-    }
-
     public String getParentId() {
         return parentId;
     }
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public Tree(String id, String text, Map<String, Object> state, boolean checked, Map<String, Object> attributes,
-                List<Tree<T>> children, boolean isParent, boolean isChildren, String parentID) {
-        super();
-        this.id = id;
-        this.title = text;
-        this.state = state;
-        this.checked = checked;
-        this.meta = attributes;
-        this.children = children;
-        this.hasParent = isParent;
-        this.hasChildren = isChildren;
-        this.parentId = parentID;
-    }
-
-    public Tree() {
-        super();
     }
 
     @Override

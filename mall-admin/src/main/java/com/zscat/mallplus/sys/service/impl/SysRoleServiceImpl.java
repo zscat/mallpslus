@@ -42,14 +42,17 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     private ISysRolePermissionService rolePermissionRelationDao;
     @Resource
     private ISysUserService userService;
+
     @Override
     public List<SysPermission> getPermissionList(Long roleId) {
         return permissionMapper.getPermissionList(roleId);
     }
+
     @Override
     public List<SysRolePermission> getRolePermission(Long roleId) {
-        return rolePermissionMapper.selectList(new QueryWrapper<SysRolePermission>().eq("role_id",roleId));
+        return rolePermissionMapper.selectList(new QueryWrapper<SysRolePermission>().eq("role_id", roleId));
     }
+
     @Override
     public boolean saves(SysRole role) {
         role.setCreateTime(new Date());
@@ -57,24 +60,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         role.setAdminCount(0);
         role.setSort(0);
         roleMapper.insert(role);
-        updatePermission(role.getId(),role.getMenuIds());
+        updatePermission(role.getId(), role.getMenuIds());
         return true;
     }
 
     @Override
-    public boolean updates( SysRole role) {
+    public boolean updates(SysRole role) {
         role.setId(role.getId());
-        updatePermission(role.getId(),role.getMenuIds());
-         roleMapper.updateById(role);
+        updatePermission(role.getId(), role.getMenuIds());
+        roleMapper.updateById(role);
         return true;
     }
+
     public void updatePermission(Long roleId, String permissionIds) {
 
         //先删除原有关系
-        rolePermissionRelationMapper.delete(new QueryWrapper<SysRolePermission>().eq("role_id",roleId));
+        rolePermissionRelationMapper.delete(new QueryWrapper<SysRolePermission>().eq("role_id", roleId));
         //批量插入新关系
         List<SysRolePermission> relationList = new ArrayList<>();
-        if (!StringUtils.isEmpty(permissionIds)){
+        if (!StringUtils.isEmpty(permissionIds)) {
             String[] mids = permissionIds.split(",");
             for (String permissionId : mids) {
                 SysRolePermission relation = new SysRolePermission();

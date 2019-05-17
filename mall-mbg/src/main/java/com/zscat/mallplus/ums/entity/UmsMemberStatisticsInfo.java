@@ -1,12 +1,13 @@
 package com.zscat.mallplus.ums.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -228,22 +229,22 @@ public class UmsMemberStatisticsInfo implements Serializable {
     @Override
     public String toString() {
         return "UmsMemberStatisticsInfo{" +
-        ", id=" + id +
-        ", memberId=" + memberId +
-        ", consumeAmount=" + consumeAmount +
-        ", orderCount=" + orderCount +
-        ", couponCount=" + couponCount +
-        ", commentCount=" + commentCount +
-        ", returnOrderCount=" + returnOrderCount +
-        ", loginCount=" + loginCount +
-        ", attendCount=" + attendCount +
-        ", fansCount=" + fansCount +
-        ", collectProductCount=" + collectProductCount +
-        ", collectSubjectCount=" + collectSubjectCount +
-        ", collectTopicCount=" + collectTopicCount +
-        ", collectCommentCount=" + collectCommentCount +
-        ", inviteFriendCount=" + inviteFriendCount +
-        ", recentOrderTime=" + recentOrderTime +
-        "}";
+                ", id=" + id +
+                ", memberId=" + memberId +
+                ", consumeAmount=" + consumeAmount +
+                ", orderCount=" + orderCount +
+                ", couponCount=" + couponCount +
+                ", commentCount=" + commentCount +
+                ", returnOrderCount=" + returnOrderCount +
+                ", loginCount=" + loginCount +
+                ", attendCount=" + attendCount +
+                ", fansCount=" + fansCount +
+                ", collectProductCount=" + collectProductCount +
+                ", collectSubjectCount=" + collectSubjectCount +
+                ", collectTopicCount=" + collectTopicCount +
+                ", collectCommentCount=" + collectCommentCount +
+                ", inviteFriendCount=" + inviteFriendCount +
+                ", recentOrderTime=" + recentOrderTime +
+                "}";
     }
 }

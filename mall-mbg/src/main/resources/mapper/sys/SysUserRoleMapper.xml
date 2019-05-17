@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sys.entity.SysUserRole">
-        <id column="id" property="id" />
-        <result column="admin_id" property="adminId" />
-        <result column="role_id" property="roleId" />
+        <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="role_id" property="roleId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

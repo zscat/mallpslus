@@ -26,7 +26,7 @@ public class OmsOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableField(exist = false)
-    List<OmsOrderItem> orderItemList ;
+    List<OmsOrderItem> orderItemList;
     /**
      * 订单id
      */
@@ -295,7 +295,6 @@ public class OmsOrder implements Serializable {
 
     @TableField("school_id")
     private Long schoolId;
-
 
 
 }

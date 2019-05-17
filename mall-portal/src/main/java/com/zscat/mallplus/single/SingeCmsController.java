@@ -11,10 +11,10 @@ import com.zscat.mallplus.cms.entity.CmsSubjectComment;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
@@ -71,8 +71,8 @@ public class SingeCmsController extends ApiBaseAction {
     @ApiOperation(value = "查询文章分类列表")
     @GetMapping(value = "/subjectCategory/list")
     public Object cateList(CmsSubjectCategory subjectCategory,
-                          @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                           @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                           @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(subjectCategoryService.page(new Page<CmsSubjectCategory>(pageNum, pageSize), new QueryWrapper<>(subjectCategory)));
     }
 
@@ -92,13 +92,13 @@ public class SingeCmsController extends ApiBaseAction {
     public Object createSubject(CmsSubject subject, BindingResult result) {
         CommonResult commonResult;
         UmsMember member = this.getCurrentMember();
-        if (member.getMemberLevelId()>0){
+        if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
             CmsSubject newSubject = new CmsSubject();
             newSubject.setMemberId(member.getId());
             List<CmsSubject> subjects = subjectService.list(new QueryWrapper<>(newSubject));
-            if (subjects!=null && subjects.size()>memberLevel.getArticlecount()){
-                commonResult = new CommonResult().failed("你今天已经有发"+memberLevel.getArticlecount()+"篇文章");
+            if (subjects != null && subjects.size() > memberLevel.getArticlecount()) {
+                commonResult = new CommonResult().failed("你今天已经有发" + memberLevel.getArticlecount() + "篇文章");
                 return commonResult;
             }
         }

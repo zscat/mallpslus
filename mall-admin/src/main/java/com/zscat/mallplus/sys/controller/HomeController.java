@@ -93,12 +93,12 @@ public class HomeController extends BaseController {
                 qiOrderCount++;
                 qiOrderPay = qiOrderPay.add(order.getPayAmount());
             }
-            if (order.getCreateTime().getTime()>=DateUtils.geFirstDayDateByMonth().getTime()
+            if (order.getCreateTime().getTime() >= DateUtils.geFirstDayDateByMonth().getTime()
                     && (order.getStatus() == 1 || order.getStatus() == 2 || order.getStatus() == 3)) {
                 monthOrderCount++;
                 monthOrderPay = monthOrderPay.add(order.getPayAmount());
             }
-            if (order.getCreateTime().getTime()>=DateUtils.getFirstDayOfWeek().getTime()
+            if (order.getCreateTime().getTime() >= DateUtils.getFirstDayOfWeek().getTime()
                     && (order.getStatus() == 1 || order.getStatus() == 2 || order.getStatus() == 3)) {
                 weekOrderCount++;
                 weekOrderPay = weekOrderPay.add(order.getPayAmount());
@@ -170,6 +170,7 @@ public class HomeController extends BaseController {
         map.put("allCount", goodsList.size());
         return new CommonResult().success(map);
     }
+
     @ApiOperation("首页会员统计")
     @SysLog(MODULE = "home", REMARK = "首页会员统计")
     @RequestMapping(value = "/userStatic", method = RequestMethod.GET)
@@ -182,7 +183,7 @@ public class HomeController extends BaseController {
             if (DateUtils.format(member.getCreateTime()).equals(DateUtils.addDay(new Date(), -1))) {
                 yesUserCount++;
             }
-            if (member.getCreateTime().getTime()>=DateUtils.geFirstDayDateByMonth().getTime()) {
+            if (member.getCreateTime().getTime() >= DateUtils.geFirstDayDateByMonth().getTime()) {
                 qiUserCount++;
             }
             if (DateUtils.format(member.getCreateTime()).equals(DateUtils.format(new Date()))) {

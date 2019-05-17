@@ -1,12 +1,13 @@
 package com.zscat.mallplus.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -122,14 +123,14 @@ public class SysArea implements Serializable {
     @Override
     public String toString() {
         return "SysArea{" +
-        ", id=" + id +
-        ", pid=" + pid +
-        ", deep=" + deep +
-        ", name=" + name +
-        ", pinyinPrefix=" + pinyinPrefix +
-        ", pinyin=" + pinyin +
-        ", extId=" + extId +
-        ", extName=" + extName +
-        "}";
+                ", id=" + id +
+                ", pid=" + pid +
+                ", deep=" + deep +
+                ", name=" + name +
+                ", pinyinPrefix=" + pinyinPrefix +
+                ", pinyin=" + pinyin +
+                ", extId=" + extId +
+                ", extName=" + extName +
+                "}";
     }
 }

@@ -1,7 +1,7 @@
 package com.zscat.mallplus.cms.mapper;
 
-import com.zscat.mallplus.cms.entity.CmsSubjectCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.cms.entity.CmsSubjectCategory;
 
 /**
  * <p>

@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -148,15 +148,15 @@ public class SysAdminLog implements Serializable {
     @Override
     public String toString() {
         return "SysAdminLog{" +
-        ", id=" + id +
-        ", userId=" + userId +
-        ", userName=" + userName +
-        ", serviceName=" + serviceName +
-        ", method=" + method +
-        ", operationDesc=" + operationDesc +
-        ", createTime=" + createTime +
-        ", ip=" + ip +
-        ", params=" + params +
-        "}";
+                ", id=" + id +
+                ", userId=" + userId +
+                ", userName=" + userName +
+                ", serviceName=" + serviceName +
+                ", method=" + method +
+                ", operationDesc=" + operationDesc +
+                ", createTime=" + createTime +
+                ", ip=" + ip +
+                ", params=" + params +
+                "}";
     }
 }

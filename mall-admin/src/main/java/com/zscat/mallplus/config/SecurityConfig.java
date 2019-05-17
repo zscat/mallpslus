@@ -86,11 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected  void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder());
     }
-
 
 
     @Bean
@@ -112,7 +111,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             throw new UsernameNotFoundException("用户名或密码错误");
         };
     }
-
 
 
     @Bean

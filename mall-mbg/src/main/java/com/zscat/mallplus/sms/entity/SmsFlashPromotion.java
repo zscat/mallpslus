@@ -59,13 +59,13 @@ public class SmsFlashPromotion implements Serializable {
     @Override
     public String toString() {
         return "SmsFlashPromotion{" +
-        ", id=" + id +
-        ", title=" + title +
-        ", startDate=" + startDate +
-        ", endDate=" + endDate +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        ",isIndex="+isIndex+
-        "}";
+                ", id=" + id +
+                ", title=" + title +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ",isIndex=" + isIndex +
+                "}";
     }
 }

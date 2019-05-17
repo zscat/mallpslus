@@ -53,6 +53,52 @@ public class PayController extends ApiBaseAction {
 
     @Autowired
     private IOmsOrderItemService orderItemService;
+
+    /**
+     * 订单退款请求
+     */
+    /*
+    @SysLog(MODULE = "pay", REMARK = "订单退款请求")
+    @ApiOperation(value = "订单退款请求")
+    @PostMapping("refund")
+    public Object refund(Integer orderId) {
+        //
+        OrderVo orderInfo = orderService.queryObject(orderId);
+
+        if (null == orderInfo) {
+            return toResponsObject(400, "订单已取消", "");
+        }
+
+        if (orderInfo.getOrder_status() == 401 || orderInfo.getOrder_status() == 402) {
+            return toResponsObject(400, "订单已退款", "");
+        }
+
+        WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
+                10.01, 10.01);
+        if (result.getResult_code().equals("SUCCESS")) {
+            if (orderInfo.getOrder_status() == 201) {
+                orderInfo.setOrder_status(401);
+            } else if (orderInfo.getOrder_status() == 300) {
+                orderInfo.setOrder_status(402);
+            }
+            orderService.updateAll(orderInfo);
+            return toResponsObject(400, "成功退款", "");
+        } else {
+            return toResponsObject(400, "退款失败", "");
+        }
+    }*/
+
+
+    //返回微信服务
+    public static String setXml(String return_code, String return_msg) {
+        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
+    }
+
+    //模拟微信回调接口
+    public static String callbakcXml(String orderNum) {
+        return "<xml><appid><![CDATA[wx2421b1c4370ec43b]]></appid><attach><![CDATA[支付测试]]></attach><bank_type><![CDATA[CFT]]></bank_type><fee_type><![CDATA[CNY]]></fee_type> <is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[10000100]]></mch_id><nonce_str><![CDATA[5d2b6c2a8db53831f7eda20af46e531c]]></nonce_str><openid><![CDATA[oUpF8uMEb4qRXf22hE3X68TekukE]]></openid> <out_trade_no><![CDATA[" + orderNum + "]]></out_trade_no>  <result_code><![CDATA[SUCCESS]]></result_code> <return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[B552ED6B279343CB493C5DD0D78AB241]]></sign><sub_mch_id><![CDATA[10000100]]></sub_mch_id> <time_end><![CDATA[20140903131540]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1004400740201409030005092168]]></transaction_id></xml>";
+    }
+
     /**
      */
     @ApiOperation(value = "跳转")
@@ -68,7 +114,7 @@ public class PayController extends ApiBaseAction {
     @SysLog(MODULE = "pay", REMARK = "获取支付的请求参数")
     @ApiOperation(value = "获取支付的请求参数")
     @GetMapping("prepay")
-    public Object payPrepay( @RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+    public Object payPrepay(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         UmsMember user = UserUtils.getCurrentMember();
         //
         OmsOrder orderInfo = orderService.getById(id);
@@ -100,7 +146,7 @@ public class PayController extends ApiBaseAction {
             // 商品描述
             parame.put("body", "超市-支付");
             //订单的商品
-            List<OmsOrderItem> orderGoods = orderItemService.list(new QueryWrapper<>(new OmsOrderItem()).eq("orderId",id));
+            List<OmsOrderItem> orderGoods = orderItemService.list(new QueryWrapper<>(new OmsOrderItem()).eq("orderId", id));
             if (null != orderGoods) {
                 String body = "超市-";
                 for (OmsOrderItem goodsVo : orderGoods) {
@@ -170,7 +216,7 @@ public class PayController extends ApiBaseAction {
     @SysLog(MODULE = "pay", REMARK = "查询订单状态")
     @ApiOperation(value = "查询订单状态")
     @GetMapping("query")
-    public Object orderQuery( @RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+    public Object orderQuery(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         UmsMember user = UserUtils.getCurrentMember();
         //
         OmsOrder orderDetail = orderService.getById(id);
@@ -292,50 +338,5 @@ public class PayController extends ApiBaseAction {
             e.printStackTrace();
             return;
         }
-    }
-
-    /**
-     * 订单退款请求
-     */
-    /*
-    @SysLog(MODULE = "pay", REMARK = "订单退款请求")
-    @ApiOperation(value = "订单退款请求")
-    @PostMapping("refund")
-    public Object refund(Integer orderId) {
-        //
-        OrderVo orderInfo = orderService.queryObject(orderId);
-
-        if (null == orderInfo) {
-            return toResponsObject(400, "订单已取消", "");
-        }
-
-        if (orderInfo.getOrder_status() == 401 || orderInfo.getOrder_status() == 402) {
-            return toResponsObject(400, "订单已退款", "");
-        }
-
-        WechatRefundApiResult result = WechatUtil.wxRefund(orderInfo.getId().toString(),
-                10.01, 10.01);
-        if (result.getResult_code().equals("SUCCESS")) {
-            if (orderInfo.getOrder_status() == 201) {
-                orderInfo.setOrder_status(401);
-            } else if (orderInfo.getOrder_status() == 300) {
-                orderInfo.setOrder_status(402);
-            }
-            orderService.updateAll(orderInfo);
-            return toResponsObject(400, "成功退款", "");
-        } else {
-            return toResponsObject(400, "退款失败", "");
-        }
-    }*/
-
-
-    //返回微信服务
-    public static String setXml(String return_code, String return_msg) {
-        return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
-    }
-
-    //模拟微信回调接口
-    public static String callbakcXml(String orderNum) {
-        return "<xml><appid><![CDATA[wx2421b1c4370ec43b]]></appid><attach><![CDATA[支付测试]]></attach><bank_type><![CDATA[CFT]]></bank_type><fee_type><![CDATA[CNY]]></fee_type> <is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[10000100]]></mch_id><nonce_str><![CDATA[5d2b6c2a8db53831f7eda20af46e531c]]></nonce_str><openid><![CDATA[oUpF8uMEb4qRXf22hE3X68TekukE]]></openid> <out_trade_no><![CDATA[" + orderNum + "]]></out_trade_no>  <result_code><![CDATA[SUCCESS]]></result_code> <return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[B552ED6B279343CB493C5DD0D78AB241]]></sign><sub_mch_id><![CDATA[10000100]]></sub_mch_id> <time_end><![CDATA[20140903131540]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1004400740201409030005092168]]></transaction_id></xml>";
     }
 }

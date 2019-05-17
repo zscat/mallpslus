@@ -131,6 +131,7 @@ public class SmsHomeNewProductController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("添加首页推荐品牌")
     @RequestMapping(value = "/batchCreate", method = RequestMethod.POST)
     @ResponseBody
@@ -141,6 +142,7 @@ public class SmsHomeNewProductController {
         }
         return new CommonResult().failed();
     }
+
     @ApiOperation("批量修改推荐状态")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     @ResponseBody
@@ -151,6 +153,7 @@ public class SmsHomeNewProductController {
         }
         return new CommonResult().failed();
     }
+
     @ApiOperation("修改推荐排序")
     @RequestMapping(value = "/update/sort/{id}", method = RequestMethod.POST)
     @ResponseBody

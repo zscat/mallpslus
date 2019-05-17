@@ -1,11 +1,10 @@
-package  com.zscat.mallplus.sms.controller;
+package com.zscat.mallplus.sms.controller;
 
-import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
-import com.zscat.mallplus.sms.service.ISmsFlashPromotionService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.sys.entity.SysPermission;
+import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
+import com.zscat.mallplus.sms.service.ISmsFlashPromotionService;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -14,12 +13,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * <p>
- *
+ * <p>
  * </p>
  *
  * @author zscat
@@ -85,7 +85,7 @@ public class SmsFlashPromotionController {
     @ApiOperation("更新sms_flash_promotion")
     @PostMapping(value = "/update/status")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:update')")
-    public Object updateFlashStatus(@RequestParam("ids") Long ids,@RequestParam("status") Integer status) {
+    public Object updateFlashStatus(@RequestParam("ids") Long ids, @RequestParam("status") Integer status) {
         try {
             SmsFlashPromotion entity = new SmsFlashPromotion();
             entity.setId(ids);
@@ -104,7 +104,7 @@ public class SmsFlashPromotionController {
     @ApiOperation("更新sms_flash_promotion")
     @PostMapping(value = "/update/isIndex")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:update')")
-    public Object updateFlashIsIndex(@RequestParam("ids") Long ids,@RequestParam("isIndex") Integer isIndex) {
+    public Object updateFlashIsIndex(@RequestParam("ids") Long ids, @RequestParam("isIndex") Integer isIndex) {
         try {
             SmsFlashPromotion entity = new SmsFlashPromotion();
             entity.setId(ids);

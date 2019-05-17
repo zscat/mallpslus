@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 /**
  * 秒杀场次信息和商品
- *
  */
 @Data
 public class SmsFlashPromotionProducts implements Serializable {

@@ -48,21 +48,21 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
     public int updateNavStatus(List<Long> ids, Integer navStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setNavStatus(navStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id",ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
     }
 
     @Override
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setShowStatus(showStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id",ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
     }
 
     @Override
     public int updateIndexStatus(List<Long> ids, Integer indexStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setIndexStatus(indexStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id",ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
     }
 
     @Override
@@ -73,17 +73,17 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
         PmsProduct product = new PmsProduct();
         product.setProductCategoryName(entity.getName());
 
-        productMapper.update(product, new QueryWrapper<PmsProduct>().eq("product_category_id",entity.getId()));
+        productMapper.update(product, new QueryWrapper<PmsProduct>().eq("product_category_id", entity.getId()));
         //同时更新筛选属性的信息
         if (!CollectionUtils.isEmpty(entity.getProductAttributeIdList())) {
 
-            productCategoryAttributeRelationMapper.delete(new QueryWrapper<>(new PmsProductCategoryAttributeRelation()).eq("product_category_id",entity.getId()));
+            productCategoryAttributeRelationMapper.delete(new QueryWrapper<>(new PmsProductCategoryAttributeRelation()).eq("product_category_id", entity.getId()));
             insertRelationList(entity.getId(), entity.getProductAttributeIdList());
         } else {
-            productCategoryAttributeRelationMapper.delete(new QueryWrapper<>(new PmsProductCategoryAttributeRelation()).eq("product_category_id",entity.getId()));
+            productCategoryAttributeRelationMapper.delete(new QueryWrapper<>(new PmsProductCategoryAttributeRelation()).eq("product_category_id", entity.getId()));
 
         }
-         categoryMapper.updateById(entity);
+        categoryMapper.updateById(entity);
         return true;
     }
 
@@ -102,6 +102,7 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
         }
         return true;
     }
+
     /**
      * 批量插入商品分类与筛选属性关系表
      *
@@ -118,6 +119,7 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
         }
         pmsProductCategoryAttributeRelationService.saveBatch(relationList);
     }
+
     /**
      * 根据分类的parentId设置分类的level
      */

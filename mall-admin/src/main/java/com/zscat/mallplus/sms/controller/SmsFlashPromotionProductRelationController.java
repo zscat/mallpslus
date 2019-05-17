@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.bo.SmsFlashPromotionProducts;
 import com.zscat.mallplus.pms.entity.PmsProduct;
-import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.sms.entity.SmsFlashPromotionProductRelation;
 import com.zscat.mallplus.sms.service.ISmsFlashPromotionProductRelationService;
@@ -21,7 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -55,15 +56,15 @@ public class SmsFlashPromotionProductRelationController {
             //根据条件查询当前秒杀活动，当前点档的所有商品信息
             List<SmsFlashPromotionProductRelation> list = ((IPage) data).getRecords();
             List<SmsFlashPromotionProducts> smsFlashPromotionProductsList = new ArrayList<>();
-            Map<String,Object> map = new HashedMap();
-            map.put("total",data.getTotal());
-            map.put("size",data.getSize());
-            map.put("current",data.getCurrent());
-            map.put("ascs",data.ascs());
-            map.put("descs",data.descs());
+            Map<String, Object> map = new HashedMap();
+            map.put("total", data.getTotal());
+            map.put("size", data.getSize());
+            map.put("current", data.getCurrent());
+            map.put("ascs", data.ascs());
+            map.put("descs", data.descs());
 
 
-            for (SmsFlashPromotionProductRelation item:list) {
+            for (SmsFlashPromotionProductRelation item : list) {
                 PmsProduct product = pmsProductService.getById(item.getProductId());
                 SmsFlashPromotionProducts smsFlashPromotionProduct = new SmsFlashPromotionProducts();
                 smsFlashPromotionProduct.setId(item.getId());
@@ -73,7 +74,7 @@ public class SmsFlashPromotionProductRelationController {
                 smsFlashPromotionProduct.setProduct(product);
                 smsFlashPromotionProductsList.add(smsFlashPromotionProduct);
             }
-            map.put("data",smsFlashPromotionProductsList);
+            map.put("data", smsFlashPromotionProductsList);
             return new CommonResult().success(map);
         } catch (Exception e) {
             log.error("根据条件查询所有商品限时购与商品关系表列表：%s", e.getMessage(), e);

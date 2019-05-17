@@ -45,24 +45,11 @@ public class ApiBaseAction {
     @Resource
     protected HttpServletResponse response;
 
-
-    /**
-     * 参数绑定异常
-     */
-    @ExceptionHandler({BindException.class, MissingServletRequestParameterException.class, TypeMismatchException.class})
-    @ResponseBody
-    public Map<String, Object> bindException(Exception e) {
-        if (e instanceof BindException) {
-            return toResponsObject(1, "参数绑定异常", e.getMessage());
-        }
-        return toResponsObject(1, "处理异常", e.getMessage());
-    }
-
     /**
      * @param requestCode
      * @param msg
      * @param data
-     * @return Map<String   ,   Object>
+     * @return Map<String       ,       Object>
      * @throws
      * @Description:构建统一格式返回对象
      * @date 2016年9月2日
@@ -97,6 +84,18 @@ public class ApiBaseAction {
     }
 
     /**
+     * 参数绑定异常
+     */
+    @ExceptionHandler({BindException.class, MissingServletRequestParameterException.class, TypeMismatchException.class})
+    @ResponseBody
+    public Map<String, Object> bindException(Exception e) {
+        if (e instanceof BindException) {
+            return toResponsObject(1, "参数绑定异常", e.getMessage());
+        }
+        return toResponsObject(1, "处理异常", e.getMessage());
+    }
+
+    /**
      * initBinder 初始化绑定 <br>
      * 这里处理了3种类型<br>
      * 1、字符串自动 trim 去掉前后空格 <br>
@@ -126,13 +125,14 @@ public class ApiBaseAction {
         }
         return xff;
     }
+
     public UmsMember getCurrentMember() {
         try {
             SecurityContext ctx = SecurityContextHolder.getContext();
             Authentication auth = ctx.getAuthentication();
             MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
             return memberDetails.getUmsMember();
-        }catch (Exception e){
+        } catch (Exception e) {
             return new UmsMember();
         }
     }

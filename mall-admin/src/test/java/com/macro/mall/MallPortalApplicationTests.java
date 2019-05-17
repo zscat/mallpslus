@@ -25,34 +25,38 @@ public class MallPortalApplicationTests {
 
     @Test
     public void contextLoads() {
-        String ids ="1,2,3,4";
-        List<SysAdminLog> ll =  sysAdminLogMapper.selectBatchIds(Arrays.asList(ids.split(",")));
-        for (SysAdminLog log : ll){
+        String ids = "1,2,3,4";
+        List<SysAdminLog> ll = sysAdminLogMapper.selectBatchIds(Arrays.asList(ids.split(",")));
+        for (SysAdminLog log : ll) {
             System.out.println(log.getMethod());
         }
     }
+
     @Test
     public void delete() {
 
         List<SysAdminLog> dd = new ArrayList<>();
         SysAdminLog q = new SysAdminLog();
-        q.setId(6L);q.setCreateTime(new Date());
+        q.setId(6L);
+        q.setCreateTime(new Date());
         dd.add(q);
 
         SysAdminLog q1 = new SysAdminLog();
-        q1.setId(7L);q1.setCreateTime(new Date());
+        q1.setId(7L);
+        q1.setCreateTime(new Date());
         dd.add(q1);
 
         SysAdminLog q2 = new SysAdminLog();
-        q2.setId(8L);q2.setCreateTime(new Date());
+        q2.setId(8L);
+        q2.setCreateTime(new Date());
         dd.add(q2);
-        List<SysAdminLog> ll1 =  sysAdminLogMapper.selectBatchIds(dd);
-        for (SysAdminLog log1 : ll1){
+        List<SysAdminLog> ll1 = sysAdminLogMapper.selectBatchIds(dd);
+        for (SysAdminLog log1 : ll1) {
             System.out.println(log1.getMethod());
         }
-         sysAdminLogMapper.deleteBatchIds(dd);
-        List<SysAdminLog> ll =  sysAdminLogMapper.selectBatchIds(dd);
-        for (SysAdminLog log : ll){
+        sysAdminLogMapper.deleteBatchIds(dd);
+        List<SysAdminLog> ll = sysAdminLogMapper.selectBatchIds(dd);
+        for (SysAdminLog log : ll) {
             System.out.println(log.getMethod());
         }
     }

@@ -33,6 +33,7 @@ public class RedPacketController {
     private ISmsRedPacketService redPacketService;
     @Resource
     private ISmsUserRedPacketService userRedPacketService;
+
     @SysLog(MODULE = "sms", REMARK = "添加红包")
     @ApiOperation(value = "添加红包")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -47,6 +48,7 @@ public class RedPacketController {
         }
         return commonResult;
     }
+
     @SysLog(MODULE = "sms", REMARK = "更新红包")
     @ApiOperation(value = "更新红包")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
@@ -62,6 +64,7 @@ public class RedPacketController {
         }
         return commonResult;
     }
+
     @SysLog(MODULE = "sms", REMARK = "删除红包")
     @ApiOperation(value = "删除红包")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
@@ -74,6 +77,7 @@ public class RedPacketController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sms", REMARK = "根据红包分页获取红包列表")
     @ApiOperation(value = "根据红包名称分页获取红包列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -86,10 +90,10 @@ public class RedPacketController {
         SmsUserRedPacket userRedPacket = new SmsUserRedPacket();
         userRedPacket.setUserId(UserUtils.getCurrentMember().getId());
         List<SmsUserRedPacket> list = userRedPacketService.list(new QueryWrapper<>(userRedPacket));
-        for(SmsRedPacket vo : redPacketList){
-            if (list!=null && list.size()>0){
-                for (SmsUserRedPacket vo1 : list){
-                    if(vo.getId().equals(vo1.getRedPacketId())){
+        for (SmsRedPacket vo : redPacketList) {
+            if (list != null && list.size() > 0) {
+                for (SmsUserRedPacket vo1 : list) {
+                    if (vo.getId().equals(vo1.getRedPacketId())) {
                         vo.setStatus(1);
                         vo.setReciveAmount(vo1.getAmount());
                         break;
@@ -100,6 +104,7 @@ public class RedPacketController {
 
         return new CommonResult().success(redPacketList);
     }
+
     @SysLog(MODULE = "sms", REMARK = "根据编号查询红包信息")
     @ApiOperation(value = "根据编号查询红包信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

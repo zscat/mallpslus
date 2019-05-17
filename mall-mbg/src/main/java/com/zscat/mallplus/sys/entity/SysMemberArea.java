@@ -1,13 +1,14 @@
 package com.zscat.mallplus.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -57,9 +58,9 @@ public class SysMemberArea implements Serializable {
     @Override
     public String toString() {
         return "SysMemberArea{" +
-        ", memberId=" + memberId +
-        ", objId=" + objId +
-        ", type=" + type +
-        "}";
+                ", memberId=" + memberId +
+                ", objId=" + objId +
+                ", type=" + type +
+                "}";
     }
 }

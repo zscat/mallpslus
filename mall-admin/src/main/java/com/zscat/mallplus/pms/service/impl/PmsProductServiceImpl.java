@@ -131,43 +131,42 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         product.setId(id);
         productMapper.updateById(product);
         //会员价格
-        memberPriceMapper.delete(new QueryWrapper<>(new PmsMemberPrice()).eq("product_id",id));
+        memberPriceMapper.delete(new QueryWrapper<>(new PmsMemberPrice()).eq("product_id", id));
         relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), id);
         //阶梯价格
 
-        productLadderMapper.delete(new QueryWrapper<>(new PmsProductLadder()).eq("product_id",id));
+        productLadderMapper.delete(new QueryWrapper<>(new PmsProductLadder()).eq("product_id", id));
         relateAndInsertList(productLadderDao, productParam.getProductLadderList(), id);
         //满减价格
 
-        productFullReductionMapper.delete(new QueryWrapper<>(new PmsProductFullReduction()).eq("product_id",id));
+        productFullReductionMapper.delete(new QueryWrapper<>(new PmsProductFullReduction()).eq("product_id", id));
         relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), id);
         //修改sku库存信息
-        skuStockMapper.delete(new QueryWrapper<>(new PmsSkuStock()).eq("product_id",id));
+        skuStockMapper.delete(new QueryWrapper<>(new PmsSkuStock()).eq("product_id", id));
         handleSkuStockCode(productParam.getSkuStockList(), id);
         relateAndInsertList(skuStockDao, productParam.getSkuStockList(), id);
         //修改商品参数,添加自定义商品规格
 
-        productAttributeValueMapper.delete(new QueryWrapper<>(new PmsProductAttributeValue()).eq("product_id",id));
+        productAttributeValueMapper.delete(new QueryWrapper<>(new PmsProductAttributeValue()).eq("product_id", id));
         relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValueList(), id);
         //关联专题
 
-        subjectProductRelationMapper.delete(new QueryWrapper<>(new CmsSubjectProductRelation()).eq("product_id",id));
+        subjectProductRelationMapper.delete(new QueryWrapper<>(new CmsSubjectProductRelation()).eq("product_id", id));
         relateAndInsertList(subjectProductRelationDao, productParam.getSubjectProductRelationList(), id);
         //关联优选
 
-        prefrenceAreaProductRelationMapper.delete(new QueryWrapper<>(new CmsPrefrenceAreaProductRelation()).eq("product_id",id));
+        prefrenceAreaProductRelationMapper.delete(new QueryWrapper<>(new CmsPrefrenceAreaProductRelation()).eq("product_id", id));
         relateAndInsertList(prefrenceAreaProductRelationDao, productParam.getPrefrenceAreaProductRelationList(), id);
         count = 1;
         return count;
     }
 
 
-
     @Override
     public int updateVerifyStatus(Long ids, Integer verifyStatus, String detail) {
         PmsProduct product = new PmsProduct();
         product.setVerifyStatus(verifyStatus);
-        int count = productMapper.update(product, new QueryWrapper<PmsProduct>().eq("id",ids) );
+        int count = productMapper.update(product, new QueryWrapper<PmsProduct>().eq("id", ids));
         //修改完审核状态后插入审核记录
 
         PmsProductVertifyRecord record = new PmsProductVertifyRecord();
@@ -185,7 +184,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         PmsProduct record = new PmsProduct();
         record.setPublishStatus(publishStatus);
 
-        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id",ids));
+        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id", ids));
     }
 
     @Override
@@ -193,7 +192,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         PmsProduct record = new PmsProduct();
         record.setRecommandStatus(recommendStatus);
 
-        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id",ids));
+        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id", ids));
     }
 
     @Override
@@ -201,7 +200,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         PmsProduct record = new PmsProduct();
         record.setNewStatus(newStatus);
 
-        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id",ids));
+        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id", ids));
     }
 
     @Override
@@ -209,16 +208,16 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         PmsProduct record = new PmsProduct();
         record.setDeleteStatus(deleteStatus);
 
-        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id",ids));
+        return productMapper.update(record, new QueryWrapper<PmsProduct>().eq("id", ids));
     }
 
     @Override
     public List<PmsProduct> list(String keyword) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("delete_status",0);
+        queryWrapper.eq("delete_status", 0);
 
         if (!StringUtils.isEmpty(keyword)) {
-            queryWrapper.like("name",keyword);
+            queryWrapper.like("name", keyword);
 
         }
         return productMapper.selectList(queryWrapper);
@@ -227,7 +226,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     @Override
     public List<PmsProductVertifyRecord> getProductVertifyRecord(Long id) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("product_id",id);
+        queryWrapper.eq("product_id", id);
 
         return productVertifyRecordMapper.selectList(queryWrapper);
     }

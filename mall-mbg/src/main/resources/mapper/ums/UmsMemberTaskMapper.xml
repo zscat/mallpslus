@@ -4,11 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.ums.entity.UmsMemberTask">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="growth" property="growth" />
-        <result column="intergration" property="intergration" />
-        <result column="type" property="type" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="growth" property="growth"/>
+        <result column="intergration" property="intergration"/>
+        <result column="type" property="type"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

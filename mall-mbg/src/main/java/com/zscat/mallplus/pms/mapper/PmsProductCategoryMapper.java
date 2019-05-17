@@ -1,7 +1,7 @@
 package com.zscat.mallplus.pms.mapper;
 
-import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.zscat.mallplus.pms.vo.PmsProductCategoryWithChildrenItem;
 
 import java.util.List;

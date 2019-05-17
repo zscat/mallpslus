@@ -2,16 +2,16 @@ package com.zscat.mallplus.controller;
 
 
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.sms.entity.SmsCoupon;
-import com.zscat.mallplus.sms.entity.SmsCouponHistory;
-import com.zscat.mallplus.sms.service.ISmsCouponService;
-import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
-import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.oms.service.IOmsCartItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sms.entity.SmsCoupon;
+import com.zscat.mallplus.sms.entity.SmsCouponHistory;
+import com.zscat.mallplus.sms.service.ISmsCouponService;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
+import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -59,7 +59,7 @@ public class UmsMemberCouponController {
     @ApiOperation("领取指定优惠券")
     @RequestMapping(value = "/add")
     @ResponseBody
-    public Object add( Long couponId) {
+    public Object add(Long couponId) {
         return couponService.add(couponId);
     }
 
@@ -75,6 +75,7 @@ public class UmsMemberCouponController {
 
     /**
      * 所有可领取的优惠券
+     *
      * @return
      */
     @RequestMapping(value = "/alllist", method = RequestMethod.GET)
@@ -92,7 +93,7 @@ public class UmsMemberCouponController {
     @RequestMapping(value = "/list/cart/{type}", method = RequestMethod.GET)
     @ResponseBody
     public Object listCart(@PathVariable Integer type) {
-        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(memberService.getCurrentMember().getId(),null);
+        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(memberService.getCurrentMember().getId(), null);
         List<SmsCouponHistoryDetail> couponHistoryList = couponService.listCart(cartPromotionItemList, type);
         return new CommonResult().success(couponHistoryList);
     }

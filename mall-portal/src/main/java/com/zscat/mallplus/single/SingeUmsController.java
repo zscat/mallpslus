@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @Api(tags = "UmsController", description = "会员关系管理")
 @RequestMapping("/api/single/user")
-public class SingeUmsController extends ApiBaseAction{
+public class SingeUmsController extends ApiBaseAction {
 
     @Resource
     private ISysSchoolService schoolService;
@@ -41,6 +41,7 @@ public class SingeUmsController extends ApiBaseAction{
     private ISysAreaService areaService;
     @Resource
     private IUmsMemberMemberTagRelationService memberTagService;
+
     @IgnoreAuth
     @ApiOperation(value = "查询学校列表")
     @GetMapping(value = "/school/list")
@@ -50,6 +51,7 @@ public class SingeUmsController extends ApiBaseAction{
                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(schoolService.page(new Page<SysSchool>(pageNum, pageSize), new QueryWrapper<>(entity)));
     }
+
     @IgnoreAuth
     @SysLog(MODULE = "ums", REMARK = "根据pid查询区域")
     @ApiOperation("根据pid查询区域")
@@ -70,7 +72,7 @@ public class SingeUmsController extends ApiBaseAction{
             member.setSchoolId(schoolId);
             memberService.updateById(member);
             return new CommonResult().success("绑定学校成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new CommonResult().failed("绑定学校失败");
         }
@@ -79,25 +81,25 @@ public class SingeUmsController extends ApiBaseAction{
     @ApiOperation(value = "会员绑定区域")
     @PostMapping(value = "/bindArea")
     @SysLog(MODULE = "ums", REMARK = "会员绑定区域")
-    public Object bindArea(@RequestParam(value = "areaIds", required = true) String  areaIds) {
+    public Object bindArea(@RequestParam(value = "areaIds", required = true) String areaIds) {
         try {
-            if (ValidatorUtils.empty(areaIds)){
+            if (ValidatorUtils.empty(areaIds)) {
                 return new CommonResult().failed("请选择区域");
             }
             UmsMember member = UserUtils.getCurrentMember();
             String[] areIdList = areaIds.split(",");
             List<UmsMemberMemberTagRelation> list = new ArrayList<>();
-            for (String id : areIdList){
+            for (String id : areIdList) {
                 UmsMemberMemberTagRelation tag = new UmsMemberMemberTagRelation();
                 tag.setMemberId(member.getId());
                 tag.setTagId(Long.valueOf(id));
                 list.add(tag);
             }
-            if (list!=null && list.size()>0){
+            if (list != null && list.size() > 0) {
                 memberTagService.saveBatch(list);
             }
             return new CommonResult().success("绑定区域成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new CommonResult().failed("绑定区域失败");
         }

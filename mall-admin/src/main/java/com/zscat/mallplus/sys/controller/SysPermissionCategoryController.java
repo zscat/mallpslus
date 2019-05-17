@@ -1,10 +1,10 @@
 package com.zscat.mallplus.sys.controller;
 
-import com.zscat.mallplus.sys.entity.SysPermissionCategory;
-import com.zscat.mallplus.sys.service.ISysPermissionCategoryService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.sys.entity.SysPermissionCategory;
+import com.zscat.mallplus.sys.service.ISysPermissionCategoryService;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -13,12 +13,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * <p>
- *
+ * <p>
  * </p>
  *
  * @author zscat
@@ -37,11 +38,11 @@ public class SysPermissionCategoryController {
     @GetMapping(value = "/list")
     @PreAuthorize("hasAuthority('sys:SysPermissionCategory:read')")
     public Object getSysPermissionCategoryByPage(SysPermissionCategory entity,
-                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                 @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ) {
         try {
-            Object data =ISysPermissionCategoryService.page(new Page<SysPermissionCategory>(pageNum, pageSize), new QueryWrapper<>(entity));
+            Object data = ISysPermissionCategoryService.page(new Page<SysPermissionCategory>(pageNum, pageSize), new QueryWrapper<>(entity));
             return new CommonResult().success(data);
         } catch (Exception e) {
             log.error("分页获取sys_permission_category列表：%s", e.getMessage(), e);
@@ -80,6 +81,7 @@ public class SysPermissionCategoryController {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "sys", REMARK = "删除sys_permission_category数据")
     @ApiOperation("删除权限类别表数据")
     @DeleteMapping(value = "/delete/{id}")

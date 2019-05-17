@@ -1,12 +1,13 @@
 package com.zscat.mallplus.oms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -296,27 +297,27 @@ public class OmsCartItem implements Serializable {
     @Override
     public String toString() {
         return "OmsCartItem{" +
-        ", id=" + id +
-        ", productId=" + productId +
-        ", productSkuId=" + productSkuId +
-        ", memberId=" + memberId +
-        ", quantity=" + quantity +
-        ", price=" + price +
-        ", sp1=" + sp1 +
-        ", sp2=" + sp2 +
-        ", sp3=" + sp3 +
-        ", productPic=" + productPic +
-        ", productName=" + productName +
-        ", productSubTitle=" + productSubTitle +
-        ", productSkuCode=" + productSkuCode +
-        ", memberNickname=" + memberNickname +
-        ", createDate=" + createDate +
-        ", modifyDate=" + modifyDate +
-        ", deleteStatus=" + deleteStatus +
-        ", productCategoryId=" + productCategoryId +
-        ", productBrand=" + productBrand +
-        ", productSn=" + productSn +
-        ", productAttr=" + productAttr +
-        "}";
+                ", id=" + id +
+                ", productId=" + productId +
+                ", productSkuId=" + productSkuId +
+                ", memberId=" + memberId +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", sp1=" + sp1 +
+                ", sp2=" + sp2 +
+                ", sp3=" + sp3 +
+                ", productPic=" + productPic +
+                ", productName=" + productName +
+                ", productSubTitle=" + productSubTitle +
+                ", productSkuCode=" + productSkuCode +
+                ", memberNickname=" + memberNickname +
+                ", createDate=" + createDate +
+                ", modifyDate=" + modifyDate +
+                ", deleteStatus=" + deleteStatus +
+                ", productCategoryId=" + productCategoryId +
+                ", productBrand=" + productBrand +
+                ", productSn=" + productSn +
+                ", productAttr=" + productAttr +
+                "}";
     }
 }

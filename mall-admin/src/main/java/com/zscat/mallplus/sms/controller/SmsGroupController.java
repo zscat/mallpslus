@@ -1,10 +1,8 @@
 package com.zscat.mallplus.sms.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.entity.SmsGroup;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -61,15 +59,15 @@ public class SmsGroupController {
         try {
             CommonResult commonResult;
             Long now = System.currentTimeMillis();
-            if (smsGroup.getStartTime().getTime()<now || smsGroup.getEndTime().getTime()<now ||
-                    smsGroup.getEndTime().getTime()<smsGroup.getStartTime().getTime()){
+            if (smsGroup.getStartTime().getTime() < now || smsGroup.getEndTime().getTime() < now ||
+                    smsGroup.getEndTime().getTime() < smsGroup.getStartTime().getTime()) {
                 return new CommonResult().failed("选中的时间错误");
             }
             SmsGroup sm = new SmsGroup();
             sm.setGoodsId(smsGroup.getGoodsId());
             List<SmsGroup> smsGroupMemberList = ISmsGroupService.list(new QueryWrapper<>(sm));
-            if (smsGroupMemberList!=null && smsGroupMemberList.size()>0){
-                return new CommonResult().failed("此商品已有拼团，商品编码="+smsGroupMemberList.get(0).getGoodsId());
+            if (smsGroupMemberList != null && smsGroupMemberList.size() > 0) {
+                return new CommonResult().failed("此商品已有拼团，商品编码=" + smsGroupMemberList.get(0).getGoodsId());
             }
 
             smsGroup.setCreateTime(new Date());
@@ -156,13 +154,13 @@ public class SmsGroupController {
 
     private void calateStatus(SmsGroup smsGroup) {
         Long now = System.currentTimeMillis();
-        if (now<smsGroup.getStartTime().getTime()){
+        if (now < smsGroup.getStartTime().getTime()) {
             smsGroup.setStatus(1);
         }
-        if (now>=smsGroup.getStartTime().getTime() && now<=smsGroup.getEndTime().getTime()){
+        if (now >= smsGroup.getStartTime().getTime() && now <= smsGroup.getEndTime().getTime()) {
             smsGroup.setStatus(2);
         }
-        if (now>smsGroup.getEndTime().getTime()){
+        if (now > smsGroup.getEndTime().getTime()) {
             smsGroup.setStatus(3);
         }
     }

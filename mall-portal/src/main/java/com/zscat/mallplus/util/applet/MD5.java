@@ -7,10 +7,10 @@ public class MD5 {
     }
 
     /*  * 生成 MD5
-  *
-          * @param data 待处理数据
-  * @return MD5结果
-  */
+     *
+     * @param data 待处理数据
+     * @return MD5结果
+     */
     public static String getMessageDigest(String data) {
         StringBuilder sb = new StringBuilder();
         try {

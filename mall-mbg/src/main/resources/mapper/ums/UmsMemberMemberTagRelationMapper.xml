@@ -4,10 +4,10 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.ums.entity.UmsMemberMemberTagRelation">
-        <id column="id" property="id" />
-        <result column="member_id" property="memberId" />
-        <result column="tag_id" property="tagId" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="tag_id" property="tagId"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

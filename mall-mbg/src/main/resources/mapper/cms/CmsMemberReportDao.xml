@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.cms.entity.CmsMemberReport">
-        <result column="id" property="id" />
-        <result column="report_type" property="reportType" />
-        <result column="report_member_name" property="reportMemberName" />
-        <result column="create_time" property="createTime" />
-        <result column="report_object" property="reportObject" />
-        <result column="report_status" property="reportStatus" />
-        <result column="handle_status" property="handleStatus" />
-        <result column="note" property="note" />
+        <result column="id" property="id"/>
+        <result column="report_type" property="reportType"/>
+        <result column="report_member_name" property="reportMemberName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="report_object" property="reportObject"/>
+        <result column="report_status" property="reportStatus"/>
+        <result column="handle_status" property="handleStatus"/>
+        <result column="note" property="note"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

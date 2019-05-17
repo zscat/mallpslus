@@ -2,15 +2,15 @@ package com.zscat.mallplus.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zscat.mallplus.sms.entity.SmsGroup;
-import com.zscat.mallplus.sms.entity.SmsGroupMember;
-import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
-import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
+import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
+import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
+import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
 import com.zscat.mallplus.util.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -35,8 +35,9 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     private SmsGroupMapper groupMapper;
     @Resource
     private SmsGroupMemberMapper groupMemberMapper;
+
     @Override
-    public PmsProductAndGroup getProductAndGroup(Long id){
+    public PmsProductAndGroup getProductAndGroup(Long id) {
         PmsProduct goods = productMapper.selectById(id);
         PmsProductAndGroup vo = new PmsProductAndGroup();
         try {
@@ -58,6 +59,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         }
         return vo;
     }
+
     /**
      * 按照异常批次号对已开单数据进行分组
      *
@@ -79,8 +81,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
                         ids.add(tmExcpNew.getMainId());
                     }
                 }
-                if (resultMap.containsKey(tmExcpNew.getMainId()+"")) {//map中异常批次已存在，将该数据存放到同一个key（key存放的是异常批次）的map中
-                    resultMap.get(tmExcpNew.getMainId()+"").add(tmExcpNew);
+                if (resultMap.containsKey(tmExcpNew.getMainId() + "")) {//map中异常批次已存在，将该数据存放到同一个key（key存放的是异常批次）的map中
+                    resultMap.get(tmExcpNew.getMainId() + "").add(tmExcpNew);
                 } else {//map中不存在，新建key，用来存放数据
                     List<SmsGroupMember> tmpList = new ArrayList<SmsGroupMember>();
                     tmpList.add(tmExcpNew);

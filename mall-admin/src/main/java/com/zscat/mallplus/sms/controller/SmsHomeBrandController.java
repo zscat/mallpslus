@@ -131,6 +131,7 @@ public class SmsHomeBrandController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sms", REMARK = "添加首页推荐品牌")
     @ApiOperation("添加首页推荐品牌")
     @RequestMapping(value = "/batchCreate", method = RequestMethod.POST)
@@ -142,6 +143,7 @@ public class SmsHomeBrandController {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "sms", REMARK = "修改品牌排序")
     @ApiOperation("修改品牌排序")
     @RequestMapping(value = "/update/sort/{id}", method = RequestMethod.POST)
@@ -153,6 +155,7 @@ public class SmsHomeBrandController {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "sms", REMARK = "批量修改推荐状态")
     @ApiOperation("批量修改推荐状态")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)

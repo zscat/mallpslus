@@ -20,14 +20,14 @@ import java.util.List;
  */
 @Service
 public class PmsBrandServiceImpl extends ServiceImpl<PmsBrandMapper, PmsBrand> implements IPmsBrandService {
-   @Resource
-   private PmsBrandMapper brandMapper;
+    @Resource
+    private PmsBrandMapper brandMapper;
 
     @Override
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setShowStatus(showStatus);
-        return brandMapper.update(pmsBrand,new QueryWrapper<PmsBrand>().in("id",ids));
+        return brandMapper.update(pmsBrand, new QueryWrapper<PmsBrand>().in("id", ids));
 
     }
 
@@ -35,6 +35,6 @@ public class PmsBrandServiceImpl extends ServiceImpl<PmsBrandMapper, PmsBrand> i
     public int updateFactoryStatus(List<Long> ids, Integer factoryStatus) {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setFactoryStatus(factoryStatus);
-        return brandMapper.update(pmsBrand,new QueryWrapper<PmsBrand>().in("id",ids));
+        return brandMapper.update(pmsBrand, new QueryWrapper<PmsBrand>().in("id", ids));
     }
 }

@@ -53,17 +53,15 @@ import java.util.Random;
 @Service
 public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember> implements IUmsMemberService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UmsMemberServiceImpl.class);
     @Resource
     private UmsMemberMapper memberMapper;
-
-
     @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
     private RedisService redisService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(UmsMemberServiceImpl.class);
-   /* @Resource
-    private AuthenticationManager authenticationManager;*/
+    /* @Resource
+     private AuthenticationManager authenticationManager;*/
     @Resource
     private UserDetailsService userDetailsService;
 
@@ -79,7 +77,8 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     private String tokenHead;
     @Resource
     private UmsMemberMemberTagRelationMapper umsMemberMemberTagRelationMapper;
-
+    @Autowired
+    private WxAppletProperties wxAppletProperties;
 
     @Override
     public UmsMember getByUsername(String username) {
@@ -105,13 +104,14 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         this.register(umsMember);
         return new CommonResult().success("注册成功", null);
     }
+
     @Override
     public CommonResult register(UmsMember user) {
         //验证验证码
         /*if (!verifyAuthCode(authCode, telephone)) {
             return new CommonResult().failed("验证码错误");
         }*/
-        if (!user.getPassword().equals(user.getConfimpassword())){
+        if (!user.getPassword().equals(user.getConfimpassword())) {
             return new CommonResult().failed("密码不一致");
         }
         //查询是否已有该用户
@@ -120,7 +120,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         queryM.setUsername(user.getUsername());
         queryM.setPassword(passwordEncoder.encode(user.getPassword()));
         UmsMember umsMembers = memberMapper.selectOne(new QueryWrapper<>(queryM));
-        if (umsMembers!=null) {
+        if (umsMembers != null) {
             return new CommonResult().failed("该用户已经存在");
         }
         //没有该用户进行添加操作
@@ -154,7 +154,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         UmsMember example = new UmsMember();
         example.setPhone(telephone);
         UmsMember member = memberMapper.selectOne(new QueryWrapper<>(example));
-        if (member==null) {
+        if (member == null) {
             return new CommonResult().failed("该账号不存在");
         }
         //验证验证码
@@ -174,7 +174,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             Authentication auth = ctx.getAuthentication();
             MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
             return memberDetails.getUmsMember();
-        }catch (Exception e){
+        } catch (Exception e) {
             return new UmsMember();
         }
     }
@@ -186,7 +186,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         record.setIntegration(integration);
         memberMapper.updateById(record);
     }
-
 
     //对输入的验证码进行校验
     private boolean verifyAuthCode(String authCode, String telephone) {
@@ -260,7 +259,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 memberMapper.insert(umsMember);
                 token = jwtTokenUtil.generateToken(umsMember.getUsername());
                 resultObj.put("userId", umsMember.getId());
-            }else {
+            } else {
                 token = jwtTokenUtil.generateToken(userVo.getUsername());
                 resultObj.put("userId", userVo.getId());
             }
@@ -277,7 +276,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         } catch (ApiMallPlusException e) {
             e.printStackTrace();
             return ApiBaseAction.toResponsFail(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ApiBaseAction.toResponsFail(e.getMessage());
         }
@@ -298,16 +297,16 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             token = jwtTokenUtil.generateToken(userDetails);*/
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(!passwordEncoder.matches(password,userDetails.getPassword())){
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("密码不正确");
             }
             UmsMember member = this.getByUsername(username);
             //   Authentication authentication = authenticationManager.authenticate(authenticationToken);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails,null,userDetails.getAuthorities());
+                    userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
-            tokenMap.put("userInfo",member);
+            tokenMap.put("userInfo", member);
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
 
@@ -319,6 +318,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return tokenMap;
 
     }
+
     @Override
     public String refreshToken(String oldToken) {
         String token = oldToken.substring(tokenHead.length());
@@ -327,8 +327,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         }
         return null;
     }
-    @Autowired
-    private WxAppletProperties wxAppletProperties;
 
     //替换字符串
     public String getCode(String APPID, String REDIRECT_URI, String SCOPE) {
@@ -348,10 +346,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     public String getUserMessage(String access_token, String openid) {
         return String.format(wxAppletProperties.getUserMessage(), access_token, openid);
     }
-
-
-
-
 
 
 }

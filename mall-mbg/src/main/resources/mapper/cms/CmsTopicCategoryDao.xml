@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.cms.entity.CmsTopicCategory">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="icon" property="icon" />
-        <result column="subject_count" property="subjectCount" />
-        <result column="show_status" property="showStatus" />
-        <result column="sort" property="sort" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="subject_count" property="subjectCount"/>
+        <result column="show_status" property="showStatus"/>
+        <result column="sort" property="sort"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

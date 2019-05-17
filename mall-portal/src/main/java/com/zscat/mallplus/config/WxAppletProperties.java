@@ -26,7 +26,7 @@ public class WxAppletProperties {
     private String uniformorder;
     private String userMessage;
     private String webAccessTokenhttps;
-    private  String templateId ;
+    private String templateId;
 
 
 }

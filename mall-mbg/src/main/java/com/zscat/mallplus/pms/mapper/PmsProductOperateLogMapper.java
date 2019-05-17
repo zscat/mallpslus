@@ -1,11 +1,11 @@
 package com.zscat.mallplus.pms.mapper;
 
-import com.zscat.mallplus.pms.entity.PmsProductOperateLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.pms.entity.PmsProductOperateLog;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author zscat

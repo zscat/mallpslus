@@ -24,6 +24,7 @@ import java.util.List;
  * <p>
  * 商品信息
  * </p>
+ *
  * @author zscat
  * @since 2019-04-19
  */

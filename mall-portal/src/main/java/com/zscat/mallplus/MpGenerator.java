@@ -26,8 +26,8 @@ public class MpGenerator {
      */
     public static void main(String[] args) {
         AutoGenerator mpg = new AutoGenerator();
-    // 选择 freemarker 引擎，默认 Veloctiy
-    //  mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        // 选择 freemarker 引擎，默认 Veloctiy
+        //  mpg.setTemplateEngine(new FreemarkerTemplateEngine());
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
@@ -37,7 +37,7 @@ public class MpGenerator {
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
-    // .setKotlin(true) 是否生成 kotlin 代码
+        // .setKotlin(true) 是否生成 kotlin 代码
         gc.setAuthor("zscat");
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
@@ -51,12 +51,12 @@ public class MpGenerator {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
-        dsc.setTypeConvert(new MySqlTypeConvert(){
+        dsc.setTypeConvert(new MySqlTypeConvert() {
             // 自定义数据库表字段类型转换【可选】
             public DbColumnType processTypeConvert(String fieldType) {
                 System.out.println("转换类型：" + fieldType);
-        // 注意！！processTypeConvert 存在默认类型转换，如果不是你要的效果请自定义返回、非如下直接返回。
-                return super.processTypeConvert(gc,fieldType);
+                // 注意！！processTypeConvert 存在默认类型转换，如果不是你要的效果请自定义返回、非如下直接返回。
+                return super.processTypeConvert(gc, fieldType);
             }
         });
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
@@ -98,8 +98,8 @@ public class MpGenerator {
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-    // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
-     //   strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
+        // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
+        //   strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
        /* strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
          strategy.setInclude(new String[] { "sys_user_permission","sys_area","sys_member_area","sys_permission",
                  "sys_role","sys_role_permission","sys_school", "sys_user","sys_user_permission",
@@ -151,7 +151,7 @@ public class MpGenerator {
         // strategy.setEntityColumnConstant(true);
         // 【实体】是否为构建者模型（默认 false）
         // public User setName(String name) {this.name = name; return this;}
-       //  strategy.setEntityBuilderModel(true);
+        //  strategy.setEntityBuilderModel(true);
         mpg.setStrategy(strategy);
 
         // 包配置
@@ -175,7 +175,7 @@ public class MpGenerator {
         // tc.setXml("...");
         // tc.setService("...");
         // tc.setServiceImpl("...");
-    // 如上任何一个模块如果设置 空 OR Null 将不生成该模块。
+        // 如上任何一个模块如果设置 空 OR Null 将不生成该模块。
         // mpg.setTemplate(tc);
 
         // 执行生成

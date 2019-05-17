@@ -31,30 +31,30 @@ import javax.annotation.Resource;
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-	@Resource
-	private TokenInterceptor vueViewInterceptor;
+    @Resource
+    private TokenInterceptor vueViewInterceptor;
 
 
-	/**
-	 * Add interceptors.
-	 *
-	 * @param registry the registry
-	 */
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		super.addInterceptors(registry);
-		registry.addInterceptor(vueViewInterceptor)
-				.addPathPatterns("/**")
-				.excludePathPatterns("/swagger-resources/**", "*.js", "/**/*.js", "*.css", "/**/*.css", "*.html","/v2/*", "/**/*.html");
+    /**
+     * Add interceptors.
+     *
+     * @param registry the registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(vueViewInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/swagger-resources/**", "*.js", "/**/*.js", "*.css", "/**/*.css", "*.html", "/v2/*", "/**/*.html");
 
-	}
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("swagger-ui.html")
-				.addResourceLocations("classpath:/META-INF/resources/");
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
 
-		registry.addResourceHandler("/webjars/**")
-				.addResourceLocations("classpath:/META-INF/resources/webjars/");
-	}
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 }

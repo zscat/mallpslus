@@ -22,6 +22,7 @@ import java.util.Date;
 public class OmsOrderReturnApplyServiceImpl extends ServiceImpl<OmsOrderReturnApplyMapper, OmsOrderReturnApply> implements IOmsOrderReturnApplyService {
     @Autowired
     private OmsOrderReturnApplyMapper returnApplyMapper;
+
     @Override
     public int updateStatus(Long id, OmsUpdateStatusParam statusParam) {
         Integer status = statusParam.getStatus();

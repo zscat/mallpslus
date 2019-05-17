@@ -32,7 +32,7 @@ public class SysRole implements Serializable {
     private String name;
 
     @TableField(exist = false)
-    private  boolean checked =false;
+    private boolean checked = false;
 
     /**
      * 描述

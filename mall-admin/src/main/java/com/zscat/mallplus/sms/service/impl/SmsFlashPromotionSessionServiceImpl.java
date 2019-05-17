@@ -29,11 +29,12 @@ public class SmsFlashPromotionSessionServiceImpl extends ServiceImpl<SmsFlashPro
     private SmsFlashPromotionSessionMapper promotionSessionMapper;
     @Resource
     private ISmsFlashPromotionProductRelationService relationService;
+
     @Override
     public List<SmsFlashPromotionSessionDetail> selectList(Long flashPromotionId) {
         List<SmsFlashPromotionSessionDetail> result = new ArrayList<>();
 
-        List<SmsFlashPromotionSession> list = promotionSessionMapper.selectList(new QueryWrapper<>(new SmsFlashPromotionSession()).eq("status",1));
+        List<SmsFlashPromotionSession> list = promotionSessionMapper.selectList(new QueryWrapper<>(new SmsFlashPromotionSession()).eq("status", 1));
         for (SmsFlashPromotionSession promotionSession : list) {
             SmsFlashPromotionSessionDetail detail = new SmsFlashPromotionSessionDetail();
             BeanUtils.copyProperties(promotionSession, detail);

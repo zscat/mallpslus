@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsRedPacket">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="amount" property="amount" />
-        <result column="send_date" property="sendDate" />
-        <result column="total" property="total" />
-        <result column="unit_amount" property="unitAmount" />
-        <result column="stock" property="stock" />
-        <result column="type" property="type" />
-        <result column="note" property="note" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="amount" property="amount"/>
+        <result column="send_date" property="sendDate"/>
+        <result column="total" property="total"/>
+        <result column="unit_amount" property="unitAmount"/>
+        <result column="stock" property="stock"/>
+        <result column="type" property="type"/>
+        <result column="note" property="note"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

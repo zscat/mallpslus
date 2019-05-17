@@ -58,9 +58,9 @@ public class SysUserRole implements Serializable {
     @Override
     public String toString() {
         return "SysUserRole{" +
-        ", id=" + id +
-        ", adminId=" + adminId +
-        ", roleId=" + roleId +
-        "}";
+                ", id=" + id +
+                ", adminId=" + adminId +
+                ", roleId=" + roleId +
+                "}";
     }
 }

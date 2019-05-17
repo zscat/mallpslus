@@ -1,8 +1,8 @@
 package com.zscat.mallplus.oms.vo;
 
 
-import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.pms.entity.PmsProduct;
+import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.ums.entity.UmsIntegrationConsumeSetting;
 import com.zscat.mallplus.ums.entity.UmsMemberReceiveAddress;
 import lombok.Data;
@@ -32,7 +32,6 @@ public class ConfirmOrderResult {
     private CalcAmount calcAmount;
     private PmsProduct goods;
     private GroupAndOrderVo groupAndOrderVo;
-
 
 
     public static class CalcAmount {

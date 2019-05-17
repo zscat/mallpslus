@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.GroupAndOrderVo;
+import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
@@ -37,14 +37,15 @@ public class SingeOmsController extends ApiBaseAction {
     @ApiOperation(value = "查询订单列表")
     @GetMapping(value = "/order/list")
     public Object orderList(OmsOrder order,
-                              @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                              @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(order)));
     }
 
 
     /**
      * 提交订单
+     *
      * @param orderParam
      * @return
      */
@@ -57,8 +58,10 @@ public class SingeOmsController extends ApiBaseAction {
         orderParam.setName(member.getNickname());
         return orderService.preSingelOrder(orderParam);
     }
+
     /**
      * 提交订单
+     *
      * @param orderParam
      * @return
      */
@@ -67,6 +70,6 @@ public class SingeOmsController extends ApiBaseAction {
     @PostMapping(value = "/bookOrder")
     public Object bookOrder(GroupAndOrderVo orderParam) {
         UmsMember member = this.getCurrentMember();
-        return orderService.generateSingleOrder(orderParam,member);
+        return orderService.generateSingleOrder(orderParam, member);
     }
 }

@@ -4,23 +4,24 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.PmsProductAttribute">
-        <id column="id" property="id" />
-        <result column="product_attribute_category_id" property="productAttributeCategoryId" />
-        <result column="name" property="name" />
-        <result column="select_type" property="selectType" />
-        <result column="input_type" property="inputType" />
-        <result column="input_list" property="inputList" />
-        <result column="sort" property="sort" />
-        <result column="filter_type" property="filterType" />
-        <result column="search_type" property="searchType" />
-        <result column="related_status" property="relatedStatus" />
-        <result column="hand_add_status" property="handAddStatus" />
-        <result column="type" property="type" />
+        <id column="id" property="id"/>
+        <result column="product_attribute_category_id" property="productAttributeCategoryId"/>
+        <result column="name" property="name"/>
+        <result column="select_type" property="selectType"/>
+        <result column="input_type" property="inputType"/>
+        <result column="input_list" property="inputList"/>
+        <result column="sort" property="sort"/>
+        <result column="filter_type" property="filterType"/>
+        <result column="search_type" property="searchType"/>
+        <result column="related_status" property="relatedStatus"/>
+        <result column="hand_add_status" property="handAddStatus"/>
+        <result column="type" property="type"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_attribute_category_id, name, select_type, input_type, input_list, sort, filter_type, search_type, related_status, hand_add_status, type
+        id, product_attribute_category_id, name, select_type, input_type, input_list, sort, filter_type, search_type,
+        related_status, hand_add_status, type
     </sql>
 
     <select id="getProductAttrInfo" resultType="com.zscat.mallplus.pms.vo.ProductAttrInfo">
@@ -37,7 +38,7 @@
 
     <select id="getProductAttrById" resultType="com.zscat.mallplus.pms.vo.PmsProductAttr">
         select pa.* from pms_product_attribute_value pv
-         LEFT JOIN pms_product_attribute pa ON pv.product_attribute_id = pa.id
-         WHERE pv.product_id = #{productId} and pa.type = #{type}
+        LEFT JOIN pms_product_attribute pa ON pv.product_attribute_id = pa.id
+        WHERE pv.product_id = #{productId} and pa.type = #{type}
     </select>
 </mapper>

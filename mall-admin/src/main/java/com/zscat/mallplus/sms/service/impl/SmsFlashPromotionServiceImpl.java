@@ -1,9 +1,9 @@
 package com.zscat.mallplus.sms.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
 import com.zscat.mallplus.sms.mapper.SmsFlashPromotionMapper;
 import com.zscat.mallplus.sms.service.ISmsFlashPromotionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,7 +21,7 @@ public class SmsFlashPromotionServiceImpl extends ServiceImpl<SmsFlashPromotionM
         SmsFlashPromotion flashPromotion = new SmsFlashPromotion();
         flashPromotion.setId(id);
         flashPromotion.setStatus(status);
-         this.updateById(flashPromotion);
+        this.updateById(flashPromotion);
         return 1;
     }
 }

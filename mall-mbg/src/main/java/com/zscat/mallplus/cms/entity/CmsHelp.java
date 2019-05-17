@@ -131,14 +131,14 @@ public class CmsHelp implements Serializable {
     @Override
     public String toString() {
         return "CmsHelp{" +
-        ", id=" + id +
-        ", categoryId=" + categoryId +
-        ", icon=" + icon +
-        ", title=" + title +
-        ", showStatus=" + showStatus +
-        ", createTime=" + createTime +
-        ", readCount=" + readCount +
-        ", content=" + content +
-        "}";
+                ", id=" + id +
+                ", categoryId=" + categoryId +
+                ", icon=" + icon +
+                ", title=" + title +
+                ", showStatus=" + showStatus +
+                ", createTime=" + createTime +
+                ", readCount=" + readCount +
+                ", content=" + content +
+                "}";
     }
 }

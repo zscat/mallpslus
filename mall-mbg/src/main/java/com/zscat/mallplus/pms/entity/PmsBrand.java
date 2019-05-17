@@ -1,9 +1,10 @@
 package com.zscat.mallplus.pms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -162,17 +163,17 @@ public class PmsBrand implements Serializable {
     @Override
     public String toString() {
         return "PmsBrand{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", firstLetter=" + firstLetter +
-        ", sort=" + sort +
-        ", factoryStatus=" + factoryStatus +
-        ", showStatus=" + showStatus +
-        ", productCount=" + productCount +
-        ", productCommentCount=" + productCommentCount +
-        ", logo=" + logo +
-        ", bigPic=" + bigPic +
-        ", brandStory=" + brandStory +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", firstLetter=" + firstLetter +
+                ", sort=" + sort +
+                ", factoryStatus=" + factoryStatus +
+                ", showStatus=" + showStatus +
+                ", productCount=" + productCount +
+                ", productCommentCount=" + productCommentCount +
+                ", logo=" + logo +
+                ", bigPic=" + bigPic +
+                ", brandStory=" + brandStory +
+                "}";
     }
 }

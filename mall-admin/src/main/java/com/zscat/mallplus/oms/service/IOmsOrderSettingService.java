@@ -1,7 +1,7 @@
 package com.zscat.mallplus.oms.service;
 
-import com.zscat.mallplus.oms.entity.OmsOrderSetting;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.oms.entity.OmsOrderSetting;
 
 /**
  * <p>

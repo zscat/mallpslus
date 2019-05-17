@@ -1,9 +1,10 @@
 package com.zscat.mallplus.pms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -86,12 +87,12 @@ public class PmsAlbum implements Serializable {
     @Override
     public String toString() {
         return "PmsAlbum{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", coverPic=" + coverPic +
-        ", picCount=" + picCount +
-        ", sort=" + sort +
-        ", description=" + description +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", coverPic=" + coverPic +
+                ", picCount=" + picCount +
+                ", sort=" + sort +
+                ", description=" + description +
+                "}";
     }
 }

@@ -1,9 +1,10 @@
 package com.zscat.mallplus.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -66,10 +67,10 @@ public class SysUserPermission implements Serializable {
     @Override
     public String toString() {
         return "SysUserPermission{" +
-        ", id=" + id +
-        ", adminId=" + adminId +
-        ", permissionId=" + permissionId +
-        ", type=" + type +
-        "}";
+                ", id=" + id +
+                ", adminId=" + adminId +
+                ", permissionId=" + permissionId +
+                ", type=" + type +
+                "}";
     }
 }

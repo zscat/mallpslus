@@ -4,11 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsCouponProductCategoryRelation">
-        <id column="id" property="id" />
-        <result column="coupon_id" property="couponId" />
-        <result column="product_category_id" property="productCategoryId" />
-        <result column="product_category_name" property="productCategoryName" />
-        <result column="parent_category_name" property="parentCategoryName" />
+        <id column="id" property="id"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="product_category_id" property="productCategoryId"/>
+        <result column="product_category_name" property="productCategoryName"/>
+        <result column="parent_category_name" property="parentCategoryName"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

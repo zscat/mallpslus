@@ -4,10 +4,10 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.PmsProductAttributeCategory">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="attribute_count" property="attributeCount" />
-        <result column="param_count" property="paramCount" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="attribute_count" property="attributeCount"/>
+        <result column="param_count" property="paramCount"/>
     </resultMap>
 
     <resultMap id="getListWithAttrMap" type="com.zscat.mallplus.pms.vo.PmsProductAttributeCategoryItem"

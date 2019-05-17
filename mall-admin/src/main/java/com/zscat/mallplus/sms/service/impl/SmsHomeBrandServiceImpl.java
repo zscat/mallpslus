@@ -31,10 +31,11 @@ public class SmsHomeBrandServiceImpl extends ServiceImpl<SmsHomeBrandMapper, Sms
         homeBrand.setSort(sort);
         return homeBrandMapper.updateById(homeBrand);
     }
+
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
         SmsHomeBrand record = new SmsHomeBrand();
         record.setRecommendStatus(recommendStatus);
-        return homeBrandMapper.update(record, new QueryWrapper<SmsHomeBrand>().in("id",ids));
+        return homeBrandMapper.update(record, new QueryWrapper<SmsHomeBrand>().in("id", ids));
     }
 }

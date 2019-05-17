@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.constant.RedisKey;
-import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
-import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
+import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
@@ -46,6 +46,7 @@ public class SingelHomeController {
     private ISmsHomeAdvertiseService advertiseService;
     @Autowired
     private IOmsOrderService orderService;
+
     @IgnoreAuth
     @ApiOperation("首页内容页信息展示")
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
@@ -66,21 +67,19 @@ public class SingelHomeController {
     @GetMapping("/bannerList")
     public Object bannerList(@RequestParam(value = "type", required = false, defaultValue = "10") Integer type) {
         List<SmsHomeAdvertise> bannerList = null;
-        String bannerJson = redisService.get(RedisKey.appletBannerKey+type);
-        if(bannerJson!=null && bannerJson!="[]"){
-            bannerList = JsonUtil.jsonToList(bannerJson,SmsHomeAdvertise.class);
-        }else {
+        String bannerJson = redisService.get(RedisKey.appletBannerKey + type);
+        if (bannerJson != null && bannerJson != "[]") {
+            bannerList = JsonUtil.jsonToList(bannerJson, SmsHomeAdvertise.class);
+        } else {
             SmsHomeAdvertise advertise = new SmsHomeAdvertise();
             advertise.setType(type);
             bannerList = advertiseService.list(new QueryWrapper<>(advertise));
-            redisService.set(RedisKey.appletBannerKey+type,JsonUtil.objectToJson(bannerList));
-            redisService.expire(RedisKey.appletBannerKey+type,24*60*60);
+            redisService.set(RedisKey.appletBannerKey + type, JsonUtil.objectToJson(bannerList));
+            redisService.expire(RedisKey.appletBannerKey + type, 24 * 60 * 60);
         }
-      //  List<SmsHomeAdvertise> bannerList = advertiseService.list(null, type, null, 5, 1);
+        //  List<SmsHomeAdvertise> bannerList = advertiseService.list(null, type, null, 5, 1);
         return new CommonResult().success(bannerList);
     }
-
-
 
 
     @IgnoreAuth
@@ -88,7 +87,7 @@ public class SingelHomeController {
     @GetMapping(value = "/login")
     @ResponseBody
     public Object login(UmsMember umsMember) {
-        if (umsMember==null){
+        if (umsMember == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
         try {
@@ -108,11 +107,12 @@ public class SingelHomeController {
     @RequestMapping(value = "/reg")
     @ResponseBody
     public Object register(UmsMember umsMember) {
-        if (umsMember==null){
+        if (umsMember == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
         return memberService.register(umsMember);
     }
+
     @IgnoreAuth
     @ApiOperation("获取验证码")
     @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)

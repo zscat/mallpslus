@@ -1,7 +1,7 @@
 package com.zscat.mallplus.ums.mapper;
 
-import com.zscat.mallplus.ums.entity.UmsIntegrationChangeHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.ums.entity.UmsIntegrationChangeHistory;
 
 /**
  * <p>

@@ -1,14 +1,13 @@
 package com.zscat.mallplus.sms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.zscat.mallplus.pms.entity.PmsProduct;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -66,20 +65,17 @@ public class SmsFlashPromotionProductRelation implements Serializable {
     private Integer sort;
 
 
-
-
-
     @Override
     public String toString() {
         return "SmsFlashPromotionProductRelation{" +
-        ", id=" + id +
-        ", flashPromotionId=" + flashPromotionId +
-        ", flashPromotionSessionId=" + flashPromotionSessionId +
-        ", productId=" + productId +
-        ", flashPromotionPrice=" + flashPromotionPrice +
-        ", flashPromotionCount=" + flashPromotionCount +
-        ", flashPromotionLimit=" + flashPromotionLimit +
-        ", sort=" + sort +
-        "}";
+                ", id=" + id +
+                ", flashPromotionId=" + flashPromotionId +
+                ", flashPromotionSessionId=" + flashPromotionSessionId +
+                ", productId=" + productId +
+                ", flashPromotionPrice=" + flashPromotionPrice +
+                ", flashPromotionCount=" + flashPromotionCount +
+                ", flashPromotionLimit=" + flashPromotionLimit +
+                ", sort=" + sort +
+                "}";
     }
 }

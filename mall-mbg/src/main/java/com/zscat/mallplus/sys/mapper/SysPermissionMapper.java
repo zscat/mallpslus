@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sys.mapper;
 
-import com.zscat.mallplus.sys.entity.SysPermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sys.entity.SysPermission;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import java.util.List;
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     List<SysPermission> listMenuByUserId(Long id);
+
     List<SysPermission> getPermissionListByUserId(Long id);
 
     List<SysPermission> getPermissionList(Long roleId);

@@ -4,13 +4,13 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.cms.entity.CmsTopicComment">
-        <id column="id" property="id" />
-        <result column="member_nick_name" property="memberNickName" />
-        <result column="topic_id" property="topicId" />
-        <result column="member_icon" property="memberIcon" />
-        <result column="content" property="content" />
-        <result column="create_time" property="createTime" />
-        <result column="show_status" property="showStatus" />
+        <id column="id" property="id"/>
+        <result column="member_nick_name" property="memberNickName"/>
+        <result column="topic_id" property="topicId"/>
+        <result column="member_icon" property="memberIcon"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="show_status" property="showStatus"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

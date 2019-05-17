@@ -1,10 +1,10 @@
 package com.zscat.mallplus.pms.controller;
 
-import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
-import com.zscat.mallplus.pms.service.IPmsSmallNaviconCategoryService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
+import com.zscat.mallplus.pms.service.IPmsSmallNaviconCategoryService;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -13,12 +13,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * <p>
- *
+ * <p>
  * </p>
  *
  * @author zscat
@@ -37,8 +38,8 @@ public class PmsSmallNaviconCategoryController {
     @GetMapping(value = "/list")
     @PreAuthorize("hasAuthority('pms:PmsSmallNaviconCategory:read')")
     public Object getPmsSmallNaviconCategoryByPage(PmsSmallNaviconCategory entity,
-                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ) {
         try {
             return new CommonResult().success(IPmsSmallNaviconCategoryService.page(new Page<PmsSmallNaviconCategory>(pageNum, pageSize), new QueryWrapper<>(entity)));
@@ -79,6 +80,7 @@ public class PmsSmallNaviconCategoryController {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "pms", REMARK = "删除pms_small_navicon_category数据")
     @ApiOperation("删除小程序首页nav管理数据")
     @DeleteMapping(value = "/delete/{id}")

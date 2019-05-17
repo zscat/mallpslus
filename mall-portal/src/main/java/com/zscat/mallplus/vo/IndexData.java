@@ -2,13 +2,14 @@ package com.zscat.mallplus.vo;
 
 
 import com.zscat.mallplus.cms.entity.CmsSubject;
-import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
-import com.zscat.mallplus.sms.entity.*;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
+import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
+import com.zscat.mallplus.sms.entity.SmsCoupon;
+import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
+import com.zscat.mallplus.sms.entity.SmsRedPacket;
 import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 import com.zscat.mallplus.vo.pms.CateProduct;
-import com.zscat.mallplus.vo.sms.SmsFlashPromotionProducts;
 import lombok.Data;
 
 import java.util.List;

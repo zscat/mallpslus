@@ -10,13 +10,12 @@ import com.zscat.mallplus.constant.RedisKey;
 import com.zscat.mallplus.pms.entity.*;
 import com.zscat.mallplus.pms.mapper.PmsCommentMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductAttributeMapper;
-import com.zscat.mallplus.pms.vo.PmsProductAttr;
-import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.ConsultTypeCount;
+import com.zscat.mallplus.pms.vo.PmsProductAttr;
 import com.zscat.mallplus.pms.vo.PmsProductCategoryWithChildrenItem;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
-import com.zscat.mallplus.ums.entity.UmsMember;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
@@ -123,12 +122,12 @@ public class PmsGoodsController {
     @GetMapping(value = "/product/queryProductDetail")
     @ApiOperation(value = "查询商品详情信息")
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        PmsProductResult productResult =new PmsProductResult();
+        PmsProductResult productResult = new PmsProductResult();
 
         //获取商品基础属性
         PmsProduct product = pmsProductService.getById(id);
         //获取商品其他属性值
-        List<PmsProductAttr> attrList = pmsProductAttributeMapper.getProductAttrById(id,0);//获取规格数据
+        List<PmsProductAttr> attrList = pmsProductAttributeMapper.getProductAttrById(id, 0);//获取规格数据
         //获取商品评价
         List<PmsComment> pmsCommentList = pmsCommentMapper.getByProductId(id);
         productResult.setProduct(product);
@@ -156,8 +155,9 @@ public class PmsGoodsController {
                           @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                           @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         PmsProductAttribute q = new PmsProductAttribute();
-        q.setType(type);q.setProductAttributeCategoryId(cid);
-        IPage<PmsProductAttribute> productAttributeList = productAttributeService.page(new Page<>(pageSize,pageNum),new QueryWrapper<>(q));
+        q.setType(type);
+        q.setProductAttributeCategoryId(cid);
+        IPage<PmsProductAttribute> productAttributeList = productAttributeService.page(new Page<>(pageSize, pageNum), new QueryWrapper<>(q));
         return new CommonResult().success(productAttributeList);
     }
 

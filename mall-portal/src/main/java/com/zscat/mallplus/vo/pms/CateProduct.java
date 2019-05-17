@@ -1,6 +1,5 @@
 package com.zscat.mallplus.vo.pms;
 
-import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 import lombok.Data;
 

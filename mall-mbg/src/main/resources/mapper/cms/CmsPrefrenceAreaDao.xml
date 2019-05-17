@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.cms.entity.CmsPrefrenceArea">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="sub_title" property="subTitle" />
-        <result column="pic" property="pic" />
-        <result column="sort" property="sort" />
-        <result column="show_status" property="showStatus" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sub_title" property="subTitle"/>
+        <result column="pic" property="pic"/>
+        <result column="sort" property="sort"/>
+        <result column="show_status" property="showStatus"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

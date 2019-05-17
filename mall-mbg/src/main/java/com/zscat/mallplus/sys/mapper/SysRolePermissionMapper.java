@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sys.mapper;
 
-import com.zscat.mallplus.sys.entity.SysRolePermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sys.entity.SysRolePermission;
 
 /**
  * <p>

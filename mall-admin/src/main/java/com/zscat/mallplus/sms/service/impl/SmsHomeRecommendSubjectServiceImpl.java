@@ -22,6 +22,7 @@ import java.util.List;
 public class SmsHomeRecommendSubjectServiceImpl extends ServiceImpl<SmsHomeRecommendSubjectMapper, SmsHomeRecommendSubject> implements ISmsHomeRecommendSubjectService {
     @Resource
     private SmsHomeRecommendSubjectMapper recommendProductMapper;
+
     @Override
     public int updateSort(Long id, Integer sort) {
         SmsHomeRecommendSubject recommendProduct = new SmsHomeRecommendSubject();
@@ -35,6 +36,6 @@ public class SmsHomeRecommendSubjectServiceImpl extends ServiceImpl<SmsHomeRecom
 
         SmsHomeRecommendSubject record = new SmsHomeRecommendSubject();
         record.setRecommendStatus(recommendStatus);
-        return recommendProductMapper.update(record, new QueryWrapper<SmsHomeRecommendSubject>().in("id",ids));
+        return recommendProductMapper.update(record, new QueryWrapper<SmsHomeRecommendSubject>().in("id", ids));
     }
 }

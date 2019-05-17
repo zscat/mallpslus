@@ -1,9 +1,10 @@
 package com.zscat.mallplus.oms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -104,12 +105,12 @@ public class OmsOrderSetting implements Serializable {
     @Override
     public String toString() {
         return "OmsOrderSetting{" +
-        ", id=" + id +
-        ", flashOrderOvertime=" + flashOrderOvertime +
-        ", normalOrderOvertime=" + normalOrderOvertime +
-        ", confirmOvertime=" + confirmOvertime +
-        ", finishOvertime=" + finishOvertime +
-        ", commentOvertime=" + commentOvertime +
-        "}";
+                ", id=" + id +
+                ", flashOrderOvertime=" + flashOrderOvertime +
+                ", normalOrderOvertime=" + normalOrderOvertime +
+                ", confirmOvertime=" + confirmOvertime +
+                ", finishOvertime=" + finishOvertime +
+                ", commentOvertime=" + commentOvertime +
+                "}";
     }
 }

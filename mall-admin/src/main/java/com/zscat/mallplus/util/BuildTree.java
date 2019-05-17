@@ -86,7 +86,8 @@ public class BuildTree {
         }
         return topNodes;
     }
-    public static  List<Tree> buildList1(List<Tree> nodes, String idParam) {
+
+    public static List<Tree> buildList1(List<Tree> nodes, String idParam) {
         if (nodes == null) {
             return null;
         }

@@ -21,7 +21,6 @@ public interface IUmsMemberService extends IService<UmsMember> {
     Object loginByWeixin(HttpServletRequest req);
 
 
-
     /**
      * 根据用户名获取会员
      */

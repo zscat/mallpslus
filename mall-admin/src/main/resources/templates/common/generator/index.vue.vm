@@ -39,12 +39,11 @@
                       border>
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
 
-#foreach($column in $columns)
-                <el-table-column label="${column.comments}" align="center">
-                    <template slot-scope="scope">{{scope.row.${column.attrname}}}</template>
-                </el-table-column>
-#end
-
+                #foreach($column in $columns)
+                    <el-table-column label="${column.comments}" align="center">
+                        <template slot-scope="scope">{{scope.row.${column.attrname}}}</template>
+                    </el-table-column>
+                #end
 
                 <el-table-column label="操作" width="200" align="center">
                     <template slot-scope="scope">
@@ -82,6 +81,7 @@
     //将qwerty都替换为$
     import {fetchList, delete${className}} from '@/api/${module}/${classname}'
     import {formatDate} from '@/utils/date';
+
     export default {
         name: '${classname}List',
         data() {
@@ -132,36 +132,41 @@
         methods: {
             getList() {
                 this.listLoading = true;
-                fetchList(this.listQuery).then(response => {
+                fetchList(this.listQuery).then(response = > {
                     this.listLoading = false;
                 this.list = response.data.records;
                 this.total = response.data.total;
                 this.totalPage = response.data.totalPage;
                 this.pageSize = response.data.pageSize;
-            });
+            })
+                ;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
             handleUpdate(index, row) {
                 this.qwertyrouter.push(
-                    {path: '/${module}/update${className}', query: {id: row.id}})
+                        {path: '/${module}/update${className}', query: {id: row.id}})
             },
             handleDelete(index, row) {
                 this.qwertyconfirm('是否要删除该类型', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
-                }).then(() => {
-                    delete${className}(row.id).then(response => {
+                }).then(() = > {
+                    delete${className}(row.id
+            ).
+                then(response = > {
                     this.qwertymessage({
                     message: '删除成功',
                     type: 'success',
                     duration: 1000
                 });
                 this.getList();
-            });
-            });
+            })
+                ;
+            })
+                ;
             },
             getProductList(index, row) {
                 console.log(index, row);
@@ -214,14 +219,15 @@
                 let data = new URLSearchParams();
                 data.append("ids", ids);
                 data.append("showStatus", showStatus);
-                updateShowStatus(data).then(response => {
+                updateShowStatus(data).then(response = > {
                     this.getList();
                 this.qwertymessage({
                     message: '修改成功',
                     type: 'success',
                     duration: 1000
                 });
-            });
+            })
+                ;
             },
             add${className}() {
                 //手动将router,改成$router

@@ -1,11 +1,12 @@
 package com.zscat.mallplus.cms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -118,13 +119,13 @@ public class CmsSubjectComment implements Serializable {
     @Override
     public String toString() {
         return "CmsSubjectComment{" +
-        ", id=" + id +
-        ", subjectId=" + subjectId +
-        ", memberNickName=" + memberNickName +
-        ", memberIcon=" + memberIcon +
-        ", content=" + content +
-        ", createTime=" + createTime +
-        ", showStatus=" + showStatus +
-        "}";
+                ", id=" + id +
+                ", subjectId=" + subjectId +
+                ", memberNickName=" + memberNickName +
+                ", memberIcon=" + memberIcon +
+                ", content=" + content +
+                ", createTime=" + createTime +
+                ", showStatus=" + showStatus +
+                "}";
     }
 }

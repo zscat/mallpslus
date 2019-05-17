@@ -55,7 +55,7 @@ public class SmsRedPacketController {
     @PreAuthorize("hasAuthority('sms:SmsRedPacket:create')")
     public Object saveSmsRedPacket(@RequestBody SmsRedPacket entity) {
         try {
-            if (ISmsRedPacketService.createRedPacket(entity)>0) {
+            if (ISmsRedPacketService.createRedPacket(entity) > 0) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
@@ -131,6 +131,7 @@ public class SmsRedPacketController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sms", REMARK = "领取红包")
     @ApiOperation(value = "领取红包")
     @RequestMapping(value = "/accept/{id}", method = RequestMethod.GET)

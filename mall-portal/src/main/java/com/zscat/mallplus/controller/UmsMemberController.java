@@ -2,8 +2,8 @@ package com.zscat.mallplus.controller;
 
 
 import com.zscat.mallplus.annotation.IgnoreAuth;
-import com.zscat.mallplus.sms.entity.UserFormId;
 import com.zscat.mallplus.single.ApiBaseAction;
+import com.zscat.mallplus.sms.entity.UserFormId;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -41,7 +41,7 @@ public class UmsMemberController extends ApiBaseAction {
     @GetMapping(value = "/login")
     @ResponseBody
     public Object login(UmsMember umsMember) {
-        if (umsMember==null){
+        if (umsMember == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
         try {
@@ -61,11 +61,12 @@ public class UmsMemberController extends ApiBaseAction {
     @RequestMapping(value = "/reg")
     @ResponseBody
     public Object register(UmsMember umsMember) {
-        if (umsMember==null){
+        if (umsMember == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
         }
         return memberService.register(umsMember);
     }
+
     @IgnoreAuth
     @ApiOperation("获取验证码")
     @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
@@ -82,6 +83,7 @@ public class UmsMemberController extends ApiBaseAction {
                                  @RequestParam String authCode) {
         return memberService.updatePassword(telephone, password, authCode);
     }
+
     @IgnoreAuth
     @GetMapping("/user")
     @ResponseBody
@@ -110,7 +112,6 @@ public class UmsMemberController extends ApiBaseAction {
     }
 
 
-
     @ApiOperation(value = "登出功能")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseBody
@@ -121,16 +122,17 @@ public class UmsMemberController extends ApiBaseAction {
 
     /**
      * 提交小程序推送formid
+     *
      * @param request
      * @param response
-     * @param formId 小程序推送formId
-     * @param source @see com.fittime.health.market.model.PushUserFormIdRecord.source
+     * @param formId   小程序推送formId
+     * @param source   @see com.fittime.health.market.model.PushUserFormIdRecord.source
      * @return
      */
     @RequestMapping(value = "submitFormId")
     @ApiOperation(value = "提交小程序推送formid")
     @ResponseBody
-    public Object submitFormId(HttpServletRequest request, HttpServletResponse response,  String formId, Integer source) {
+    public Object submitFormId(HttpServletRequest request, HttpServletResponse response, String formId, Integer source) {
 
         UserFormId entity = new UserFormId();
 

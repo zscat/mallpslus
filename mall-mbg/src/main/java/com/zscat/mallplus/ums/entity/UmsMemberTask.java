@@ -1,8 +1,9 @@
 package com.zscat.mallplus.ums.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -82,11 +83,11 @@ public class UmsMemberTask implements Serializable {
     @Override
     public String toString() {
         return "UmsMemberTask{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", growth=" + growth +
-        ", intergration=" + intergration +
-        ", type=" + type +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", growth=" + growth +
+                ", intergration=" + intergration +
+                ", type=" + type +
+                "}";
     }
 }

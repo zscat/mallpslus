@@ -34,6 +34,7 @@ public class DateUtil {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         return calendar.getTime();
     }
+
     public static String dateToStr(Date date, String formatStr) {
         SimpleDateFormat format = new SimpleDateFormat(formatStr);
         String s = "";
@@ -46,6 +47,7 @@ public class DateUtil {
 
         return s;
     }
+
     public static Date strToDate(String str, String formatStr) {
         SimpleDateFormat format = new SimpleDateFormat(formatStr);
         Date date = null;

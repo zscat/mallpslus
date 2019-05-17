@@ -1,11 +1,12 @@
 package com.zscat.mallplus.oms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -85,11 +86,11 @@ public class OmsOrderReturnReason implements Serializable {
     @Override
     public String toString() {
         return "OmsOrderReturnReason{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", sort=" + sort +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", sort=" + sort +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                "}";
     }
 }

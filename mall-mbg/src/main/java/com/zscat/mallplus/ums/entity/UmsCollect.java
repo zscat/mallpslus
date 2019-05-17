@@ -1,15 +1,16 @@
 package com.zscat.mallplus.ums.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -135,14 +136,14 @@ public class UmsCollect implements Serializable {
     @Override
     public String toString() {
         return "UmsCollect{" +
-        ", id=" + id +
-        ", memberId=" + memberId +
-        ", goodsId=" + goodsId +
-        ", goodsName=" + goodsName +
-        ", goodsPic=" + goodsPic +
-        ", goodsPrice=" + goodsPrice +
-        ", type=" + type +
-        ", createTime=" + createTime +
-        "}";
+                ", id=" + id +
+                ", memberId=" + memberId +
+                ", goodsId=" + goodsId +
+                ", goodsName=" + goodsName +
+                ", goodsPic=" + goodsPic +
+                ", goodsPrice=" + goodsPrice +
+                ", type=" + type +
+                ", createTime=" + createTime +
+                "}";
     }
 }

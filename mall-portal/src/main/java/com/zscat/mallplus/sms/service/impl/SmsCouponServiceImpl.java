@@ -2,6 +2,7 @@ package com.zscat.mallplus.sms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.entity.SmsCouponHistory;
 import com.zscat.mallplus.sms.entity.SmsCouponProductCategoryRelation;
@@ -10,7 +11,6 @@ import com.zscat.mallplus.sms.mapper.SmsCouponHistoryMapper;
 import com.zscat.mallplus.sms.mapper.SmsCouponMapper;
 import com.zscat.mallplus.sms.service.ISmsCouponService;
 import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
-import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.UserUtils;
@@ -43,19 +43,22 @@ public class SmsCouponServiceImpl extends ServiceImpl<SmsCouponMapper, SmsCoupon
     private SmsCouponHistoryMapper couponHistoryMapper;
 
     @Override
-    public List<SmsCoupon> selectNotRecive(Long memberId){
+    public List<SmsCoupon> selectNotRecive(Long memberId) {
         return couponMapper.selectNotRecive(memberId);
     }
+
     @Override
-    public List<SmsCoupon> selectRecive(Long memberId){
-        return  couponMapper.selectRecive(memberId);
+    public List<SmsCoupon> selectRecive(Long memberId) {
+        return couponMapper.selectRecive(memberId);
     }
+
     @Override
-    public List<SmsCoupon> selectNotRecive(){
+    public List<SmsCoupon> selectNotRecive() {
         SmsCoupon coupon = new SmsCoupon();
         coupon.setType(0);
-        return couponMapper.selectList(new QueryWrapper<>(coupon).gt("end_time",new Date()));
+        return couponMapper.selectList(new QueryWrapper<>(coupon).gt("end_time", new Date()));
     }
+
     @Override
     public CommonResult add(Long couponId) {
         UmsMember currentMember = UserUtils.getCurrentMember();
@@ -93,7 +96,7 @@ public class SmsCouponServiceImpl extends ServiceImpl<SmsCouponMapper, SmsCoupon
         couponHistory.setUseStatus(0);
         couponHistory.setStartTime(coupon.getStartTime());
         couponHistory.setEndTime(coupon.getEndTime());
-        couponHistory.setNote(coupon.getName()+":满"+coupon.getMinPoint()+"减"+ coupon.getAmount());
+        couponHistory.setNote(coupon.getName() + ":满" + coupon.getMinPoint() + "减" + coupon.getAmount());
         couponHistoryMapper.insert(couponHistory);
         //修改优惠券表的数量、领取数量
         coupon.setCount(coupon.getCount() - 1);

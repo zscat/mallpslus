@@ -4,11 +4,11 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.oms.entity.OmsOrderReturnReason">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="sort" property="sort" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

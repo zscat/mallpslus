@@ -158,6 +158,7 @@ public class OmsOrderController {
         }
         return new CommonResult().failed();
     }
+
     @SysLog(MODULE = "oms", REMARK = "修改收货人信息")
     @ApiOperation("修改收货人信息")
     @RequestMapping(value = "/update/receiverInfo", method = RequestMethod.POST)

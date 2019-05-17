@@ -7,22 +7,25 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.constant.RedisKey;
-import com.zscat.mallplus.pms.entity.PmsProductCategory;
-import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
-import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
-import com.zscat.mallplus.pms.service.IPmsSmallNaviconCategoryService;
-import com.zscat.mallplus.sms.entity.*;
-import com.zscat.mallplus.sms.mapper.SmsFlashPromotionSessionMapper;
-import com.zscat.mallplus.sms.mapper.SmsHomeNewProductMapper;
-import com.zscat.mallplus.sms.mapper.SmsHomeRecommendProductMapper;
-import com.zscat.mallplus.sms.service.*;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
+import com.zscat.mallplus.pms.entity.PmsProductCategory;
+import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
+import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.pms.service.IPmsSmallNaviconCategoryService;
 import com.zscat.mallplus.single.ApiBaseAction;
+import com.zscat.mallplus.sms.entity.SmsCoupon;
+import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
+import com.zscat.mallplus.sms.entity.SmsFlashPromotionProductRelation;
+import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
+import com.zscat.mallplus.sms.mapper.SmsFlashPromotionSessionMapper;
+import com.zscat.mallplus.sms.mapper.SmsHomeNewProductMapper;
+import com.zscat.mallplus.sms.mapper.SmsHomeRecommendProductMapper;
+import com.zscat.mallplus.sms.service.*;
 import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
 import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
@@ -32,9 +35,10 @@ import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
-import com.zscat.mallplus.vo.*;
+import com.zscat.mallplus.vo.IndexData;
+import com.zscat.mallplus.vo.OrderStatusCount;
+import com.zscat.mallplus.vo.TArticleDO;
 import com.zscat.mallplus.vo.pms.CateProduct;
-import com.zscat.mallplus.vo.sms.SmsFlashPromotionProducts;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -58,6 +62,8 @@ import java.util.*;
 @RequestMapping("/api/applet")
 public class AppletMemberController extends ApiBaseAction {
     @Autowired
+    ISmsFlashPromotionSessionService smsFlashPromotionSessionService;
+    @Autowired
     private IUmsMemberService memberService;
     @Autowired
     private ISmsHomeAdvertiseService advertiseService;
@@ -70,9 +76,7 @@ public class AppletMemberController extends ApiBaseAction {
     @Autowired
     private ISmsFlashPromotionService smsFlashPromotionService;
     @Autowired
-    private  ISmsFlashPromotionProductRelationService smsFlashPromotionProductRelationService;
-    @Autowired
-    ISmsFlashPromotionSessionService smsFlashPromotionSessionService;
+    private ISmsFlashPromotionProductRelationService smsFlashPromotionProductRelationService;
     @Autowired
     private IPmsProductService pmsProductService;
     @Autowired
@@ -90,13 +94,11 @@ public class AppletMemberController extends ApiBaseAction {
     @Autowired
     private RedisService redisService;
     @Resource
-    private  SmsFlashPromotionSessionMapper smsFlashPromotionSessionMapper;
+    private SmsFlashPromotionSessionMapper smsFlashPromotionSessionMapper;
     @Resource
     private SmsHomeRecommendProductMapper smsHomeRecommendProductMapper;
     @Resource
     private SmsHomeNewProductMapper smsHomeNewProductMapper;
-
-
 
 
     @Resource
@@ -158,7 +160,7 @@ public class AppletMemberController extends ApiBaseAction {
             if (bannerJson != null) {
                 bannerList = JsonUtil.jsonToList(bannerJson, SmsHomeAdvertise.class);
             }
-            if(bannerJson==null||bannerList.size()<=0){
+            if (bannerJson == null || bannerList.size() <= 0) {
                 queryT.setType(2);
                 bannerList = advertiseService.list(new QueryWrapper<>(queryT));
                 redisService.set(RedisKey.appletBannerKey + "2", JsonUtil.objectToJson(bannerList));
@@ -169,12 +171,12 @@ public class AppletMemberController extends ApiBaseAction {
             List<PmsSmallNaviconCategory> nav_icon_list = null;
             PmsSmallNaviconCategory queryT_small = new PmsSmallNaviconCategory();
             String navIconJson = redisService.get(RedisKey.appletNavIconKey);
-            if(navIconJson !=null){
-                nav_icon_list =JsonUtil.jsonToList(navIconJson, PmsSmallNaviconCategory.class);
+            if (navIconJson != null) {
+                nav_icon_list = JsonUtil.jsonToList(navIconJson, PmsSmallNaviconCategory.class);
             }
-            if(navIconJson==null||nav_icon_list.size()<=0){
+            if (navIconJson == null || nav_icon_list.size() <= 0) {
                 nav_icon_list = smallNaviconCategoryService.list(new QueryWrapper<>(queryT_small));
-                redisService.set(RedisKey.appletNavIconKey,JsonUtil.objectToJson(nav_icon_list));
+                redisService.set(RedisKey.appletNavIconKey, JsonUtil.objectToJson(nav_icon_list));
                 redisService.expire(RedisKey.appletNavIconKey, 24 * 60 * 60);
             }
             //获取分类结束
@@ -187,89 +189,88 @@ public class AppletMemberController extends ApiBaseAction {
 //                homeFlashPromotion = JsonUtil.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
 //            }
 //            if(smsFlashPromotionProductJson==null||homeFlashPromotion.size()<=0){
-                SmsFlashPromotion queryS = new SmsFlashPromotion();
-                queryS.setIsIndex(1);
-                SmsFlashPromotion indexFlashPromotion = smsFlashPromotionService.getOne(new QueryWrapper<>(queryS));
-                 Long flashPromotionId = 0L;
-                 //数据库中有当前秒杀活动时赋值
-                if(indexFlashPromotion!=null){
+            SmsFlashPromotion queryS = new SmsFlashPromotion();
+            queryS.setIsIndex(1);
+            SmsFlashPromotion indexFlashPromotion = smsFlashPromotionService.getOne(new QueryWrapper<>(queryS));
+            Long flashPromotionId = 0L;
+            //数据库中有当前秒杀活动时赋值
+            if (indexFlashPromotion != null) {
                 flashPromotionId = indexFlashPromotion.getId();
+            }
+            //首页秒杀活动数据
+
+            //根据时间计算当前点档
+            Date now = new Date();
+            String formatNow = DateFormatUtils.format(now, "HH:mm:ss");
+
+            SmsFlashSessionInfo smsFlashSessionInfo = smsFlashPromotionSessionMapper.getCurrentDang(formatNow);
+            if (smsFlashSessionInfo != null && flashPromotionId != 0L) {//当前时间有秒杀档，并且有秒杀活动时，获取数据
+                Long smsFlashSessionId = smsFlashSessionInfo.getId();
+                //秒杀活动点档信息存储
+                tempsmsFlashList.setId(smsFlashSessionId);
+                tempsmsFlashList.setFlashName(smsFlashSessionInfo.getName());
+                tempsmsFlashList.setStartTime(smsFlashSessionInfo.getStartTime());
+                tempsmsFlashList.setEndTime(smsFlashSessionInfo.getEndTime());
+                SmsFlashPromotionProductRelation querySMP = new SmsFlashPromotionProductRelation();
+                querySMP.setFlashPromotionId(flashPromotionId);
+                querySMP.setFlashPromotionSessionId(smsFlashSessionId);
+                List<SmsFlashPromotionProductRelation> smsFlashPromotionProductRelationlist = smsFlashPromotionProductRelationService.list(new QueryWrapper<>(querySMP));
+                List<HomeProductAttr> productAttrs = new ArrayList<>();
+                for (SmsFlashPromotionProductRelation item : smsFlashPromotionProductRelationlist) {
+                    PmsProduct tempproduct = pmsProductService.getById(item.getProductId());
+                    HomeProductAttr product = new HomeProductAttr();
+                    product.setProductId(tempproduct.getId());
+                    product.setProductImg(tempproduct.getPic());
+                    product.setProductName(tempproduct.getName());
+                    product.setProductPrice(tempproduct.getPromotionPrice() != null ? tempproduct.getPromotionPrice() : BigDecimal.ZERO);
+                    productAttrs.add(product);
                 }
-                //首页秒杀活动数据
-
-                //根据时间计算当前点档
-                Date now = new Date();
-                String formatNow = DateFormatUtils.format(now,"HH:mm:ss");
-
-                SmsFlashSessionInfo smsFlashSessionInfo = smsFlashPromotionSessionMapper.getCurrentDang(formatNow);
-                if(smsFlashSessionInfo!=null && flashPromotionId!=0L){//当前时间有秒杀档，并且有秒杀活动时，获取数据
-                    Long smsFlashSessionId = smsFlashSessionInfo.getId();
-                    //秒杀活动点档信息存储
-                    tempsmsFlashList.setId(smsFlashSessionId);
-                    tempsmsFlashList.setFlashName(smsFlashSessionInfo.getName());
-                    tempsmsFlashList.setStartTime(smsFlashSessionInfo.getStartTime());
-                    tempsmsFlashList.setEndTime(smsFlashSessionInfo.getEndTime());
-                    SmsFlashPromotionProductRelation querySMP = new SmsFlashPromotionProductRelation();
-                    querySMP.setFlashPromotionId(flashPromotionId);
-                    querySMP.setFlashPromotionSessionId(smsFlashSessionId);
-                    List<SmsFlashPromotionProductRelation> smsFlashPromotionProductRelationlist = smsFlashPromotionProductRelationService.list(new QueryWrapper<>(querySMP));
-                    List<HomeProductAttr> productAttrs = new ArrayList<>();
-                    for (SmsFlashPromotionProductRelation item:smsFlashPromotionProductRelationlist) {
-                        PmsProduct tempproduct = pmsProductService.getById(item.getProductId());
-                        HomeProductAttr product = new HomeProductAttr();
-                        product.setProductId(tempproduct.getId());
-                        product.setProductImg(tempproduct.getPic());
-                        product.setProductName(tempproduct.getName());
-                        product.setProductPrice(tempproduct.getPromotionPrice()!=null?tempproduct.getPromotionPrice():BigDecimal.ZERO);
-                        productAttrs.add(product);
-                    }
-                    tempsmsFlashList.setProductList(productAttrs);
-                    homeFlashPromotion = tempsmsFlashList;
+                tempsmsFlashList.setProductList(productAttrs);
+                homeFlashPromotion = tempsmsFlashList;
 //                    redisService.set(RedisKey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(homeFlashPromotion));
 //                    redisService.expire(RedisKey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
-                }
+            }
 //            }
             //获取秒杀活动结束
             //获取首页分类商品列表
             List<CateProduct> cateProductList = null;
             List<CateProduct> temp = new ArrayList<>();
             String cateProductJson = redisService.get(RedisKey.appletCateProductsKey);
-            if(cateProductJson!=null){
-                cateProductList = JsonUtil.jsonToList(cateProductJson,CateProduct.class);
+            if (cateProductJson != null) {
+                cateProductList = JsonUtil.jsonToList(cateProductJson, CateProduct.class);
             }
-            if(cateProductJson==null||cateProductList.size()<=0){
+            if (cateProductJson == null || cateProductList.size() <= 0) {
                 PmsProductCategory queryP = new PmsProductCategory();
                 queryP.setIndexStatus(1);
                 List<PmsProductCategory> pmsProductCategoryList = pmsProductCategoryService.list(new QueryWrapper<>(queryP));
-                if(pmsProductCategoryList.size()>0){
-                for (PmsProductCategory item :pmsProductCategoryList)
-                {
-                    PmsProduct queryProduct = new PmsProduct();
-                    queryProduct.setProductCategoryId(item.getId());
-                    List<PmsProduct> pmsProductList = pmsProductService.list(new QueryWrapper<>(queryProduct));//商品列表
-                    List<HomeProductAttr> temphomeProductattr = new ArrayList<>();
+                if (pmsProductCategoryList.size() > 0) {
+                    for (PmsProductCategory item : pmsProductCategoryList) {
+                        PmsProduct queryProduct = new PmsProduct();
+                        queryProduct.setProductCategoryId(item.getId());
+                        List<PmsProduct> pmsProductList = pmsProductService.list(new QueryWrapper<>(queryProduct));//商品列表
+                        List<HomeProductAttr> temphomeProductattr = new ArrayList<>();
 
-                    for (PmsProduct pmsProduct: pmsProductList
-                         ) {
-                        HomeProductAttr productAttr = new HomeProductAttr();
-                        productAttr.setProductId(pmsProduct.getId());
-                        productAttr.setProductName(pmsProduct.getName());
-                        productAttr.setProductImg(pmsProduct.getPic());
-                        productAttr.setProductPrice(pmsProduct.getPrice()!=null?pmsProduct.getPrice():BigDecimal.ZERO);
-                        temphomeProductattr.add(productAttr);
+                        for (PmsProduct pmsProduct : pmsProductList
+                                ) {
+                            HomeProductAttr productAttr = new HomeProductAttr();
+                            productAttr.setProductId(pmsProduct.getId());
+                            productAttr.setProductName(pmsProduct.getName());
+                            productAttr.setProductImg(pmsProduct.getPic());
+                            productAttr.setProductPrice(pmsProduct.getPrice() != null ? pmsProduct.getPrice() : BigDecimal.ZERO);
+                            temphomeProductattr.add(productAttr);
+                        }
+
+                        CateProduct cateProduct = new CateProduct();
+                        cateProduct.setCategoryId(item.getId());
+                        cateProduct.setCategoryName(item.getName());
+                        cateProduct.setCategoryImage(item.getIcon());
+                        cateProduct.setPmsProductList(temphomeProductattr);
+                        //存入分类+商品对象vo
+                        temp.add(cateProduct);
                     }
-
-                    CateProduct cateProduct = new CateProduct();
-                    cateProduct.setCategoryId(item.getId());
-                    cateProduct.setCategoryName(item.getName());
-                    cateProduct.setCategoryImage(item.getIcon());
-                    cateProduct.setPmsProductList(temphomeProductattr);
-                    //存入分类+商品对象vo
-                    temp.add(cateProduct);
-                }
-                cateProductList = temp;
-                redisService.set(RedisKey.appletCateProductsKey,JsonUtil.objectToJson(cateProductList));
-                redisService.expire(RedisKey.appletCateProductsKey, 24 * 60 * 60);
+                    cateProductList = temp;
+                    redisService.set(RedisKey.appletCateProductsKey, JsonUtil.objectToJson(cateProductList));
+                    redisService.expire(RedisKey.appletCateProductsKey, 24 * 60 * 60);
                 }
             }
 
@@ -278,14 +279,14 @@ public class AppletMemberController extends ApiBaseAction {
             //获取热门商品列表
             List<HomeProductAttr> hot_productList = null;
             String hotProductJson = redisService.get(RedisKey.appletHotProductsKey);
-            if(hotProductJson!=null){
-                hot_productList = JsonUtil.jsonToList(hotProductJson,HomeProductAttr.class);
+            if (hotProductJson != null) {
+                hot_productList = JsonUtil.jsonToList(hotProductJson, HomeProductAttr.class);
             }
-            if(hotProductJson==null||hot_productList.size()<=0){
+            if (hotProductJson == null || hot_productList.size() <= 0) {
                 hot_productList = smsHomeRecommendProductMapper.queryList();
-                if(hot_productList!=null){
-                redisService.set(RedisKey.appletHotProductsKey,JsonUtil.objectToJson(hot_productList));
-                redisService.expire(RedisKey.appletHotProductsKey, 24 * 60 * 60);
+                if (hot_productList != null) {
+                    redisService.set(RedisKey.appletHotProductsKey, JsonUtil.objectToJson(hot_productList));
+                    redisService.expire(RedisKey.appletHotProductsKey, 24 * 60 * 60);
                 }
             }
 
@@ -293,12 +294,12 @@ public class AppletMemberController extends ApiBaseAction {
             //获取首页新品列表
             List<HomeProductAttr> new_productList = null;
             String newProductJson = redisService.get(RedisKey.appletNewProductsKey);
-            if(newProductJson!=null){
-                new_productList = JsonUtil.jsonToList(newProductJson,HomeProductAttr.class);
+            if (newProductJson != null) {
+                new_productList = JsonUtil.jsonToList(newProductJson, HomeProductAttr.class);
             }
-            if(newProductJson==null||new_productList.size()<=0){
+            if (newProductJson == null || new_productList.size() <= 0) {
                 new_productList = smsHomeNewProductMapper.queryList();
-                if(new_productList!=null) {
+                if (new_productList != null) {
                     redisService.set(RedisKey.appletNewProductsKey, JsonUtil.objectToJson(new_productList));
                     redisService.expire(RedisKey.appletNewProductsKey, 24 * 60 * 60);
                 }

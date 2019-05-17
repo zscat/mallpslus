@@ -90,7 +90,7 @@ public class SmsCouponController {
             if (ValidatorUtils.empty(id)) {
                 return new CommonResult().paramFailed("优惠卷表id");
             }
-            if (ISmsCouponService.delete(id)>0) {
+            if (ISmsCouponService.delete(id) > 0) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
@@ -117,7 +117,6 @@ public class SmsCouponController {
         }
 
     }
-
 
 
 }

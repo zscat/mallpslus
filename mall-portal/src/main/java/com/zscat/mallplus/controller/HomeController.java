@@ -6,14 +6,14 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.constant.RedisKey;
-import com.zscat.mallplus.sms.entity.SmsCoupon;
-import com.zscat.mallplus.sms.service.ISmsCouponService;
-import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sms.entity.SmsCoupon;
+import com.zscat.mallplus.sms.service.ISmsCouponService;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
@@ -55,7 +55,6 @@ public class HomeController {
     private RedisService redisService;
 
 
-
     @IgnoreAuth
     @ApiOperation("首页内容页信息展示")
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
@@ -63,15 +62,16 @@ public class HomeController {
     public Object content() {
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(RedisKey.HomeContentResult);
-        if(bannerJson!=null){
-            contentResult = JsonUtil.jsonToPojo(bannerJson,HomeContentResult.class);
-        }else {
+        if (bannerJson != null) {
+            contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
+        } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(RedisKey.HomeContentResult,JsonUtil.objectToJson(contentResult));
-            redisService.expire(RedisKey.HomeContentResult,24*60*60);
+            redisService.set(RedisKey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.expire(RedisKey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);
     }
+
     @IgnoreAuth
     @ApiOperation("首页内容页信息展示")
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
@@ -79,12 +79,12 @@ public class HomeController {
     public Object pcContent() {
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(RedisKey.HomeContentResult);
-        if(bannerJson!=null){
-            contentResult = JsonUtil.jsonToPojo(bannerJson,HomeContentResult.class);
-        }else {
+        if (bannerJson != null) {
+            contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
+        } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(RedisKey.HomeContentResult,JsonUtil.objectToJson(contentResult));
-            redisService.expire(RedisKey.HomeContentResult,24*60*60);
+            redisService.set(RedisKey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.expire(RedisKey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);
     }
@@ -95,10 +95,11 @@ public class HomeController {
     @SysLog(MODULE = "home", REMARK = "分页获取最热商品")
     @RequestMapping(value = "/hotProductList", method = RequestMethod.GET)
     public Object hotProductList(@RequestParam(value = "pageSize", defaultValue = "4") Integer pageSize,
-                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<PmsProduct> productList = advertiseService.getHotProductList(pageSize, pageNum);
         return new CommonResult().success(productList);
     }
+
     @IgnoreAuth
     @ApiOperation("分页获取最新商品")
     @SysLog(MODULE = "home", REMARK = "分页获取最新商品")
@@ -114,11 +115,12 @@ public class HomeController {
     @SysLog(MODULE = "home", REMARK = "根据分类获取专题")
     @RequestMapping(value = "/subjectList", method = RequestMethod.GET)
     public Object getSubjectList(
-                                 @RequestParam(value = "pageSize", defaultValue = "4") Integer pageSize,
-                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+            @RequestParam(value = "pageSize", defaultValue = "4") Integer pageSize,
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<CmsSubject> subjectList = advertiseService.getRecommendSubjectList(pageSize, pageNum);
         return new CommonResult().success(subjectList);
     }
+
     @IgnoreAuth
     @GetMapping(value = "/subjectDetail")
     @SysLog(MODULE = "home", REMARK = "据分类获取专题")
@@ -139,18 +141,14 @@ public class HomeController {
     }
 
 
-
-
-
     @IgnoreAuth
     @SysLog(MODULE = "home", REMARK = "获取导航栏")
-    @RequestMapping(value = "/navList",method = RequestMethod.GET)
+    @RequestMapping(value = "/navList", method = RequestMethod.GET)
     @ApiOperation(value = "获取导航栏")
-    public Object getNavList(){
+    public Object getNavList() {
 
         return new CommonResult().success(null);
     }
-
 
 
     @IgnoreAuth

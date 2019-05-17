@@ -1,11 +1,12 @@
 package com.zscat.mallplus.oms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -327,30 +328,30 @@ public class OmsOrderItem implements Serializable {
     @Override
     public String toString() {
         return "OmsOrderItem{" +
-        ", id=" + id +
-        ", orderId=" + orderId +
-        ", orderSn=" + orderSn +
-        ", productId=" + productId +
-        ", productPic=" + productPic +
-        ", productName=" + productName +
-        ", productBrand=" + productBrand +
-        ", productSn=" + productSn +
-        ", productPrice=" + productPrice +
-        ", productQuantity=" + productQuantity +
-        ", productSkuId=" + productSkuId +
-        ", productSkuCode=" + productSkuCode +
-        ", productCategoryId=" + productCategoryId +
-        ", sp1=" + sp1 +
-        ", sp2=" + sp2 +
-        ", sp3=" + sp3 +
-        ", promotionName=" + promotionName +
-        ", promotionAmount=" + promotionAmount +
-        ", couponAmount=" + couponAmount +
-        ", integrationAmount=" + integrationAmount +
-        ", realAmount=" + realAmount +
-        ", giftIntegration=" + giftIntegration +
-        ", giftGrowth=" + giftGrowth +
-        ", productAttr=" + productAttr +
-        "}";
+                ", id=" + id +
+                ", orderId=" + orderId +
+                ", orderSn=" + orderSn +
+                ", productId=" + productId +
+                ", productPic=" + productPic +
+                ", productName=" + productName +
+                ", productBrand=" + productBrand +
+                ", productSn=" + productSn +
+                ", productPrice=" + productPrice +
+                ", productQuantity=" + productQuantity +
+                ", productSkuId=" + productSkuId +
+                ", productSkuCode=" + productSkuCode +
+                ", productCategoryId=" + productCategoryId +
+                ", sp1=" + sp1 +
+                ", sp2=" + sp2 +
+                ", sp3=" + sp3 +
+                ", promotionName=" + promotionName +
+                ", promotionAmount=" + promotionAmount +
+                ", couponAmount=" + couponAmount +
+                ", integrationAmount=" + integrationAmount +
+                ", realAmount=" + realAmount +
+                ", giftIntegration=" + giftIntegration +
+                ", giftGrowth=" + giftGrowth +
+                ", productAttr=" + productAttr +
+                "}";
     }
 }

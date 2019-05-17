@@ -1,9 +1,10 @@
 package com.zscat.mallplus.pms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -69,10 +70,10 @@ public class PmsProductAttributeValue implements Serializable {
     @Override
     public String toString() {
         return "PmsProductAttributeValue{" +
-        ", id=" + id +
-        ", productId=" + productId +
-        ", productAttributeId=" + productAttributeId +
-        ", value=" + value +
-        "}";
+                ", id=" + id +
+                ", productId=" + productId +
+                ", productAttributeId=" + productAttributeId +
+                ", value=" + value +
+                "}";
     }
 }

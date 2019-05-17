@@ -1,7 +1,7 @@
 package com.zscat.mallplus.pms.service;
 
-import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.zscat.mallplus.pms.vo.PmsProductCategoryWithChildrenItem;
 
 import java.util.List;
@@ -21,7 +21,9 @@ public interface IPmsProductCategoryService extends IService<PmsProductCategory>
     int updateNavStatus(List<Long> ids, Integer navStatus);
 
     int updateShowStatus(List<Long> ids, Integer showStatus);
+
     int updateIndexStatus(List<Long> ids, Integer indexStatus);
+
     boolean updateAnd(PmsProductCategory entity);
 
     boolean saveAnd(PmsProductCategory entity);

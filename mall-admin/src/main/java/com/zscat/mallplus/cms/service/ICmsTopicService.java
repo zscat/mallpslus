@@ -13,7 +13,7 @@ import com.zscat.mallplus.cms.entity.CmsTopic;
  */
 public interface ICmsTopicService extends IService<CmsTopic> {
 
-    int updateVerifyStatus(Long ids, Long topicId,Integer verifyStatus);
+    int updateVerifyStatus(Long ids, Long topicId, Integer verifyStatus);
 
     boolean saves(CmsTopic entity);
 }

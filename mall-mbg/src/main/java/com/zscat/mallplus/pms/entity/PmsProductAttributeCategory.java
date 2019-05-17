@@ -22,25 +22,21 @@ import java.util.List;
 public class PmsProductAttributeCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    @TableField(exist = false)
+    List<PmsProduct> goodsList;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String name;
-
     /**
      * 属性数量
      */
     @TableField("attribute_count")
     private Integer attributeCount;
-
     /**
      * 参数数量
      */
     @TableField("param_count")
     private Integer paramCount;
-    @TableField(exist = false)
-    List<PmsProduct> goodsList;
 
 
 }

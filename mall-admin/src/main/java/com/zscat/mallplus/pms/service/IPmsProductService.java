@@ -33,6 +33,7 @@ public interface IPmsProductService extends IService<PmsProduct> {
      */
     @Transactional
     int update(Long id, PmsProductParam productParam);
+
     /**
      * 批量修改审核状态
      *

@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sms.service;
 
-import com.zscat.mallplus.sms.entity.SmsHomeNewProduct;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.sms.entity.SmsHomeNewProduct;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public interface ISmsHomeNewProductService extends IService<SmsHomeNewProduct> {
      * 修改推荐排序
      */
     int updateSort(Long id, Integer sort);
+
     /**
      * 更新推荐状态
      */

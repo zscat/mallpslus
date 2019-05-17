@@ -1,18 +1,13 @@
 package com.cxytiandi.encrypt.springboot.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 加密注解
- * 
+ * <p>
  * <p>加了此注解的接口将进行数据加密操作<p>
- * 
- * @author zscat
  *
+ * @author zscat
  * @about 2019-04-30
  */
 @Target(ElementType.METHOD)
@@ -20,6 +15,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Encrypt {
 
-	String value() default "";
-	
+    String value() default "";
+
 }

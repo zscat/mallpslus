@@ -1,11 +1,12 @@
 package com.zscat.mallplus.ums.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -118,13 +119,13 @@ public class UmsMemberRuleSetting implements Serializable {
     @Override
     public String toString() {
         return "UmsMemberRuleSetting{" +
-        ", id=" + id +
-        ", continueSignDay=" + continueSignDay +
-        ", continueSignPoint=" + continueSignPoint +
-        ", consumePerPoint=" + consumePerPoint +
-        ", lowOrderAmount=" + lowOrderAmount +
-        ", maxPointPerOrder=" + maxPointPerOrder +
-        ", type=" + type +
-        "}";
+                ", id=" + id +
+                ", continueSignDay=" + continueSignDay +
+                ", continueSignPoint=" + continueSignPoint +
+                ", consumePerPoint=" + consumePerPoint +
+                ", lowOrderAmount=" + lowOrderAmount +
+                ", maxPointPerOrder=" + maxPointPerOrder +
+                ", type=" + type +
+                "}";
     }
 }

@@ -6,9 +6,6 @@ import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.sms.entity.*;
-import com.zscat.mallplus.sms.mapper.SmsHomeAdvertiseMapper;
-import com.zscat.mallplus.sms.service.*;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
 import com.zscat.mallplus.pms.entity.PmsBrand;
@@ -18,6 +15,9 @@ import com.zscat.mallplus.pms.service.IPmsBrandService;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sms.entity.*;
+import com.zscat.mallplus.sms.mapper.SmsHomeAdvertiseMapper;
+import com.zscat.mallplus.sms.service.*;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import org.springframework.beans.BeanUtils;
@@ -72,6 +72,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     private ICmsSubjectCommentService commentService;
     @Resource
     private IPmsBrandService brandService;
+
     @Override
     public HomeContentResult singelContent() {
         HomeContentResult result = new HomeContentResult();
@@ -94,11 +95,11 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
             productQueryParam.setPublishStatus(1);
             productQueryParam.setVerifyStatus(1);
             List<PmsProduct> goodsList = pmsProductService.list(new QueryWrapper<>(productQueryParam));
-            if (goodsList!=null && goodsList.size()>0){
+            if (goodsList != null && goodsList.size() > 0) {
                 PmsProduct pmsProduct = goodsList.get(0);
-                PmsProduct product =  new PmsProduct();
+                PmsProduct product = new PmsProduct();
                 BeanUtils.copyProperties(pmsProduct, product);
-              //  product.setType(1);
+                //  product.setType(1);
                 goodsList.add(product);
             }
             gt.setGoodsList(goodsList);
@@ -106,6 +107,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
         result.setCat_list(productAttributeCategoryList);
         return result;
     }
+
     @Override
     public List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) {
         List<SmsHomeBrand> brands = homeBrandService.list(new QueryWrapper<>());
@@ -113,29 +115,33 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
         return (List<PmsBrand>) brandService.listByIds(brands);
 
     }
+
     @Override
     public List<PmsProduct> getNewProductList(int pageNum, int pageSize) {
         List<SmsHomeNewProduct> brands = homeNewProductService.list(new QueryWrapper<>());
         List<Long> ids = new ArrayList<>();
         return (List<PmsProduct>) pmsProductService.listByIds(brands);
     }
+
     @Override
     public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {
         List<SmsHomeRecommendProduct> brands = homeRecommendProductService.list(new QueryWrapper<>());
         List<Long> ids = new ArrayList<>();
         return (List<PmsProduct>) pmsProductService.listByIds(brands);
     }
+
     @Override
     public List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) {
         List<SmsHomeRecommendSubject> brands = homeRecommendSubjectService.list(new QueryWrapper<>());
         List<Long> ids = new ArrayList<>();
         return (List<CmsSubject>) subjectService.listByIds(brands);
     }
+
     @Override
     public List<SmsHomeAdvertise> getHomeAdvertiseList() {
         SmsHomeAdvertise advertise = new SmsHomeAdvertise();
         advertise.setStatus(1);
-        return  advertiseService.list(new QueryWrapper<>(advertise));
+        return advertiseService.list(new QueryWrapper<>(advertise));
     }
 
 

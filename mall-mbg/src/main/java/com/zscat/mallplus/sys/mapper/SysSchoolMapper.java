@@ -1,11 +1,11 @@
 package com.zscat.mallplus.sys.mapper;
 
-import com.zscat.mallplus.sys.entity.SysSchool;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sys.entity.SysSchool;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author zscat

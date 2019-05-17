@@ -8,14 +8,14 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.sms.entity.SmsGroup;
-import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
+import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
@@ -66,31 +66,32 @@ public class SingePmsController extends ApiBaseAction {
     @ApiOperation(value = "查询商品详情信息")
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         PmsProductAndGroup productResult = pmsProductService.getProductAndGroup(id);
-        Map<String ,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         SmsGroup queryGoods = new SmsGroup();
         queryGoods.setGoodsId(id);
         SmsGroup group = groupService.getOne(new QueryWrapper<>(queryGoods));
-        if (group!=null){
-            Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(),group.getHours()),"yyyy-MM-dd HH:mm:ss");
+        if (group != null) {
+            Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
             Long nowT = System.currentTimeMillis();
-            if (group!=null && nowT>group.getStartTime().getTime() && nowT<endTime.getTime()){
-                map.put("group",group);
-                map.put("isGroup",1);
-            }else{
-                map.put("isGroup",2);
+            if (group != null && nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
+                map.put("group", group);
+                map.put("isGroup", 1);
+            } else {
+                map.put("isGroup", 2);
             }
         }
 
-        map.put("goods",productResult);
+        map.put("goods", productResult);
         return new CommonResult().success(map);
     }
+
     @SysLog(MODULE = "pms", REMARK = "查询商品列表")
     @IgnoreAuth
     @ApiOperation(value = "查询商品列表")
     @GetMapping(value = "/goods/list")
     public Object goodsList(PmsProduct product,
-                              @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                              @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         product.setPublishStatus(1);
         product.setVerifyStatus(1);
         return new CommonResult().success(pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product)));
@@ -101,8 +102,8 @@ public class SingePmsController extends ApiBaseAction {
     @ApiOperation(value = "查询商品分类列表")
     @GetMapping(value = "/productCategory/list")
     public Object productCategoryList(PmsProductCategory productCategory,
-                          @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-                          @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                                      @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                                      @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(productCategoryService.page(new Page<PmsProductCategory>(pageNum, pageSize), new QueryWrapper<>(productCategory)));
     }
 
@@ -112,15 +113,15 @@ public class SingePmsController extends ApiBaseAction {
     public Object createGoods(PmsProduct productParam) {
         CommonResult commonResult;
         UmsMember member = this.getCurrentMember();
-        if (member.getMemberLevelId()>0){
+        if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
             PmsProduct newSubject = new PmsProduct();
             newSubject.setSupplyId(member.getId());
             newSubject.setPublishStatus(1);
             newSubject.setVerifyStatus(1);
             List<PmsProduct> subjects = pmsProductService.list(new QueryWrapper<>(newSubject));
-            if (subjects!=null && subjects.size()>memberLevel.getGoodscount()){
-                commonResult = new CommonResult().failed("你今天已经有发"+memberLevel.getGoodscount()+"个商品");
+            if (subjects != null && subjects.size() > memberLevel.getGoodscount()) {
+                commonResult = new CommonResult().failed("你今天已经有发" + memberLevel.getGoodscount() + "个商品");
                 return commonResult;
             }
         }

@@ -50,7 +50,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         cartItem.setMemberNickname(currentMember.getNickname());
         cartItem.setDeleteStatus(0);
         PmsProduct pmsProduct = pmsProductMapper.selectById(cartItem.getProductId());
-        if (org.apache.commons.lang.StringUtils.isBlank(cartItem.getProductPic())){
+        if (org.apache.commons.lang.StringUtils.isBlank(cartItem.getProductPic())) {
             cartItem.setProductPic(pmsProduct.getPic());
         }
         cartItem.setProductBrand(pmsProduct.getBrandName());
@@ -96,13 +96,13 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
     }
 
     @Override
-    public List<OmsCartItem> list(Long memberId,List<Long> ids) {
+    public List<OmsCartItem> list(Long memberId, List<Long> ids) {
 
         OmsCartItem example = new OmsCartItem();
         example.setMemberId(memberId);
         example.setDeleteStatus(0);
-        if (ids!=null && ids.size()>0){
-            return cartItemMapper.selectList(new QueryWrapper<>(example).in("id",ids));
+        if (ids != null && ids.size() > 0) {
+            return cartItemMapper.selectList(new QueryWrapper<>(example).in("id", ids));
         }
         return cartItemMapper.selectList(new QueryWrapper<>(example));
     }
@@ -114,7 +114,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
 
     @Override
     public List<CartPromotionItem> listPromotion(Long memberId, List<Long> ids) {
-        List<OmsCartItem> cartItemList = list(memberId,ids);
+        List<OmsCartItem> cartItemList = list(memberId, ids);
         List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(cartItemList)) {
             cartPromotionItemList = this.calcCartPromotion(cartItemList);
@@ -127,8 +127,8 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         OmsCartItem cartItem = new OmsCartItem();
         cartItem.setQuantity(quantity);
         QueryWrapper example = new QueryWrapper();
-        example.eq("deleteStatus",0);
-        example.eq("memberId",memberId);
+        example.eq("deleteStatus", 0);
+        example.eq("memberId", memberId);
 
         return cartItemMapper.update(cartItem, example);
     }
@@ -138,7 +138,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         OmsCartItem record = new OmsCartItem();
         record.setDeleteStatus(1);
         QueryWrapper<OmsCartItem> example = new QueryWrapper<OmsCartItem>();
-        example.in("id",ids).eq("memberId",memberId);
+        example.in("id", ids).eq("memberId", memberId);
         return cartItemMapper.update(record, example);
     }
 
@@ -165,7 +165,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         OmsCartItem record = new OmsCartItem();
         record.setDeleteStatus(1);
         QueryWrapper<OmsCartItem> example = new QueryWrapper<OmsCartItem>();
-        example.eq("memberId",memberId);
+        example.eq("memberId", memberId);
         return cartItemMapper.update(record, example);
     }
 
@@ -176,7 +176,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         cartItem.setMemberNickname(currentMember.getNickname());
         cartItem.setDeleteStatus(0);
         PmsProduct pmsProduct = pmsProductMapper.selectById(cartItem.getProductId());
-        if (org.apache.commons.lang.StringUtils.isBlank(cartItem.getProductPic())){
+        if (org.apache.commons.lang.StringUtils.isBlank(cartItem.getProductPic())) {
             cartItem.setProductPic(pmsProduct.getPic());
         }
         cartItem.setProductBrand(pmsProduct.getBrandName());
@@ -196,6 +196,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
         }
         return cartItem;
     }
+
     @Override
     public List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList) {
         //1.先根据productId对CartItem进行分组，以spu为单位进行计算优惠

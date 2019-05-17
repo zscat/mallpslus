@@ -4,16 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.ums.entity.UmsMemberReceiveAddress">
-        <id column="id" property="id" />
-        <result column="member_id" property="memberId" />
-        <result column="name" property="name" />
-        <result column="phone_number" property="phoneNumber" />
-        <result column="default_status" property="defaultStatus" />
-        <result column="post_code" property="postCode" />
-        <result column="province" property="province" />
-        <result column="city" property="city" />
-        <result column="region" property="region" />
-        <result column="detail_address" property="detailAddress" />
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="name" property="name"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="default_status" property="defaultStatus"/>
+        <result column="post_code" property="postCode"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="region" property="region"/>
+        <result column="detail_address" property="detailAddress"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -22,6 +22,6 @@
     </sql>
 
     <update id="updateStatusByMember">
-        update ums_member_receive_address set default_status = 0  where   member_id = #{memberId}
+        update ums_member_receive_address set default_status = 0 where member_id = #{memberId}
     </update>
 </mapper>

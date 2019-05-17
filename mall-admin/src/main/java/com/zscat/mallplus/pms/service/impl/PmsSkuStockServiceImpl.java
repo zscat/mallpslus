@@ -28,10 +28,10 @@ public class PmsSkuStockServiceImpl extends ServiceImpl<PmsSkuStockMapper, PmsSk
     @Override
     public List<PmsSkuStock> getList(Long pid, String keyword) {
         QueryWrapper q = new QueryWrapper();
-        q.eq("product_id",pid);
+        q.eq("product_id", pid);
 
         if (!StringUtils.isEmpty(keyword)) {
-            q.like("sku_code",keyword);
+            q.like("sku_code", keyword);
         }
         return skuStockMapper.selectList(q);
     }

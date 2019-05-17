@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * <p>
- *
+ * <p>
  * </p>
  *
  * @author zscat
@@ -125,15 +125,15 @@ public class SmsGroupMember implements Serializable {
     @Override
     public String toString() {
         return "SmsGroupMember{" +
-        ", id=" + id +
-        ", groupId=" + groupId +
-        ", memberId=" + memberId +
-        ", createTime=" + createTime +
-        ", mainId=" + mainId +
-        ", name=" + name +
-        ", goodsId=" + goodsId +
-        ", status=" + status +
-        ", orderId=" + orderId +
-        "}";
+                ", id=" + id +
+                ", groupId=" + groupId +
+                ", memberId=" + memberId +
+                ", createTime=" + createTime +
+                ", mainId=" + mainId +
+                ", name=" + name +
+                ", goodsId=" + goodsId +
+                ", status=" + status +
+                ", orderId=" + orderId +
+                "}";
     }
 }

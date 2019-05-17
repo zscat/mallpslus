@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sms.service;
 
-import com.zscat.mallplus.sms.entity.SmsHomeRecommendSubject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.sms.entity.SmsHomeRecommendSubject;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public interface ISmsHomeRecommendSubjectService extends IService<SmsHomeRecomme
      * 更新推荐状态
      */
     int updateRecommendStatus(List<Long> ids, Integer recommendStatus);
+
     /**
      * 修改推荐排序
      */

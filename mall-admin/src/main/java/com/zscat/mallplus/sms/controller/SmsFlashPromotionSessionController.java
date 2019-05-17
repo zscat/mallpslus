@@ -135,6 +135,7 @@ public class SmsFlashPromotionSessionController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sms", REMARK = "修改启用状态")
     @ApiOperation("修改启用状态")
     @RequestMapping(value = "/update/status/{id}", method = RequestMethod.POST)

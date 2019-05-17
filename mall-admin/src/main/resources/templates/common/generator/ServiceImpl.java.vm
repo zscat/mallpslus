@@ -1,10 +1,11 @@
-package ${package}.${module}.service.impl;
+package
 
-import ${package}.${module}.entity.${Module}${className};
-import ${package}.${module}.mapper.${Module}${className}Mapper;
-import ${package}.${module}.service.I${Module}${className}Service;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
+    ${package}.${
+
+module }.service.impl;
+    ${package}.${module}.entity.${Module}${className};
+    ${package}.${module}.mapper.${Module}${className}Mapper;
+    ${package}.${module}.service.  {Module}${className}Service;
 
 /**
  * <p>
@@ -15,5 +16,5 @@ import org.springframework.stereotype.Service;
  * @since 2019-04-14
  */
 @Service
-    public class ${Module}${className}ServiceImpl extends ServiceImpl<${Module}${className}Mapper, ${Module}${className}> implements I${Module}${className}Service {
+public class ${Module}${className}ServiceImpl extends ServiceImpl<${Module}${className}Mapper, ${Module}${className}> implements I${Module}${className}Service {
 }

@@ -14,5 +14,4 @@ import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
 public interface ISmsFlashPromotionService extends IService<SmsFlashPromotion> {
 
 
-
 }

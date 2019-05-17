@@ -4,16 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.oms.entity.OmsCompanyAddress">
-        <id column="id" property="id" />
-        <result column="address_name" property="addressName" />
-        <result column="send_status" property="sendStatus" />
-        <result column="receive_status" property="receiveStatus" />
-        <result column="name" property="name" />
-        <result column="phone" property="phone" />
-        <result column="province" property="province" />
-        <result column="city" property="city" />
-        <result column="region" property="region" />
-        <result column="detail_address" property="detailAddress" />
+        <id column="id" property="id"/>
+        <result column="address_name" property="addressName"/>
+        <result column="send_status" property="sendStatus"/>
+        <result column="receive_status" property="receiveStatus"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="region" property="region"/>
+        <result column="detail_address" property="detailAddress"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

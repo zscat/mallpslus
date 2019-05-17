@@ -96,7 +96,7 @@ public class SysUserController extends ApiController {
     @PostMapping(value = "/update/{id}")
     public Object updateUser(@RequestBody SysUser entity) {
         try {
-            if (sysUserService.updates(entity.getId(),entity)) {
+            if (sysUserService.updates(entity.getId(), entity)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
@@ -169,7 +169,7 @@ public class SysUserController extends ApiController {
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
-       return new CommonResult().success(tokenMap);
+        return new CommonResult().success(tokenMap);
     }
 
     @SysLog(MODULE = "sys", REMARK = "获取当前登录用户信息")
@@ -206,9 +206,9 @@ public class SysUserController extends ApiController {
         int count = sysUserService.updateUserRole(adminId, roleIds);
         if (count >= 0) {
             //更新，删除时候，如果redis里有权限列表，重置
-            if (!redisService.exists(String.format(Rediskey.menuList,adminId))){
-                List<SysPermission> list= permissionMapper.listUserPerms(adminId);
-                String key =String.format(Rediskey.menuList,adminId);
+            if (!redisService.exists(String.format(Rediskey.menuList, adminId))) {
+                List<SysPermission> list = permissionMapper.listUserPerms(adminId);
+                String key = String.format(Rediskey.menuList, adminId);
                 redisService.set(key, JsonUtil.objectToJson(list));
                 return list;
             }

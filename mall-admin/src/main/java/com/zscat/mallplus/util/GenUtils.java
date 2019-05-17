@@ -137,7 +137,7 @@ public class GenUtils {
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             } catch (IOException e) {
-                throw new ApiMallPlusException("渲染模板失败，表名：" +tableDO.getTableName(), e);
+                throw new ApiMallPlusException("渲染模板失败，表名：" + tableDO.getTableName(), e);
             }
         }
     }
@@ -201,7 +201,7 @@ public class GenUtils {
             return Module + className + "menu.sql";
         }
         if (template.contains("Service.java.vm")) {
-            return "I"+Module + className + "Service.java";
+            return "I" + Module + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
@@ -219,7 +219,7 @@ public class GenUtils {
             return classname + ".js";
         }
         if (template.contains("path.js.vm")) {
-            return classname+"path" + ".js";
+            return classname + "path" + ".js";
         }
         if (template.contains("add.vue.vm")) {
             return classname + File.separator + "add.vue";
@@ -232,7 +232,7 @@ public class GenUtils {
             return classname + File.separator + "update.vue";
         }
         if (template.contains("BrandDetail.vue.vm")) {
-                return classname + File.separator + "components" + File.separator + className + "Detail.vue";
+            return classname + File.separator + "components" + File.separator + className + "Detail.vue";
         }
 
         return null;

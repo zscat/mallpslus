@@ -16,22 +16,18 @@ import java.util.Date;
  * @date 2016年12月21日 下午12:53:33
  */
 public class DateUtils {
-    // 日志
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(DateUtils.class);
-
     /**
      * 时间格式(yyyy-MM-dd)
      */
     public final static String DATE_PATTERN = "yyyy-MM-dd";
     /**
-     * 无分隔符日期格式 "yyyyMMddHHmmssSSS"
-     */
-    public static String DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS = "yyyyMMddHHmmssSSS";
-    /**
      * 时间格式(yyyy-MM-dd HH:mm:ss)
      */
     public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-
+    /**
+     * 无分隔符日期格式 "yyyyMMddHHmmssSSS"
+     */
+    public static String DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS = "yyyyMMddHHmmssSSS";
     // 日期转换格式数组
     public static String[][] regularExp = new String[][]{
 
@@ -45,6 +41,8 @@ public class DateUtils {
             {"\\d{4}((([0][1,3-9]|[1][0-2]|[1-9])([0-2]\\d|[3][0,1]|[1-9]))|((02|2)(([1-9])|[0-2]\\d)))([0,1]\\d|[2][0-3])([0-5]\\d|\\d)([0-5]\\d|\\d)\\d{1,3}",
                     DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS}
     };
+    // 日志
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
@@ -118,8 +116,7 @@ public class DateUtils {
     /**
      * 将字符串类型的转换成Date类型
      *
-     * @param dateStr
-     *            字符串类型的日期 yyyy-MM-dd
+     * @param dateStr 字符串类型的日期 yyyy-MM-dd
      * @return Date类型的日期
      * @throws ParseException
      */
@@ -135,15 +132,15 @@ public class DateUtils {
         }
         return resultDate;
     }
+
     /**
      * 将字符串类型的转换成Date类型
      *
-     * @param dateStr
-     *            字符串类型的日期 yyyy-MM-dd
+     * @param dateStr 字符串类型的日期 yyyy-MM-dd
      * @return Date类型的日期
      * @throws ParseException
      */
-    public static Date convertStringToDate(String dateStr,String formate) {
+    public static Date convertStringToDate(String dateStr, String formate) {
         // 返回的日期
         Date resultDate = null;
         try {
@@ -158,11 +155,12 @@ public class DateUtils {
 
     /**
      * 添加小时
+     *
      * @param date
      * @param hour
      * @return
      */
-    public static String addHours(Date date, int hour){
+    public static String addHours(Date date, int hour) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);

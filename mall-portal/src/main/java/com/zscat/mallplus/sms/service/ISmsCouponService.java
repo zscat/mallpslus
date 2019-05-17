@@ -1,10 +1,10 @@
 package com.zscat.mallplus.sms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.entity.SmsCouponHistory;
 import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
-import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.utils.CommonResult;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +40,7 @@ public interface ISmsCouponService extends IService<SmsCoupon> {
 
 
     List<SmsCoupon> selectNotRecive(Long memberId);
+
     List<SmsCoupon> selectRecive(Long memberId);
 
     List<SmsCoupon> selectNotRecive();

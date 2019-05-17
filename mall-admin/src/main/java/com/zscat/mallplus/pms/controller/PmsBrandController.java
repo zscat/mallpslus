@@ -131,6 +131,7 @@ public class PmsBrandController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation(value = "批量更新显示状态")
     @RequestMapping(value = "/update/showStatus", method = RequestMethod.POST)
     @ResponseBody

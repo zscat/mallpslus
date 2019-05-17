@@ -19,7 +19,7 @@ public class UserUtils {
             Authentication auth = ctx.getAuthentication();
             MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
             return memberDetails.getUmsMember();
-        }catch (Exception e){
+        } catch (Exception e) {
             return new UmsMember();
         }
     }

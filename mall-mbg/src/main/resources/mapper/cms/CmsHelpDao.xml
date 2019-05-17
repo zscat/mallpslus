@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.cms.entity.CmsHelp">
-        <id column="id" property="id" />
-        <result column="category_id" property="categoryId" />
-        <result column="icon" property="icon" />
-        <result column="title" property="title" />
-        <result column="show_status" property="showStatus" />
-        <result column="create_time" property="createTime" />
-        <result column="read_count" property="readCount" />
-        <result column="content" property="content" />
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="icon" property="icon"/>
+        <result column="title" property="title"/>
+        <result column="show_status" property="showStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="read_count" property="readCount"/>
+        <result column="content" property="content"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

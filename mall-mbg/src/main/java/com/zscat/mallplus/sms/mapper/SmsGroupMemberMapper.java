@@ -1,11 +1,11 @@
 package com.zscat.mallplus.sms.mapper;
 
-import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author zscat

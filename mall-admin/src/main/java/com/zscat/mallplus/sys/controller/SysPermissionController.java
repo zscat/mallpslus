@@ -1,7 +1,6 @@
 package com.zscat.mallplus.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysPermissionNode;
@@ -32,7 +31,7 @@ import java.util.List;
 @RestController
 @Api(tags = "SysPermissionController", description = "后台用户权限表管理")
 @RequestMapping("/sys/SysPermission")
-public class SysPermissionController extends BaseController{
+public class SysPermissionController extends BaseController {
     @Resource
     private ISysPermissionService ISysPermissionService;
 
@@ -95,7 +94,7 @@ public class SysPermissionController extends BaseController{
     @ApiOperation("更新后台用户权限表")
     @PostMapping(value = "/update/showStatus")
     @PreAuthorize("hasAuthority('sys:SysPermission:update')")
-    public Object updateRoleStatus(@RequestParam("ids") Long ids,@RequestParam("showStatus") Integer showStatus) {
+    public Object updateRoleStatus(@RequestParam("ids") Long ids, @RequestParam("showStatus") Integer showStatus) {
         try {
             SysPermission entity = new SysPermission();
             entity.setId(ids);
@@ -160,6 +159,7 @@ public class SysPermissionController extends BaseController{
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sys", REMARK = "获取所有权限列表")
     @ApiOperation("获取所有权限列表")
     @RequestMapping(value = "/findPermissions", method = RequestMethod.GET)

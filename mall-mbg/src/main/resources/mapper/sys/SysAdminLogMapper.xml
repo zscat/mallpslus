@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sys.entity.SysAdminLog">
-        <id column="id" property="id" />
-        <result column="user_id" property="userId" />
-        <result column="user_name" property="userName" />
-        <result column="service_name" property="serviceName" />
-        <result column="method" property="method" />
-        <result column="operation_desc" property="operationDesc" />
-        <result column="create_time" property="createTime" />
-        <result column="ip" property="ip" />
-        <result column="params" property="params" />
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="service_name" property="serviceName"/>
+        <result column="method" property="method"/>
+        <result column="operation_desc" property="operationDesc"/>
+        <result column="create_time" property="createTime"/>
+        <result column="ip" property="ip"/>
+        <result column="params" property="params"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

@@ -144,7 +144,7 @@ public class CmsTopicController {
                                      @RequestParam("topicId") Long topicId,
                                      @RequestParam("verifyStatus") Integer verifyStatus) {
 
-        int count = ICmsTopicService.updateVerifyStatus(ids,topicId,verifyStatus);
+        int count = ICmsTopicService.updateVerifyStatus(ids, topicId, verifyStatus);
         if (count > 0) {
             return new CommonResult().success(count);
         } else {

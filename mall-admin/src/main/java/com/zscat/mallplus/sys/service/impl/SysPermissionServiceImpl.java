@@ -14,7 +14,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private SysPermissionMapper permissionMapper;
     @Resource
     private ISysUserService userService;
+
     @Override
     public List<Tree<SysPermission>> getPermissionsByUserId(Long id) {
         List<Tree<SysPermission>> trees = Lists.newArrayList();
@@ -67,7 +67,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         SysPermission productCategory = new SysPermission();
         productCategory.setStatus(showStatus);
-        return permissionMapper.update(productCategory, new QueryWrapper<SysPermission>().eq("id",ids));
+        return permissionMapper.update(productCategory, new QueryWrapper<SysPermission>().eq("id", ids));
 
     }
 

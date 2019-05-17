@@ -14,5 +14,4 @@ import com.zscat.mallplus.sys.entity.SysUserRole;
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
 
-
 }

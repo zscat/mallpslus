@@ -1,8 +1,8 @@
 package com.zscat.mallplus.pms.vo;
 
 
-import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import com.zscat.mallplus.pms.entity.PmsProduct;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import lombok.Data;
 
 import java.util.List;
@@ -16,5 +16,5 @@ import java.util.Map;
 public class PmsProductAndGroup extends PmsProduct {
     private Map<String, List<SmsGroupMember>> map;
     private String isGroup = "1"; //1 可以发起团购
-    private String  is_favorite;
+    private String is_favorite;
 }

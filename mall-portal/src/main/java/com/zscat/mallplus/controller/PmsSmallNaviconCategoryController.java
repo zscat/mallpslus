@@ -2,7 +2,6 @@ package com.zscat.mallplus.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
-import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
 import com.zscat.mallplus.pms.service.IPmsSmallNaviconCategoryService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -21,6 +20,7 @@ import javax.annotation.Resource;
 public class PmsSmallNaviconCategoryController {
     @Resource
     IPmsSmallNaviconCategoryService smallNaviconCategoryService;
+
     @IgnoreAuth
     @PostMapping(value = "/nav/querySmallNavList")
     @ApiOperation(value = "查询首页nav列表")

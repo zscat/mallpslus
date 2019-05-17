@@ -1,14 +1,12 @@
 package com.zscat.mallplus.sys.mapper;
 
-import com.zscat.mallplus.sys.entity.SysPermissionCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import java.util.List;
-import java.util.Map;
+import com.zscat.mallplus.sys.entity.SysPermissionCategory;
 
 
 /**
  * 权限类别表
+ *
  * @author zscat
  * @email 951449465@qq.com
  * @date 2019-04-27 18:52:51
@@ -16,7 +14,7 @@ import java.util.Map;
 
 public interface SysPermissionCategoryMapper extends BaseMapper<SysPermissionCategory> {
 
-	SysPermissionCategory get(Long id);
+    SysPermissionCategory get(Long id);
 //
 //	List<SysPermissionCategory> list(SysPermissionCategory permissionCategory);
 //

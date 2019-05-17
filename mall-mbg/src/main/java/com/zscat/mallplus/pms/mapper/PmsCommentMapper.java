@@ -1,7 +1,7 @@
 package com.zscat.mallplus.pms.mapper;
 
-import com.zscat.mallplus.pms.entity.PmsComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.pms.entity.PmsComment;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
  * @since 2019-04-19
  */
 public interface PmsCommentMapper extends BaseMapper<PmsComment> {
-        List<PmsComment> getByProductId(Long productId);
+    List<PmsComment> getByProductId(Long productId);
 }

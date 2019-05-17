@@ -44,19 +44,23 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         long startTime, endTime;
-        Map<String,String[]> params = new HashMap<String,String[]>(request.getParameterMap());
+        Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
 
         StringBuffer sbParams = new StringBuffer();
         sbParams.append("?");
 
         for (String key : params.keySet()) {
-            if(null == key || null == params.get(key) || null == params.get(key)[0]){  continue;}
+            if (null == key || null == params.get(key) || null == params.get(key)[0]) {
+                continue;
+            }
             sbParams.append(key).append("=").append(params.get(key)[0]).append("&");
         }
 
-        if(sbParams.length() > 1) {sbParams = sbParams.delete(sbParams.length() - 1, sbParams.length());}
+        if (sbParams.length() > 1) {
+            sbParams = sbParams.delete(sbParams.length() - 1, sbParams.length());
+        }
 
-        String fullUrl = ((HttpServletRequest)request).getRequestURL().toString();
+        String fullUrl = ((HttpServletRequest) request).getRequestURL().toString();
 
         String authHeader = request.getHeader(this.tokenHeader);
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
@@ -78,12 +82,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         startTime = System.currentTimeMillis();
         chain.doFilter(request, response);
         endTime = System.currentTimeMillis();
-        String requestType = ((HttpServletRequest)request).getMethod();
+        String requestType = ((HttpServletRequest) request).getMethod();
 
         logger.info(formMapKey(11, fullUrl, requestType,
                 IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), authHeader)
                 + ",\"cost\":\"" + (endTime - startTime) + "ms\"");
     }
+
     private String formMapKey(Object userId, String mothedName, String requestType,
                               String ip, String params, String token) {
         return "\"time\"" + ":\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS").format(new Date())

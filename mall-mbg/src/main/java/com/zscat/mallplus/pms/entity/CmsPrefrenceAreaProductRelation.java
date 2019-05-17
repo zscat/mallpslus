@@ -1,9 +1,10 @@
 package com.zscat.mallplus.pms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 
 /**
@@ -56,9 +57,9 @@ public class CmsPrefrenceAreaProductRelation implements Serializable {
     @Override
     public String toString() {
         return "CmsPrefrenceAreaProductRelation{" +
-        ", id=" + id +
-        ", prefrenceAreaId=" + prefrenceAreaId +
-        ", productId=" + productId +
-        "}";
+                ", id=" + id +
+                ", prefrenceAreaId=" + prefrenceAreaId +
+                ", productId=" + productId +
+                "}";
     }
 }

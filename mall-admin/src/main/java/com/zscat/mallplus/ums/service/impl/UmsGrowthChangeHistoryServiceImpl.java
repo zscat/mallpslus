@@ -1,9 +1,9 @@
 package com.zscat.mallplus.ums.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.ums.entity.UmsGrowthChangeHistory;
 import com.zscat.mallplus.ums.mapper.UmsGrowthChangeHistoryMapper;
 import com.zscat.mallplus.ums.service.IUmsGrowthChangeHistoryService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

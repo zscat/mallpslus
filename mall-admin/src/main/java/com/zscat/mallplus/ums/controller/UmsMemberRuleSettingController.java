@@ -1,23 +1,17 @@
 package com.zscat.mallplus.ums.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.ums.entity.UmsMemberRuleSetting;
+import com.zscat.mallplus.ums.service.IUmsMemberRuleSettingService;
 import com.zscat.mallplus.utils.CommonResult;
-
-
-
+import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import com.zscat.mallplus.ums.entity.UmsMemberRuleSetting;
-import com.zscat.mallplus.ums.service.IUmsMemberRuleSettingService;
-import com.zscat.mallplus.utils.ValidatorUtils;
-import com.zscat.mallplus.annotation.SysLog;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

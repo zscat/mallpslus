@@ -132,6 +132,7 @@ public class OmsOrderReturnApplyController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "oms", REMARK = "获取所有收货地址")
     @ApiOperation("修改申请状态")
     @RequestMapping(value = "/update/status/{id}", method = RequestMethod.POST)

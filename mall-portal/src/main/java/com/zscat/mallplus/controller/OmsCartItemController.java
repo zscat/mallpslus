@@ -119,7 +119,7 @@ public class OmsCartItemController {
     @RequestMapping(value = "/delete")
     @ResponseBody
     public Object delete(String cart_id_list) {
-        if (StringUtils.isEmpty(cart_id_list)){
+        if (StringUtils.isEmpty(cart_id_list)) {
             return new CommonResult().failed("参数为空");
         }
         List<Long> resultList = new ArrayList<>(cart_id_list.split(",").length);

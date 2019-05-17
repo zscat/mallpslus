@@ -1,11 +1,12 @@
 package com.zscat.mallplus.sms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -104,13 +105,13 @@ public class SmsFlashPromotionLog implements Serializable {
     @Override
     public String toString() {
         return "SmsFlashPromotionLog{" +
-        ", id=" + id +
-        ", memberId=" + memberId +
-        ", productId=" + productId +
-        ", memberPhone=" + memberPhone +
-        ", productName=" + productName +
-        ", subscribeTime=" + subscribeTime +
-        ", sendTime=" + sendTime +
-        "}";
+                ", id=" + id +
+                ", memberId=" + memberId +
+                ", productId=" + productId +
+                ", memberPhone=" + memberPhone +
+                ", productName=" + productName +
+                ", subscribeTime=" + subscribeTime +
+                ", sendTime=" + sendTime +
+                "}";
     }
 }

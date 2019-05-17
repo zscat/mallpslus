@@ -37,11 +37,39 @@ import java.util.Objects;
 @Aspect
 @Component
 public class SysLogAspect {
-    private Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
     @Resource
     public ISysAdminLogService fopSystemOperationLogService;
     @Resource
     public ISysUserService adminService;
+    private Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
+
+    public static String getString(Object o) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuffer sb = new StringBuffer();
+        sb.append("entity[");
+        Field[] farr = o.getClass().getDeclaredFields();
+        for (Field field : farr) {
+            try {
+                field.setAccessible(true);
+                if (!ValidatorUtils.empty(field.get(o))) {
+                    sb.append(field.getName());
+                    sb.append("=");
+                    if (field.get(o) instanceof Date) {
+                        // 日期的处理
+                        sb.append(sdf.format(field.get(o)));
+                    } else {
+                        sb.append(field.get(o));
+                    }
+                    sb.append("|");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 
     @Pointcut("@annotation(com.zscat.mallplus.annotation.SysLog)")
     public void logPointCut() {
@@ -122,34 +150,6 @@ public class SysLogAspect {
             logger.error("保存系统日志失败");
         }
 
-    }
-
-    public static String getString(Object o) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        StringBuffer sb = new StringBuffer();
-        sb.append("entity[");
-        Field[] farr = o.getClass().getDeclaredFields();
-        for (Field field : farr) {
-            try {
-                field.setAccessible(true);
-                if (!ValidatorUtils.empty(field.get(o))) {
-                    sb.append(field.getName());
-                    sb.append("=");
-                    if (field.get(o) instanceof Date) {
-                        // 日期的处理
-                        sb.append(sdf.format(field.get(o)));
-                    } else {
-                        sb.append(field.get(o));
-                    }
-                    sb.append("|");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        sb.append("]");
-        return sb.toString();
     }
 
 }

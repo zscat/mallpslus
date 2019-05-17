@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TbThanks implements Serializable{
+public class TbThanks implements Serializable {
     private Integer id;
 
     private String nickName;
@@ -114,7 +114,7 @@ public class TbThanks implements Serializable{
     }
 
     public void setPayType(Integer payType) {
-        this.payType = payType ;
+        this.payType = payType;
     }
 
     public Long getOrderId() {
@@ -122,6 +122,6 @@ public class TbThanks implements Serializable{
     }
 
     public void setOrderId(Long orderId) {
-        this.orderId = orderId ;
+        this.orderId = orderId;
     }
 }

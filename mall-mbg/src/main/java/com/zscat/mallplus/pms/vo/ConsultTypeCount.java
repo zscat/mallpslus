@@ -10,11 +10,11 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
-public class ConsultTypeCount implements Serializable{
-    private  int all;
-    private  int goods;
-    private  int general;
-    private  int bad;
-    private  int other;
+public class ConsultTypeCount implements Serializable {
+    private int all;
+    private int goods;
+    private int general;
+    private int bad;
+    private int other;
 
 }

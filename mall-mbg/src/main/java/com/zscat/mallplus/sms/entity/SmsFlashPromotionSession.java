@@ -107,12 +107,12 @@ public class SmsFlashPromotionSession implements Serializable {
     @Override
     public String toString() {
         return "SmsFlashPromotionSession{" +
-        ", id=" + id +
-        ", name=" + name +
-        ", startTime=" + startTime +
-        ", endTime=" + endTime +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        "}";
+                ", id=" + id +
+                ", name=" + name +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                "}";
     }
 }

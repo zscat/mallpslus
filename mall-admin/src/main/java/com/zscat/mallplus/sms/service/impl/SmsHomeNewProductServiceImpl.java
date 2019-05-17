@@ -22,12 +22,14 @@ import java.util.List;
 public class SmsHomeNewProductServiceImpl extends ServiceImpl<SmsHomeNewProductMapper, SmsHomeNewProduct> implements ISmsHomeNewProductService {
     @Resource
     private SmsHomeNewProductMapper homeNewProductMapper;
+
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
         SmsHomeNewProduct record = new SmsHomeNewProduct();
         record.setRecommendStatus(recommendStatus);
-        return homeNewProductMapper.update(record, new QueryWrapper<SmsHomeNewProduct>().in("id",ids));
+        return homeNewProductMapper.update(record, new QueryWrapper<SmsHomeNewProduct>().in("id", ids));
     }
+
     @Override
     public int updateSort(Long id, Integer sort) {
         SmsHomeNewProduct homeNewProduct = new SmsHomeNewProduct();

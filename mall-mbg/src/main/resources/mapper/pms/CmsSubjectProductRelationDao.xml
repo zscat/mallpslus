@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.CmsSubjectProductRelation">
-        <id column="id" property="id" />
-        <result column="subject_id" property="subjectId" />
-        <result column="product_id" property="productId" />
+        <id column="id" property="id"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="product_id" property="productId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

@@ -7,19 +7,19 @@ import java.lang.annotation.*;
 
 /**
  * 启用加密Starter
- * 
+ * <p>
  * <p>在Spring Boot启动类上加上此注解<p>
- * 
+ * <p>
  * <pre class="code">
  * &#064;SpringBootApplication
  * &#064;EnableEncrypt
  * public class App {
- *     public static void main(String[] args) {
- *         SpringApplication.run(App.class, args);
- *     }
+ * public static void main(String[] args) {
+ * SpringApplication.run(App.class, args);
+ * }
  * }
  * <pre>
- * 
+ *
  * @author zscat
  *
  * @about 2019-04-30

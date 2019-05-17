@@ -10,14 +10,14 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class BaseController {
-	public SysUser getCurrentUser() {
-		try {
-			SecurityContext ctx = SecurityContextHolder.getContext();
-			Authentication auth = ctx.getAuthentication();
-			AdminUserDetails memberDetails = (AdminUserDetails) auth.getPrincipal();
-			return memberDetails.getUmsAdmin();
-		}catch (Exception e){
-			return new SysUser();
-		}
-	}
+    public SysUser getCurrentUser() {
+        try {
+            SecurityContext ctx = SecurityContextHolder.getContext();
+            Authentication auth = ctx.getAuthentication();
+            AdminUserDetails memberDetails = (AdminUserDetails) auth.getPrincipal();
+            return memberDetails.getUmsAdmin();
+        } catch (Exception e) {
+            return new SysUser();
+        }
+    }
 }

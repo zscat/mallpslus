@@ -11,27 +11,6 @@ import java.util.Date;
  */
 public class TArticleDO implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    public TArticleDO() {
-
-    }
-
-    public TArticleDO(String title) {
-        this.title = title;
-    }
-
-    public TArticleDO(String title, String summary) {
-        this.title = title;
-        this.summary = summary;
-    }
-
-    public TArticleDO(String title, String summary, String content, String img) {
-        this.title = title;
-        this.summary = summary;
-        this.content = content;
-        this.img = img;
-    }
-
     //
     private Long id;
     //标题
@@ -56,12 +35,21 @@ public class TArticleDO implements Serializable {
     private Long villageid;
     //用户名
     private String username;
+    public TArticleDO() {
 
-    /**
-     * 设置：
-     */
-    public void setId(Long id) {
-        this.id = id;
+    }
+    public TArticleDO(String title) {
+        this.title = title;
+    }
+    public TArticleDO(String title, String summary) {
+        this.title = title;
+        this.summary = summary;
+    }
+    public TArticleDO(String title, String summary, String content, String img) {
+        this.title = title;
+        this.summary = summary;
+        this.content = content;
+        this.img = img;
     }
 
     /**
@@ -72,10 +60,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：标题
+     * 设置：
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
@@ -86,10 +74,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：摘要
+     * 设置：标题
      */
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -100,10 +88,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：发布时间
+     * 设置：摘要
      */
-    public void setReleasedate(Date releasedate) {
-        this.releasedate = releasedate;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     /**
@@ -114,10 +102,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：点击量
+     * 设置：发布时间
      */
-    public void setClickhit(Integer clickhit) {
-        this.clickhit = clickhit;
+    public void setReleasedate(Date releasedate) {
+        this.releasedate = releasedate;
     }
 
     /**
@@ -128,10 +116,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：回复量
+     * 设置：点击量
      */
-    public void setReplyhit(Integer replyhit) {
-        this.replyhit = replyhit;
+    public void setClickhit(Integer clickhit) {
+        this.clickhit = clickhit;
     }
 
     /**
@@ -142,10 +130,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：内容
+     * 设置：回复量
      */
-    public void setContent(String content) {
-        this.content = content;
+    public void setReplyhit(Integer replyhit) {
+        this.replyhit = replyhit;
     }
 
     /**
@@ -156,10 +144,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：关键字
+     * 设置：内容
      */
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**
@@ -170,10 +158,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：状态
+     * 设置：关键字
      */
-    public void setState(Integer state) {
-        this.state = state;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     /**
@@ -184,10 +172,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：图片
+     * 设置：状态
      */
-    public void setImg(String img) {
-        this.img = img;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     /**
@@ -198,10 +186,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：所属者
+     * 设置：图片
      */
-    public void setVillageid(Long villageid) {
-        this.villageid = villageid;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     /**
@@ -212,10 +200,10 @@ public class TArticleDO implements Serializable {
     }
 
     /**
-     * 设置：用户名
+     * 设置：所属者
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setVillageid(Long villageid) {
+        this.villageid = villageid;
     }
 
     /**
@@ -223,5 +211,12 @@ public class TArticleDO implements Serializable {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * 设置：用户名
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

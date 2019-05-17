@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sms.mapper;
 
-import com.zscat.mallplus.sms.entity.SmsCouponHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sms.entity.SmsCouponHistory;
 import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 
 import java.util.List;

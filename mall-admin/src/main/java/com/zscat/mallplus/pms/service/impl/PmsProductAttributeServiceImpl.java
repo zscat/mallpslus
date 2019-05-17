@@ -25,7 +25,7 @@ import java.util.List;
 public class PmsProductAttributeServiceImpl extends ServiceImpl<PmsProductAttributeMapper, PmsProductAttribute> implements IPmsProductAttributeService {
 
     @Resource
-    private  PmsProductAttributeMapper productAttributeMapper;
+    private PmsProductAttributeMapper productAttributeMapper;
     @Resource
     private PmsProductAttributeCategoryMapper productAttributeCategoryMapper;
 
@@ -37,7 +37,7 @@ public class PmsProductAttributeServiceImpl extends ServiceImpl<PmsProductAttrib
     @Transactional
     @Override
     public boolean saveAndUpdate(PmsProductAttribute entity) {
-         productAttributeMapper.insert(entity);
+        productAttributeMapper.insert(entity);
         //新增商品属性以后需要更新商品属性分类数量
         PmsProductAttributeCategory pmsProductAttributeCategory = productAttributeCategoryMapper.selectById(entity.getProductAttributeCategoryId());
         if (entity.getType() == 0) {

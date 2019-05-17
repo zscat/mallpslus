@@ -1,7 +1,7 @@
 package com.zscat.mallplus.ums.mapper;
 
-import com.zscat.mallplus.ums.entity.UmsMember;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.ums.entity.UmsMember;
 
 /**
  * <p>

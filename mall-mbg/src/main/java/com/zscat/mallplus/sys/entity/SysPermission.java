@@ -154,16 +154,16 @@ public class SysPermission implements Serializable {
     @Override
     public String toString() {
         return "SysPermission{" +
-        ", id=" + id +
-        ", pid=" + pid +
-        ", name=" + name +
-        ", value=" + value +
-        ", icon=" + icon +
-        ", type=" + type +
-        ", uri=" + uri +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        ", sort=" + sort +
-        "}";
+                ", id=" + id +
+                ", pid=" + pid +
+                ", name=" + name +
+                ", value=" + value +
+                ", icon=" + icon +
+                ", type=" + type +
+                ", uri=" + uri +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", sort=" + sort +
+                "}";
     }
 }

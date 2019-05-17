@@ -245,21 +245,23 @@ public class JsonUtils {
     }
 
     public static <T> List<T> json2list(String jsonArrayStr, Class<T> clazz) throws Exception {
-        List<Map<String, Object>> list = (List)objectMapper.readValue(jsonArrayStr, new TypeReference<List<T>>() {
+        List<Map<String, Object>> list = (List) objectMapper.readValue(jsonArrayStr, new TypeReference<List<T>>() {
         });
         List<T> result = new ArrayList();
         Iterator var4 = list.iterator();
 
-        while(var4.hasNext()) {
-            Map<String, Object> map = (Map)var4.next();
+        while (var4.hasNext()) {
+            Map<String, Object> map = (Map) var4.next();
             result.add(map2pojo(map, clazz));
         }
 
         return result;
     }
+
     public static <T> T map2pojo(Map map, Class<T> clazz) {
         return objectMapper.convertValue(map, clazz);
     }
+
     /**
      * 解析json属性，放到实体里面去
      *
@@ -291,7 +293,7 @@ public class JsonUtils {
      *
      * @param @param  jsondata
      * @param @return 设定文件
-     * @return Map<String       ,       Map       <       String       ,       Object>>    返回类型
+     * @return Map<String               ,               Map               <               String               ,               Object>>    返回类型
      * @throws
      * @Title: readJsonMap
      * @Description: TODO(这里用一句话描述这个方法的作用)

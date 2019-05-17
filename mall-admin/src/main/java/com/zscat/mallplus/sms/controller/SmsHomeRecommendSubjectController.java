@@ -131,12 +131,13 @@ public class SmsHomeRecommendSubjectController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("添加首页推荐专题")
     @RequestMapping(value = "/batchCreate", method = RequestMethod.POST)
     @ResponseBody
     public Object create(@RequestBody List<SmsHomeRecommendSubject> homeBrandList) {
         boolean count = ISmsHomeRecommendSubjectService.saveBatch(homeBrandList);
-        if (count ) {
+        if (count) {
             return new CommonResult().success(count);
         }
         return new CommonResult().failed();
@@ -152,6 +153,7 @@ public class SmsHomeRecommendSubjectController {
         }
         return new CommonResult().failed();
     }
+
     @ApiOperation("批量修改推荐状态")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     @ResponseBody

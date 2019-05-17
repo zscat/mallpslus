@@ -8,6 +8,9 @@ import lombok.Data;
  */
 @Data
 public class OrderParam {
+    String page;
+    String formId;
+    String platform = "2";
     //收货地址id
     private Long addressId;
     //优惠券id
@@ -16,16 +19,11 @@ public class OrderParam {
     private Integer useIntegration;
     //支付方式
     private Integer payType;
-
-    private Integer offline ;// 0 送货 1 自取
-    private String  content;
+    private Integer offline;// 0 送货 1 自取
+    private String content;
     private String cartId;
     private String cartIds;
     private String type; // 1 商品详情 2 勾选购物车 3全部购物车的商品
-
-    String page;
-    String formId;
-    String platform ="2";
 
 
 }

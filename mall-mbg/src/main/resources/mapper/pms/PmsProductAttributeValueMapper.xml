@@ -4,10 +4,10 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.PmsProductAttributeValue">
-        <id column="id" property="id" />
-        <result column="product_id" property="productId" />
-        <result column="product_attribute_id" property="productAttributeId" />
-        <result column="value" property="value" />
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="product_attribute_id" property="productAttributeId"/>
+        <result column="value" property="value"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

@@ -1,11 +1,12 @@
 package com.zscat.mallplus.pms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -82,11 +83,11 @@ public class PmsMemberPrice implements Serializable {
     @Override
     public String toString() {
         return "PmsMemberPrice{" +
-        ", id=" + id +
-        ", productId=" + productId +
-        ", memberLevelId=" + memberLevelId +
-        ", memberPrice=" + memberPrice +
-        ", memberLevelName=" + memberLevelName +
-        "}";
+                ", id=" + id +
+                ", productId=" + productId +
+                ", memberLevelId=" + memberLevelId +
+                ", memberPrice=" + memberPrice +
+                ", memberLevelName=" + memberLevelName +
+                "}";
     }
 }

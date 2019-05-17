@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.ums.entity.UmsCollect">
-        <id column="id" property="id" />
-        <result column="member_id" property="memberId" />
-        <result column="goods_id" property="goodsId" />
-        <result column="goods_name" property="goodsName" />
-        <result column="goods_pic" property="goodsPic" />
-        <result column="goods_price" property="goodsPrice" />
-        <result column="type" property="type" />
-        <result column="create_time" property="createTime" />
+        <id column="id" property="id"/>
+        <result column="member_id" property="memberId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_pic" property="goodsPic"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

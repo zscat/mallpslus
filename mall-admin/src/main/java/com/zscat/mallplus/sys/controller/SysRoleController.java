@@ -8,8 +8,6 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.sys.entity.SysRole;
 import com.zscat.mallplus.sys.entity.SysRolePermission;
 import com.zscat.mallplus.sys.service.ISysRoleService;
-import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.ums.service.impl.RedisServiceImpl;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -137,6 +135,7 @@ public class SysRoleController extends ApiController {
             return new CommonResult().failed();
         }
     }
+
     @SysLog(MODULE = "sys", REMARK = "获取相应角色权限")
     @ApiOperation("获取相应角色权限")
     @RequestMapping(value = "/permission/{roleId}", method = RequestMethod.GET)
@@ -145,11 +144,12 @@ public class SysRoleController extends ApiController {
         List<SysRolePermission> permissionList = sysRoleService.getRolePermission(roleId);
         return new CommonResult().success(permissionList);
     }
+
     @SysLog(MODULE = "sys", REMARK = "获取相应角色权限-单表")
     @ApiOperation("获取相应角色权限-单表")
     @RequestMapping(value = "/rolePermission/{roleId}", method = RequestMethod.GET)
     @ResponseBody
-    public Object rolePermission(@PathVariable Long  roleId) {
+    public Object rolePermission(@PathVariable Long roleId) {
         List<SysRolePermission> rolePermission = sysRoleService.getRolePermission(roleId);
         return new CommonResult().success(rolePermission);
     }

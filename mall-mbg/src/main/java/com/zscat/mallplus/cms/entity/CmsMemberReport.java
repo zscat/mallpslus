@@ -1,9 +1,10 @@
 package com.zscat.mallplus.cms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -129,14 +130,14 @@ public class CmsMemberReport implements Serializable {
     @Override
     public String toString() {
         return "CmsMemberReport{" +
-        ", id=" + id +
-        ", reportType=" + reportType +
-        ", reportMemberName=" + reportMemberName +
-        ", createTime=" + createTime +
-        ", reportObject=" + reportObject +
-        ", reportStatus=" + reportStatus +
-        ", handleStatus=" + handleStatus +
-        ", note=" + note +
-        "}";
+                ", id=" + id +
+                ", reportType=" + reportType +
+                ", reportMemberName=" + reportMemberName +
+                ", createTime=" + createTime +
+                ", reportObject=" + reportObject +
+                ", reportStatus=" + reportStatus +
+                ", handleStatus=" + handleStatus +
+                ", note=" + note +
+                "}";
     }
 }

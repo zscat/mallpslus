@@ -2,10 +2,10 @@ package com.zscat.mallplus.sms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.cms.entity.CmsSubject;
-import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
 import com.zscat.mallplus.pms.entity.PmsBrand;
 import com.zscat.mallplus.pms.entity.PmsProduct;
+import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
 
 import java.util.List;
 
@@ -21,10 +21,13 @@ public interface ISmsHomeAdvertiseService extends IService<SmsHomeAdvertise> {
 
     HomeContentResult singelContent();
 
-     List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) ;
-     List<PmsProduct> getNewProductList(int pageNum, int pageSize) ;
-     List<PmsProduct> getHotProductList(int pageNum, int pageSize) ;
-     List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) ;
+    List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize);
 
-     List<SmsHomeAdvertise> getHomeAdvertiseList() ;
+    List<PmsProduct> getNewProductList(int pageNum, int pageSize);
+
+    List<PmsProduct> getHotProductList(int pageNum, int pageSize);
+
+    List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize);
+
+    List<SmsHomeAdvertise> getHomeAdvertiseList();
 }

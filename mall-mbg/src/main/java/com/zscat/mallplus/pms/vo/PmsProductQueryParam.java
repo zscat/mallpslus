@@ -25,7 +25,7 @@ public class PmsProductQueryParam {
     private Integer pageSize = 10;
     private Integer pageNum = 1;
     private Long productAttributeCategoryId;
-    private String  sort = "price asc"; // 1 asc
+    private String sort = "price asc"; // 1 asc
 
     public Integer getPublishStatus() {
         return publishStatus;

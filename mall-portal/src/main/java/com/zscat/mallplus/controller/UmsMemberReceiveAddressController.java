@@ -54,13 +54,13 @@ public class UmsMemberReceiveAddressController {
     @RequestMapping(value = "/save")
     @ResponseBody
     public Object update(UmsMemberReceiveAddress address) {
-        boolean count = false ;
-        if (address!=null && address.getId()!=null){
-             count = memberReceiveAddressService.updateById( address);
-        }else {
-             count = memberReceiveAddressService.save(address);
+        boolean count = false;
+        if (address != null && address.getId() != null) {
+            count = memberReceiveAddressService.updateById(address);
+        } else {
+            count = memberReceiveAddressService.save(address);
         }
-        if (count ) {
+        if (count) {
             return new CommonResult().success(count);
         }
         return new CommonResult().failed();
@@ -83,6 +83,7 @@ public class UmsMemberReceiveAddressController {
         UmsMemberReceiveAddress address = memberReceiveAddressService.getById(id);
         return new CommonResult().success(address);
     }
+
     @IgnoreAuth
     @ApiOperation("显示所有收货地址")
     @RequestMapping(value = "/getItemDefautl", method = RequestMethod.GET)
@@ -91,8 +92,8 @@ public class UmsMemberReceiveAddressController {
         UmsMemberReceiveAddress address = memberReceiveAddressService.getDefaultItem();
         return new CommonResult().success(address);
     }
+
     /**
-     *
      * @param id
      * @return
      */

@@ -1,9 +1,9 @@
 package com.zscat.mallplus.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.sys.entity.SysSchool;
 import com.zscat.mallplus.sys.mapper.SysSchoolMapper;
 import com.zscat.mallplus.sys.service.ISysSchoolService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

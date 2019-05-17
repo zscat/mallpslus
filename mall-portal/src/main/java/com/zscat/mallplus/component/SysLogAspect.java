@@ -36,11 +36,40 @@ import java.util.Objects;
 @Aspect
 @Component
 public class SysLogAspect {
-    private Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
     @Resource
     public SysWebLogMapper fopSystemOperationLogService;
     @Resource
     public IUmsMemberService adminService;
+    private Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
+
+    public static String getString(Object o) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuffer sb = new StringBuffer();
+        sb.append("entity[");
+        Field[] farr = o.getClass().getDeclaredFields();
+        for (Field field : farr) {
+            try {
+                field.setAccessible(true);
+                if (!ValidatorUtils.empty(field.get(o))) {
+                    sb.append(field.getName());
+                    sb.append("=");
+                    if (field.get(o) instanceof Date) {
+                        // 日期的处理
+                        sb.append(sdf.format(field.get(o)));
+                    } else {
+                        sb.append(field.get(o));
+                    }
+                    sb.append("|");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
     @Pointcut("@annotation(com.zscat.mallplus.annotation.SysLog)")
     public void logPointCut() {
 
@@ -75,8 +104,8 @@ public class SysLogAspect {
                 sb = new StringBuilder();
                 for (int i = 0; i < parameterNames.length; i++) {
                     Object param = joinPoint.getArgs()[i] != null ? joinPoint.getArgs()[i] : "";
-                    if(StringUtils.isNotEmpty(param.toString()) && !"request".equals(parameterNames[i])&& !"response".equals(parameterNames[i])
-                            && !"modelMap".equals(parameterNames[i])){
+                    if (StringUtils.isNotEmpty(param.toString()) && !"request".equals(parameterNames[i]) && !"response".equals(parameterNames[i])
+                            && !"modelMap".equals(parameterNames[i])) {
                         if (param instanceof Integer) {
                             sb.append(parameterNames[i] + ":" + param + "; ");
                         } else if (param instanceof String) {
@@ -91,9 +120,9 @@ public class SysLogAspect {
                             sb.append(parameterNames[i] + ":" + param + "; ");
                         } else if (param instanceof Date) {
                             sb.append(parameterNames[i] + ":" + param + "; ");
-                        }else if (param instanceof Timestamp) {
+                        } else if (param instanceof Timestamp) {
                             sb.append(parameterNames[i] + ":" + param + "; ");
-                        }else{
+                        } else {
                             sb.append(parameterNames[i] + ":" + getString(param) + "; ");
                         }
                     }
@@ -119,33 +148,5 @@ public class SysLogAspect {
             logger.error("保存系统日志失败");
         }
 
-    }
-
-    public static String getString(Object o) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        StringBuffer sb = new StringBuffer();
-        sb.append("entity[");
-        Field[] farr = o.getClass().getDeclaredFields();
-        for (Field field : farr) {
-            try {
-                field.setAccessible(true);
-                if(!ValidatorUtils.empty(field.get(o))){
-                    sb.append(field.getName());
-                    sb.append("=");
-                    if (field.get(o) instanceof Date) {
-                        // 日期的处理
-                        sb.append(sdf.format(field.get(o)));
-                    } else {
-                        sb.append(field.get(o));
-                    }
-                    sb.append("|");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        sb.append("]");
-        return sb.toString();
     }
 }

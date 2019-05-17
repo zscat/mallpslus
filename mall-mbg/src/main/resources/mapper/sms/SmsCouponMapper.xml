@@ -4,24 +4,24 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsCoupon">
-        <id column="id" property="id" />
-        <result column="type" property="type" />
-        <result column="name" property="name" />
-        <result column="platform" property="platform" />
-        <result column="count" property="count" />
-        <result column="amount" property="amount" />
-        <result column="per_limit" property="perLimit" />
-        <result column="min_point" property="minPoint" />
-        <result column="start_time" property="startTime" />
-        <result column="end_time" property="endTime" />
-        <result column="use_type" property="useType" />
-        <result column="note" property="note" />
-        <result column="publish_count" property="publishCount" />
-        <result column="use_count" property="useCount" />
-        <result column="receive_count" property="receiveCount" />
-        <result column="enable_time" property="enableTime" />
-        <result column="code" property="code" />
-        <result column="member_level" property="memberLevel" />
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="platform" property="platform"/>
+        <result column="count" property="count"/>
+        <result column="amount" property="amount"/>
+        <result column="per_limit" property="perLimit"/>
+        <result column="min_point" property="minPoint"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="use_type" property="useType"/>
+        <result column="note" property="note"/>
+        <result column="publish_count" property="publishCount"/>
+        <result column="use_count" property="useCount"/>
+        <result column="receive_count" property="receiveCount"/>
+        <result column="enable_time" property="enableTime"/>
+        <result column="code" property="code"/>
+        <result column="member_level" property="memberLevel"/>
     </resultMap>
 
     <resultMap id="couponItemParam" type="com.zscat.mallplus.sms.vo.SmsCouponParam"
@@ -53,15 +53,18 @@
     </select>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, type, name, platform, count, amount, per_limit, min_point, start_time, end_time, use_type, note, publish_count, use_count, receive_count, enable_time, code, member_level
+        id, type, name, platform, count, amount, per_limit, min_point, start_time, end_time, use_type, note,
+        publish_count, use_count, receive_count, enable_time, code, member_level
     </sql>
 
-    <select id="selectNotRecive"  resultMap="BaseResultMap">
-        SELECT sms_coupon.* from sms_coupon where id not in (SELECT coupon_id from sms_coupon_history where member_id = #{memberId})
+    <select id="selectNotRecive" resultMap="BaseResultMap">
+        SELECT sms_coupon.* from sms_coupon where id not in (SELECT coupon_id from sms_coupon_history where member_id =
+        #{memberId})
 
     </select>
-    <select id="selectRecive"  resultMap="BaseResultMap">
+    <select id="selectRecive" resultMap="BaseResultMap">
 
-        SELECT sms_coupon.* from sms_coupon where id  in (SELECT coupon_id from sms_coupon_history where member_id = #{memberId})
+        SELECT sms_coupon.* from sms_coupon where id in (SELECT coupon_id from sms_coupon_history where member_id =
+        #{memberId})
     </select>
 </mapper>

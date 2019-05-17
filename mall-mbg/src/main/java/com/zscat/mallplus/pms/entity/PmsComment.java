@@ -1,11 +1,12 @@
 package com.zscat.mallplus.pms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -201,21 +202,21 @@ public class PmsComment implements Serializable {
     @Override
     public String toString() {
         return "PmsComment{" +
-        ", id=" + id +
-        ", productId=" + productId +
-        ", memberNickName=" + memberNickName +
-        ", productName=" + productName +
-        ", star=" + star +
-        ", memberIp=" + memberIp +
-        ", createTime=" + createTime +
-        ", showStatus=" + showStatus +
-        ", productAttribute=" + productAttribute +
-        ", collectCouont=" + collectCouont +
-        ", readCount=" + readCount +
-        ", content=" + content +
-        ", pics=" + pics +
-        ", memberIcon=" + memberIcon +
-        ", replayCount=" + replayCount +
-        "}";
+                ", id=" + id +
+                ", productId=" + productId +
+                ", memberNickName=" + memberNickName +
+                ", productName=" + productName +
+                ", star=" + star +
+                ", memberIp=" + memberIp +
+                ", createTime=" + createTime +
+                ", showStatus=" + showStatus +
+                ", productAttribute=" + productAttribute +
+                ", collectCouont=" + collectCouont +
+                ", readCount=" + readCount +
+                ", content=" + content +
+                ", pics=" + pics +
+                ", memberIcon=" + memberIcon +
+                ", replayCount=" + replayCount +
+                "}";
     }
 }

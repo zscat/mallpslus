@@ -1,11 +1,12 @@
 package com.zscat.mallplus.cms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -287,26 +288,26 @@ public class CmsSubject implements Serializable {
     @Override
     public String toString() {
         return "CmsSubject{" +
-        ", id=" + id +
-        ", categoryId=" + categoryId +
-        ", title=" + title +
-        ", pic=" + pic +
-        ", productCount=" + productCount +
-        ", recommendStatus=" + recommendStatus +
-        ", createTime=" + createTime +
-        ", collectCount=" + collectCount +
-        ", readCount=" + readCount +
-        ", commentCount=" + commentCount +
-        ", albumPics=" + albumPics +
-        ", description=" + description +
-        ", showStatus=" + showStatus +
-        ", content=" + content +
-        ", forwardCount=" + forwardCount +
-        ", categoryName=" + categoryName +
-        ", areaId=" + areaId +
-        ", schoolId=" + schoolId +
-        ", memberId=" + memberId +
-        ", reward=" + reward +
-        "}";
+                ", id=" + id +
+                ", categoryId=" + categoryId +
+                ", title=" + title +
+                ", pic=" + pic +
+                ", productCount=" + productCount +
+                ", recommendStatus=" + recommendStatus +
+                ", createTime=" + createTime +
+                ", collectCount=" + collectCount +
+                ", readCount=" + readCount +
+                ", commentCount=" + commentCount +
+                ", albumPics=" + albumPics +
+                ", description=" + description +
+                ", showStatus=" + showStatus +
+                ", content=" + content +
+                ", forwardCount=" + forwardCount +
+                ", categoryName=" + categoryName +
+                ", areaId=" + areaId +
+                ", schoolId=" + schoolId +
+                ", memberId=" + memberId +
+                ", reward=" + reward +
+                "}";
     }
 }

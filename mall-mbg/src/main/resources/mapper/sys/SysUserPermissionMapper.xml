@@ -4,10 +4,10 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sys.entity.SysUserPermission">
-        <id column="id" property="id" />
-        <result column="admin_id" property="adminId" />
-        <result column="permission_id" property="permissionId" />
-        <result column="type" property="type" />
+        <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="permission_id" property="permissionId"/>
+        <result column="type" property="type"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

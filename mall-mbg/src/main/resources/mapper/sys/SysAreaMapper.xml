@@ -4,14 +4,14 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.sys.entity.SysArea">
-        <result column="id" property="id" />
-        <result column="pid" property="pid" />
-        <result column="deep" property="deep" />
-        <result column="name" property="name" />
-        <result column="pinyin_prefix" property="pinyinPrefix" />
-        <result column="pinyin" property="pinyin" />
-        <result column="ext_id" property="extId" />
-        <result column="ext_name" property="extName" />
+        <result column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="deep" property="deep"/>
+        <result column="name" property="name"/>
+        <result column="pinyin_prefix" property="pinyinPrefix"/>
+        <result column="pinyin" property="pinyin"/>
+        <result column="ext_id" property="extId"/>
+        <result column="ext_name" property="extName"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

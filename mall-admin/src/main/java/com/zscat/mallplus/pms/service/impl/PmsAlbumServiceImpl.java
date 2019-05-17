@@ -1,9 +1,9 @@
 package com.zscat.mallplus.pms.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.pms.entity.PmsAlbum;
 import com.zscat.mallplus.pms.mapper.PmsAlbumMapper;
 import com.zscat.mallplus.pms.service.IPmsAlbumService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

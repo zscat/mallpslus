@@ -4,19 +4,19 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.PmsSkuStock">
-        <id column="id" property="id" />
-        <result column="product_id" property="productId" />
-        <result column="sku_code" property="skuCode" />
-        <result column="price" property="price" />
-        <result column="stock" property="stock" />
-        <result column="low_stock" property="lowStock" />
-        <result column="sp1" property="sp1" />
-        <result column="sp2" property="sp2" />
-        <result column="sp3" property="sp3" />
-        <result column="pic" property="pic" />
-        <result column="sale" property="sale" />
-        <result column="promotion_price" property="promotionPrice" />
-        <result column="lock_stock" property="lockStock" />
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="sku_code" property="skuCode"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="sp1" property="sp1"/>
+        <result column="sp2" property="sp2"/>
+        <result column="sp3" property="sp3"/>
+        <result column="pic" property="pic"/>
+        <result column="sale" property="sale"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="lock_stock" property="lockStock"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

@@ -202,19 +202,19 @@ public class PmsProductConsult implements Serializable {
     @Override
     public String toString() {
         return "PmsProductConsult{" +
-        ", id=" + id +
-        ", goodsId=" + goodsId +
-        ", goodsName=" + goodsName +
-        ", memberId=" + memberId +
-        ", memberName=" + memberName +
-        ", storeId=" + storeId +
-        ", email=" + email +
-        ", consultContent=" + consultContent +
-        ", consultAddtime=" + consultAddtime +
-        ", consultReply=" + consultReply +
-        ", consultReplyTime=" + consultReplyTime +
-        ", isanonymous=" + isanonymous +
-        ", isDel=" + isDel +
-        "}";
+                ", id=" + id +
+                ", goodsId=" + goodsId +
+                ", goodsName=" + goodsName +
+                ", memberId=" + memberId +
+                ", memberName=" + memberName +
+                ", storeId=" + storeId +
+                ", email=" + email +
+                ", consultContent=" + consultContent +
+                ", consultAddtime=" + consultAddtime +
+                ", consultReply=" + consultReply +
+                ", consultReplyTime=" + consultReplyTime +
+                ", isanonymous=" + isanonymous +
+                ", isDel=" + isDel +
+                "}";
     }
 }

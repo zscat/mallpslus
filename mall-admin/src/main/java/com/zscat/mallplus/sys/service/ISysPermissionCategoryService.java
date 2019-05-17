@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sys.service;
 
-import com.zscat.mallplus.sys.entity.SysPermissionCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.sys.entity.SysPermissionCategory;
 
 /**
  * 权限类别表

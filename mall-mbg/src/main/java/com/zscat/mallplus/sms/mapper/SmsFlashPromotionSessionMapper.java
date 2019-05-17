@@ -1,7 +1,7 @@
 package com.zscat.mallplus.sms.mapper;
 
-import com.zscat.mallplus.sms.entity.SmsFlashPromotionSession;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zscat.mallplus.sms.entity.SmsFlashPromotionSession;
 import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import org.apache.ibatis.annotations.Param;
 

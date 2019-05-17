@@ -1,12 +1,13 @@
 package com.zscat.mallplus.oms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -397,33 +398,33 @@ public class OmsOrderReturnApply implements Serializable {
     @Override
     public String toString() {
         return "OmsOrderReturnApply{" +
-        ", id=" + id +
-        ", orderId=" + orderId +
-        ", companyAddressId=" + companyAddressId +
-        ", productId=" + productId +
-        ", orderSn=" + orderSn +
-        ", createTime=" + createTime +
-        ", memberUsername=" + memberUsername +
-        ", returnAmount=" + returnAmount +
-        ", returnName=" + returnName +
-        ", returnPhone=" + returnPhone +
-        ", status=" + status +
-        ", handleTime=" + handleTime +
-        ", productPic=" + productPic +
-        ", productName=" + productName +
-        ", productBrand=" + productBrand +
-        ", productAttr=" + productAttr +
-        ", productCount=" + productCount +
-        ", productPrice=" + productPrice +
-        ", productRealPrice=" + productRealPrice +
-        ", reason=" + reason +
-        ", description=" + description +
-        ", proofPics=" + proofPics +
-        ", handleNote=" + handleNote +
-        ", handleMan=" + handleMan +
-        ", receiveMan=" + receiveMan +
-        ", receiveTime=" + receiveTime +
-        ", receiveNote=" + receiveNote +
-        "}";
+                ", id=" + id +
+                ", orderId=" + orderId +
+                ", companyAddressId=" + companyAddressId +
+                ", productId=" + productId +
+                ", orderSn=" + orderSn +
+                ", createTime=" + createTime +
+                ", memberUsername=" + memberUsername +
+                ", returnAmount=" + returnAmount +
+                ", returnName=" + returnName +
+                ", returnPhone=" + returnPhone +
+                ", status=" + status +
+                ", handleTime=" + handleTime +
+                ", productPic=" + productPic +
+                ", productName=" + productName +
+                ", productBrand=" + productBrand +
+                ", productAttr=" + productAttr +
+                ", productCount=" + productCount +
+                ", productPrice=" + productPrice +
+                ", productRealPrice=" + productRealPrice +
+                ", reason=" + reason +
+                ", description=" + description +
+                ", proofPics=" + proofPics +
+                ", handleNote=" + handleNote +
+                ", handleMan=" + handleMan +
+                ", receiveMan=" + receiveMan +
+                ", receiveTime=" + receiveTime +
+                ", receiveNote=" + receiveNote +
+                "}";
     }
 }

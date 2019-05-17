@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zscat.mallplus.pms.entity.CmsPrefrenceAreaProductRelation">
-        <id column="id" property="id" />
-        <result column="prefrence_area_id" property="prefrenceAreaId" />
-        <result column="product_id" property="productId" />
+        <id column="id" property="id"/>
+        <result column="prefrence_area_id" property="prefrenceAreaId"/>
+        <result column="product_id" property="productId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

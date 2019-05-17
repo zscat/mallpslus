@@ -1,11 +1,12 @@
 package com.zscat.mallplus.sms.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -195,20 +196,20 @@ public class SmsCouponHistory implements Serializable {
     @Override
     public String toString() {
         return "SmsCouponHistory{" +
-        ", id=" + id +
-        ", couponId=" + couponId +
-        ", memberId=" + memberId +
-        ", couponCode=" + couponCode +
-        ", memberNickname=" + memberNickname +
-        ", getType=" + getType +
-        ", createTime=" + createTime +
-        ", useStatus=" + useStatus +
-        ", useTime=" + useTime +
-        ", orderId=" + orderId +
-        ", orderSn=" + orderSn +
-        ", startTime=" + startTime +
-        ", endTime=" + endTime +
-        ", note=" + note +
-        "}";
+                ", id=" + id +
+                ", couponId=" + couponId +
+                ", memberId=" + memberId +
+                ", couponCode=" + couponCode +
+                ", memberNickname=" + memberNickname +
+                ", getType=" + getType +
+                ", createTime=" + createTime +
+                ", useStatus=" + useStatus +
+                ", useTime=" + useTime +
+                ", orderId=" + orderId +
+                ", orderSn=" + orderSn +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", note=" + note +
+                "}";
     }
 }

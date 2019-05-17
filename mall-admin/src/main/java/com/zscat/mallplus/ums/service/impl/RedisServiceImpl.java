@@ -17,12 +17,13 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class RedisServiceImpl implements RedisService {
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
     /**
      * 默认编码
      */
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public void set(String key, String value) {
         stringRedisTemplate.opsForValue().set(key, value);

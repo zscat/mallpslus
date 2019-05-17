@@ -42,61 +42,6 @@ public class SmsRedPacketServiceImpl extends ServiceImpl<SmsRedPacketMapper, Sms
     @Resource
     private IUmsMemberBlanceLogService memberBlanceLogService;
 
-    @Override
-    public int createRedPacket(SmsRedPacket redPacket) {
-        redPacket.setSendDate(new Date());
-        redPacket.setUserId(UserUtils.getCurrentMember().getId());
-        if (redPacket.getType() == 2) { //1随机红包 2等额红包
-            redPacket.setAmount(new BigDecimal(redPacket.getTotal()).multiply(redPacket.getUnitAmount()));
-        }
-        redPacketMapper.insert(redPacket);
-        List<SmsUserRedPacket> list = new ArrayList<>();
-        if (redPacket.getType() == 1) { //1随机红包 2等额红包
-            list = divide(redPacket);
-
-        } else if (redPacket.getType() == 2) { //1随机红包 2等额红包
-            for (int i = 0; i < redPacket.getTotal(); i++) {
-                SmsUserRedPacket vo = new SmsUserRedPacket();
-                vo.setGrabTime(new Date());
-                vo.setAdminId(UserUtils.getCurrentMember().getId());
-                vo.setAmount(redPacket.getUnitAmount());
-
-                vo.setNote(redPacket.getNote());
-                vo.setRedPacketId(redPacket.getId());
-                list.add(vo);
-            }
-        }
-        userRedPacketService.saveBatch(list);
-        return 1;
-    }
-    @Override
-    @Transactional
-    public int acceptRedPacket(Integer id) {
-        int counts = userRedPacketMapper.countOne(id, UserUtils.getCurrentMember().getId());
-        if (counts > 0) {
-            return 2;
-        }
-        UmsMember member = UserUtils.getCurrentMember();
-        SmsUserRedPacket userRedPacket = userRedPacketMapper.listUserRedOne(id);
-        userRedPacket.setUserId(member.getId());
-
-        UmsMemberBlanceLog log = new UmsMemberBlanceLog();
-        log.setMemberId(member.getId());
-        log.setCreateTime(new Date());
-        log.setNote("红包收入");
-        log.setType(2);
-        log.setPrice(userRedPacket.getAmount());
-
-        member.setBlance(member.getBlance().add(userRedPacket.getAmount()));
-
-        memberBlanceLogService.save(log);
-        umsMemberService.updateById(member);
-        userRedPacketMapper.updateById(userRedPacket);
-        return 1;
-    }
-
-    //二倍均值法
-
     /**
      * 剩余红包金额M，剩余人数N，那么：每次抢到金额=随机(0，M/N*2)
      * 保证了每次随机金额的平均值是公平的
@@ -151,8 +96,6 @@ public class SmsRedPacketServiceImpl extends ServiceImpl<SmsRedPacketMapper, Sms
 
         return list;
     }
-
-    //线段分割法
 
     /**
      * 把红包总金额想象成一条很长的线段，而每个人抢到的金额，则是这条主线段所拆分出的若干子线段。
@@ -210,6 +153,8 @@ public class SmsRedPacketServiceImpl extends ServiceImpl<SmsRedPacketMapper, Sms
 
     }
 
+    //二倍均值法
+
     public static void main(String[] args) {
 //        List<Integer> accountList = divideRedPackage(50, 1000);
         SmsRedPacket redPacket = new SmsRedPacket();
@@ -225,6 +170,62 @@ public class SmsRedPacketServiceImpl extends ServiceImpl<SmsRedPacketMapper, Sms
 
         }
         System.out.println("total=" + count);
+    }
+
+    //线段分割法
+
+    @Override
+    public int createRedPacket(SmsRedPacket redPacket) {
+        redPacket.setSendDate(new Date());
+        redPacket.setUserId(UserUtils.getCurrentMember().getId());
+        if (redPacket.getType() == 2) { //1随机红包 2等额红包
+            redPacket.setAmount(new BigDecimal(redPacket.getTotal()).multiply(redPacket.getUnitAmount()));
+        }
+        redPacketMapper.insert(redPacket);
+        List<SmsUserRedPacket> list = new ArrayList<>();
+        if (redPacket.getType() == 1) { //1随机红包 2等额红包
+            list = divide(redPacket);
+
+        } else if (redPacket.getType() == 2) { //1随机红包 2等额红包
+            for (int i = 0; i < redPacket.getTotal(); i++) {
+                SmsUserRedPacket vo = new SmsUserRedPacket();
+                vo.setGrabTime(new Date());
+                vo.setAdminId(UserUtils.getCurrentMember().getId());
+                vo.setAmount(redPacket.getUnitAmount());
+
+                vo.setNote(redPacket.getNote());
+                vo.setRedPacketId(redPacket.getId());
+                list.add(vo);
+            }
+        }
+        userRedPacketService.saveBatch(list);
+        return 1;
+    }
+
+    @Override
+    @Transactional
+    public int acceptRedPacket(Integer id) {
+        int counts = userRedPacketMapper.countOne(id, UserUtils.getCurrentMember().getId());
+        if (counts > 0) {
+            return 2;
+        }
+        UmsMember member = UserUtils.getCurrentMember();
+        SmsUserRedPacket userRedPacket = userRedPacketMapper.listUserRedOne(id);
+        userRedPacket.setUserId(member.getId());
+
+        UmsMemberBlanceLog log = new UmsMemberBlanceLog();
+        log.setMemberId(member.getId());
+        log.setCreateTime(new Date());
+        log.setNote("红包收入");
+        log.setType(2);
+        log.setPrice(userRedPacket.getAmount());
+
+        member.setBlance(member.getBlance().add(userRedPacket.getAmount()));
+
+        memberBlanceLogService.save(log);
+        umsMemberService.updateById(member);
+        userRedPacketMapper.updateById(userRedPacket);
+        return 1;
     }
 }
 

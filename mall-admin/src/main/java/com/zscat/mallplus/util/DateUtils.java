@@ -12,7 +12,6 @@ import java.util.Date;
  * 日期处理
  */
 public class DateUtils {
-    private final static Logger logger = LoggerFactory.getLogger(DateUtils.class);
     /**
      * 时间格式(yyyy-MM-dd)
      */
@@ -21,7 +20,7 @@ public class DateUtils {
      * 时间格式(yyyy-MM-dd HH:mm:ss)
      */
     public final static String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-
+    private final static Logger logger = LoggerFactory.getLogger(DateUtils.class);
     private static final DateFormat FORMATER_DATE_YMD = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Date toDate(String d) throws Exception {

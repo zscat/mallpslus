@@ -1,9 +1,9 @@
 package com.zscat.mallplus.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.sys.entity.SysUserPermission;
 import com.zscat.mallplus.sys.mapper.SysUserPermissionMapper;
 import com.zscat.mallplus.sys.service.ISysUserPermissionService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

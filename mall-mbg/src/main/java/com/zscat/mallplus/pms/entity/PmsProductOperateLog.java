@@ -1,16 +1,17 @@
 package com.zscat.mallplus.pms.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
@@ -163,18 +164,18 @@ public class PmsProductOperateLog implements Serializable {
     @Override
     public String toString() {
         return "PmsProductOperateLog{" +
-        ", id=" + id +
-        ", productId=" + productId +
-        ", priceOld=" + priceOld +
-        ", priceNew=" + priceNew +
-        ", salePriceOld=" + salePriceOld +
-        ", salePriceNew=" + salePriceNew +
-        ", giftPointOld=" + giftPointOld +
-        ", giftPointNew=" + giftPointNew +
-        ", usePointLimitOld=" + usePointLimitOld +
-        ", usePointLimitNew=" + usePointLimitNew +
-        ", operateMan=" + operateMan +
-        ", createTime=" + createTime +
-        "}";
+                ", id=" + id +
+                ", productId=" + productId +
+                ", priceOld=" + priceOld +
+                ", priceNew=" + priceNew +
+                ", salePriceOld=" + salePriceOld +
+                ", salePriceNew=" + salePriceNew +
+                ", giftPointOld=" + giftPointOld +
+                ", giftPointNew=" + giftPointNew +
+                ", usePointLimitOld=" + usePointLimitOld +
+                ", usePointLimitNew=" + usePointLimitNew +
+                ", operateMan=" + operateMan +
+                ", createTime=" + createTime +
+                "}";
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * <p>
- *
+ * <p>
  * </p>
  *
  * @author zscat
@@ -199,19 +199,19 @@ public class SmsGroup implements Serializable {
     @Override
     public String toString() {
         return "SmsGroup{" +
-        ", id=" + id +
-        ", goodsId=" + goodsId +
-        ", goodsName=" + goodsName +
-        ", originPrice=" + originPrice +
-        ", groupPrice=" + groupPrice +
-        ", startTime=" + startTime +
-        ", endTime=" + endTime +
-        ", hours=" + hours +
-        ", peoples=" + peoples +
-        ", status=" + status +
-        ", createTime=" + createTime +
-        ", maxPeople=" + maxPeople +
-        ", limitGoods=" + limitGoods +
-        "}";
+                ", id=" + id +
+                ", goodsId=" + goodsId +
+                ", goodsName=" + goodsName +
+                ", originPrice=" + originPrice +
+                ", groupPrice=" + groupPrice +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", hours=" + hours +
+                ", peoples=" + peoples +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", maxPeople=" + maxPeople +
+                ", limitGoods=" + limitGoods +
+                "}";
     }
 }

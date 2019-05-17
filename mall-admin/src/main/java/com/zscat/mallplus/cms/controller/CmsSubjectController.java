@@ -131,6 +131,7 @@ public class CmsSubjectController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("修改推荐状态")
     @RequestMapping(value = "/update/updateRecommendStatus")
     @ResponseBody
@@ -144,6 +145,7 @@ public class CmsSubjectController {
             return new CommonResult().failed();
         }
     }
+
     @ApiOperation("修改展示状态")
     @RequestMapping(value = "/update/updateShowStatus")
     @ResponseBody
