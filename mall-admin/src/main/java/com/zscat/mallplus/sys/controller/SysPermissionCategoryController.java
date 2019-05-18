@@ -36,7 +36,6 @@ public class SysPermissionCategoryController {
     @SysLog(MODULE = "sys", REMARK = "查询sys_permission_category表")
     @ApiOperation("查询sys_permission_category表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:read')")
     public Object getSysPermissionCategoryByPage(SysPermissionCategory entity,
                                                  @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                  @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
@@ -53,7 +52,6 @@ public class SysPermissionCategoryController {
     @SysLog(MODULE = "sys", REMARK = "保存sys_permission_category表")
     @ApiOperation("保存sys_permission_category表")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:create')")
     public Object savePermissionCategory(@RequestBody SysPermissionCategory entity) {
         try {
             if (ISysPermissionCategoryService.save(entity)) {
@@ -69,7 +67,6 @@ public class SysPermissionCategoryController {
     @SysLog(MODULE = "sys", REMARK = "更新sys_permission_category")
     @ApiOperation("更新sys_permission_category")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:update')")
     public Object updatePermissionCategory(@RequestBody SysPermissionCategory entity) {
         try {
             if (ISysPermissionCategoryService.updateById(entity)) {
@@ -85,7 +82,6 @@ public class SysPermissionCategoryController {
     @SysLog(MODULE = "sys", REMARK = "删除sys_permission_category数据")
     @ApiOperation("删除权限类别表数据")
     @DeleteMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:delete')")
     public Object deleteRole(@ApiParam("权限类别表_id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
@@ -104,7 +100,6 @@ public class SysPermissionCategoryController {
     @SysLog(MODULE = "sys", REMARK = "根据ID查询sys_permission_category")
     @ApiOperation("根据ID查询sys_permission_category")
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:read')")
     public Object getRoleById(@ApiParam("权限类别表_id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
@@ -123,7 +118,6 @@ public class SysPermissionCategoryController {
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "sys", REMARK = "批量删除SysPermissionCategory表")
-    @PreAuthorize("hasAuthority('sys:SysPermissionCategory:delete')")
     public Object deleteBatch(@RequestParam("ids") List<Long> ids) {
         boolean count = ISysPermissionCategoryService.removeByIds(ids);
         if (count) {

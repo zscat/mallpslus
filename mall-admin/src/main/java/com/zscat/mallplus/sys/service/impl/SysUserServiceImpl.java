@@ -321,7 +321,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         SysUser productCategory = new SysUser();
         productCategory.setStatus(showStatus);
-        return adminMapper.update(productCategory, new QueryWrapper<SysUser>().eq("id", ids));
+        return adminMapper.update(productCategory, new QueryWrapper<SysUser>().in("id", ids));
 
     }
 

@@ -67,7 +67,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         SysPermission productCategory = new SysPermission();
         productCategory.setStatus(showStatus);
-        return permissionMapper.update(productCategory, new QueryWrapper<SysPermission>().eq("id", ids));
+        return permissionMapper.update(productCategory, new QueryWrapper<SysPermission>().in("id", ids));
 
     }
 

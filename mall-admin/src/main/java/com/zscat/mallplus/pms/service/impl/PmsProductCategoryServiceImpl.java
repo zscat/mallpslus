@@ -48,21 +48,21 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
     public int updateNavStatus(List<Long> ids, Integer navStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setNavStatus(navStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().in("id", ids));
     }
 
     @Override
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setShowStatus(showStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().in("id", ids));
     }
 
     @Override
     public int updateIndexStatus(List<Long> ids, Integer indexStatus) {
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setIndexStatus(indexStatus);
-        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().eq("id", ids));
+        return categoryMapper.update(productCategory, new QueryWrapper<PmsProductCategory>().in("id", ids));
     }
 
     @Override

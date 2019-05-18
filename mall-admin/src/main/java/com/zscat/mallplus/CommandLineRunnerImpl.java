@@ -15,6 +15,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         for (String arg : args) {
             System.out.print(arg + " ");
         }
-        System.out.println();
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println(5%2);
     }
 }
