@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("sms_flash_promotion_session")
-public class SmsFlashPromotionSession implements Serializable {
+public class SmsFlashPromotionSession extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

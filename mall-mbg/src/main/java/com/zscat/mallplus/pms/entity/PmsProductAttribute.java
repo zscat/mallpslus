@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("pms_product_attribute")
-public class PmsProductAttribute implements Serializable {
+public class PmsProductAttribute extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

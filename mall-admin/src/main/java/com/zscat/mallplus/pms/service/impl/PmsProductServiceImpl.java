@@ -245,7 +245,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
             for (Object item : dataList) {
                 Method setId = item.getClass().getMethod("setId", Long.class);
                 setId.invoke(item, (Long) null);
-                Method se]tProductId = item.getClass().getMethod("setProductId", Long.class);
+                Method setProductId = item.getClass().getMethod("setProductId", Long.class);
                 setProductId.invoke(item, productId);
             }
             Method insertList = dao.getClass().getMethod("saveBatch", Collection.class);

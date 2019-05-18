@@ -2,6 +2,7 @@ package com.zscat.mallplus.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * @email 951449465@qq.com
  * @date 2019-04-27 18:52:51
  */
-public class SysPermissionCategory implements Serializable {
+public class SysPermissionCategory extends BaseEntity implements Serializable  {
     private static final long serialVersionUID = 1L;
 
     //

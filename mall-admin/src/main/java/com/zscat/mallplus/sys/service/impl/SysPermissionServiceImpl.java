@@ -3,17 +3,21 @@ package com.zscat.mallplus.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.bo.Tree;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysPermissionNode;
 import com.zscat.mallplus.sys.mapper.SysPermissionMapper;
 import com.zscat.mallplus.sys.service.ISysPermissionService;
 import com.zscat.mallplus.sys.service.ISysUserService;
+import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.BuildTree;
+import com.zscat.mallplus.util.JsonUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,35 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     private SysPermissionMapper permissionMapper;
     @Resource
     private ISysUserService userService;
+
+    @Resource
+    private RedisService redisService;
+
+    @Override
+    public List<Tree<SysPermission>> getAllPermission() {
+        List<Tree<SysPermission>> trees = Lists.newArrayList();
+        List<SysPermission> menuDOs;
+        if (!redisService.exists(String.format(Rediskey.allTreesList, "admin"))) {
+            menuDOs = permissionMapper.selectList(new QueryWrapper<>());
+            redisService.set(String.format(Rediskey.allTreesList, "admin"), JsonUtil.objectToJson(menuDOs));
+        } else {
+            menuDOs = JsonUtil.jsonToList(redisService.get(String.format(Rediskey.menuTreesList, "admin")), SysPermission.class);
+        }
+        for (SysPermission sysMenuDO : menuDOs) {
+            Tree<SysPermission> tree = new Tree<SysPermission>();
+            tree.setId(sysMenuDO.getId().toString());
+            tree.setParentId(sysMenuDO.getPid().toString());
+            tree.setTitle(sysMenuDO.getName());
+            Map<String, Object> attributes = new HashMap<>(16);
+            attributes.put("url", sysMenuDO.getUri());
+            attributes.put("icon", sysMenuDO.getIcon());
+            tree.setMeta(attributes);
+            trees.add(tree);
+        }
+        // 默认顶级菜单为０，根据数据库实际情况调整
+        List<Tree<SysPermission>> list = BuildTree.buildList(trees, "0");
+        return list;
+    }
 
     @Override
     public List<Tree<SysPermission>> getPermissionsByUserId(Long id) {

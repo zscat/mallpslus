@@ -20,4 +20,6 @@ public interface ISysPermissionService extends IService<SysPermission> {
     List<Tree<SysPermission>> getPermissionsByUserId(Long id);
 
     List<SysPermissionNode> treeList();
+
+    List<Tree<SysPermission>> getAllPermission();
 }

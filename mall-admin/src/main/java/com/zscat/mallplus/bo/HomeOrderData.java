@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * @Description:
  */
 @Data
-public class HomeOrderData implements Serializable {
+public class HomeOrderData extends BaseEntity implements Serializable  {
     int nowOrderCount = 0; // 今日订单
     BigDecimal nowOrderPay = new BigDecimal(0); //今日销售总额
     int yesOrderCount = 0; // 昨日订单

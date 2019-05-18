@@ -166,6 +166,9 @@ public class SysPermissionController extends BaseController {
     @ResponseBody
     public Object findPermissions() {
         Long userId = getCurrentUser().getId();
+        if ("admin".equals(getCurrentUser().getUsername())) {
+            return new CommonResult().success(ISysPermissionService.getAllPermission());
+        }
         return new CommonResult().success(ISysPermissionService.getPermissionsByUserId(userId));
     }
 

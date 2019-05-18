@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
-public class OrderStatusCount implements Serializable {
+public class OrderStatusCount  implements Serializable  {
     // 0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
     private int status0;
     private int status1;

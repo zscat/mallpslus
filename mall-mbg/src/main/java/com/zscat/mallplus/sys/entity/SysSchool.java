@@ -3,6 +3,7 @@ package com.zscat.mallplus.sys.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-14
  */
 @TableName("sys_school")
-public class SysSchool implements Serializable {
+public class SysSchool extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

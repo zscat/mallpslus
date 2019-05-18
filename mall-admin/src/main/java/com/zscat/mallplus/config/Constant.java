@@ -1,6 +1,11 @@
 package com.zscat.mallplus.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
+    public static Map<String, String> Tables = new HashMap<>();
+
     //演示系统账户
     public static String DEMO_ACCOUNT = "test";
     //自动去除表前缀

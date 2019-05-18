@@ -16,7 +16,7 @@ module }.model;
  */
 @Data
 @TableName("${tableName}")
-public class ${Module}${className} implements Serializable{
+public class ${Module}${className} extends BaseEntity implements Serializable {
 private static final long serialVersionUID=1L;
 
 #foreach ($column in $columns)

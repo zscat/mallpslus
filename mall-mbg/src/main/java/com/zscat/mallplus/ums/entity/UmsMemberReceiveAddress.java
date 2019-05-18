@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("ums_member_receive_address")
-public class UmsMemberReceiveAddress implements Serializable {
+public class UmsMemberReceiveAddress extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

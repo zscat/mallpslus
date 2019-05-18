@@ -6,6 +6,7 @@ package com.zscat.mallplus.bo;
  * @Description:
  */
 public class Rediskey {
+    public static String allTreesList = "allTreesList:%s";
     public static String menuTreesList = "menuTreesList:%s";
     public static String permissionTreesList = "permissionTreesList:%s";
 

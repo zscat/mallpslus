@@ -1,0 +1,47 @@
+package com.zscat.mallplus.sys.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.sys.entity.SysStore;
+import com.zscat.mallplus.sys.entity.SysUser;
+import com.zscat.mallplus.sys.mapper.SysStoreMapper;
+import com.zscat.mallplus.sys.mapper.SysUserMapper;
+import com.zscat.mallplus.sys.service.ISysStoreService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+
+
+/**
+ * <p>
+ * 服务实现类
+ * </p>
+ *
+ * @author zscat
+ * @since 2019-05-18
+ */
+@Service
+public class SysStoreServiceImpl extends ServiceImpl<SysStoreMapper, SysStore> implements ISysStoreService {
+
+    @Resource
+    private SysStoreMapper storeMapper;
+    @Resource
+    private SysUserMapper userMapper;
+
+    @Transactional
+    @Override
+    public boolean saveStore(SysStore entity) {
+        storeMapper.insert(entity);
+        SysUser user = new SysUser();
+        user.setUsername("admin");
+        user.setStatus(1);
+        user.setPassword("123456");
+        user.setCreateTime(new Date());
+        user.setIcon(entity.getLogo());
+        user.setNickName(entity.getName());
+        user.setStoreId(entity.getId());
+        user.setEmail(entity.getSupportPhone());
+        return userMapper.insert(user) > 0;
+    }
+}

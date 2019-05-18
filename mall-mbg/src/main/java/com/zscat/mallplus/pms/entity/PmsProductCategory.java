@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @TableName("pms_product_category")
 @Data
-public class PmsProductCategory implements Serializable {
+public class PmsProductCategory extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

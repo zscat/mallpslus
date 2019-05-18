@@ -3,6 +3,7 @@ package com.zscat.mallplus.ums.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("ums_member_task")
-public class UmsMemberTask implements Serializable {
+public class UmsMemberTask extends BaseEntity implements Serializable  {
 
     private static final long serialVersionUID = 1L;
 

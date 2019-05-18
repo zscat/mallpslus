@@ -3,6 +3,8 @@
  */
 package com.zscat.mallplus.sms.entity;
 
+import com.zscat.mallplus.utils.BaseEntity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -11,7 +13,7 @@ import java.sql.Timestamp;
  *
  * @author yang.liu
  */
-public class UserFormId implements Serializable {
+public class UserFormId extends BaseEntity implements Serializable  {
     private static final long serialVersionUID = 4565156634543900140L;
 
     private Long id;
