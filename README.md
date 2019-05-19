@@ -8,7 +8,7 @@
 
 > 或者您可以 "follow" 一下，该项目将持续更新，不断完善功能。
 
-> 项目交流人QQ群：[195405248]
+> 项目交流人QQ群：[176736712 473023475 203747031]
 
 > 如有问题或者好的建议可以在 Issues 中提。
 
@@ -112,6 +112,7 @@ mall
 
 技术 | 说明 | 官网
 ----|----|----
+https://github.com/macrozheng/mall
 Spring Boot | 容器+MVC框架 | [https://spring.io/projects/spring-boot](https://spring.io/projects/spring-boot)
 Spring Security | 认证和授权框架 | [https://spring.io/projects/spring-security](https://spring.io/projects/spring-security)
 MyBatis | ORM框架  | [http://www.mybatis.org/mybatis-3/zh/index.html](http://www.mybatis.org/mybatis-3/zh/index.html)
