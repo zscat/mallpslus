@@ -3,7 +3,6 @@ package com.zscat.mallplus.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
-import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.bo.Tree;
 import com.zscat.mallplus.sys.entity.SysPermission;
 import com.zscat.mallplus.sys.entity.SysPermissionNode;
@@ -13,6 +12,7 @@ import com.zscat.mallplus.sys.service.ISysUserService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.BuildTree;
 import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.vo.Rediskey;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

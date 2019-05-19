@@ -39,7 +39,8 @@ public interface ISysUserService extends IService<SysUser> {
 
     void removePermissRedis(Long id);
 
-//    Object reg(SysUser entity);
+    List<SysPermission> listPerms();
+    Object reg(SysUser entity);
 
 //    SmsCode generateCode(String phone);
 

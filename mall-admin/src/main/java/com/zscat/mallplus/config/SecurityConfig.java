@@ -105,6 +105,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             user.setUsername(username);
             SysUser admin = sysUserService.getOne(new QueryWrapper<>(user));
             if (admin != null) {
+                if (admin.getSupplyId() == 1L) {
+                    List<SysPermission> permissionList = sysUserService.listPerms();
+                    return new AdminUserDetails(admin, permissionList);
+                }
                 List<SysPermission> permissionList = sysUserService.listUserPerms(admin.getId());
                 return new AdminUserDetails(admin, permissionList);
             }

@@ -2,7 +2,6 @@ package com.zscat.mallplus.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zscat.mallplus.constant.RedisKey;
 import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
@@ -18,6 +17,7 @@ import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class OmsPortalOrderController extends ApiBaseAction {
     @ResponseBody
     public Object detail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         OmsOrder orderDetailResult = null;
-        String bannerJson = redisService.get(RedisKey.PmsProductResult + id);
+        String bannerJson = redisService.get(Rediskey.PmsProductResult + id);
         if (bannerJson != null) {
             orderDetailResult = JsonUtil.jsonToPojo(bannerJson, OmsOrderDetail.class);
         } else {
@@ -76,8 +76,8 @@ public class OmsPortalOrderController extends ApiBaseAction {
             query.setOrderId(id);
             List<OmsOrderItem> orderItemList = orderItemService.list(new QueryWrapper<>(query));
             orderDetailResult.setOrderItemList(orderItemList);
-            redisService.set(RedisKey.PmsProductResult + id, JsonUtil.objectToJson(orderDetailResult));
-            redisService.expire(RedisKey.PmsProductResult + id, 10 * 60);
+            redisService.set(Rediskey.PmsProductResult + id, JsonUtil.objectToJson(orderDetailResult));
+            redisService.expire(Rediskey.PmsProductResult + id, 10 * 60);
         }
 
         return new CommonResult().success(orderDetailResult);

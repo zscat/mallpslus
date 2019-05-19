@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.constant.RedisKey;
 import com.zscat.mallplus.pms.entity.*;
 import com.zscat.mallplus.pms.mapper.PmsCommentMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductAttributeMapper;
@@ -20,6 +19,7 @@ import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,13 +172,13 @@ public class PmsGoodsController {
         PmsProductConsult productConsult = new PmsProductConsult();
         productConsult.setGoodsId(goodsId);
         List<PmsProductConsult> list = null;
-        String consultJson = redisService.get(RedisKey.PmsProductConsult + goodsId);
+        String consultJson = redisService.get(Rediskey.PmsProductConsult + goodsId);
         if (consultJson != null) {
             list = JsonUtil.jsonToList(consultJson, PmsProductConsult.class);
         } else {
             list = pmsProductConsultService.list(new QueryWrapper<>(productConsult));
-            redisService.set(RedisKey.PmsProductConsult + goodsId, JsonUtil.objectToJson(list));
-            redisService.expire(RedisKey.PmsProductConsult + goodsId, 24 * 60 * 60);
+            redisService.set(Rediskey.PmsProductConsult + goodsId, JsonUtil.objectToJson(list));
+            redisService.expire(Rediskey.PmsProductConsult + goodsId, 24 * 60 * 60);
         }
 
         int goods = 0;

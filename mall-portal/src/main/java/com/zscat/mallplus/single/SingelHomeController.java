@@ -4,7 +4,6 @@ package com.zscat.mallplus.single;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.constant.RedisKey;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
 import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
@@ -14,6 +13,9 @@ import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.PhoneUtil;
+import com.zscat.mallplus.vo.Rediskey;
+import com.zscat.mallplus.vo.SmsCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,15 +69,15 @@ public class SingelHomeController {
     @GetMapping("/bannerList")
     public Object bannerList(@RequestParam(value = "type", required = false, defaultValue = "10") Integer type) {
         List<SmsHomeAdvertise> bannerList = null;
-        String bannerJson = redisService.get(RedisKey.appletBannerKey + type);
+        String bannerJson = redisService.get(Rediskey.appletBannerKey + type);
         if (bannerJson != null && bannerJson != "[]") {
             bannerList = JsonUtil.jsonToList(bannerJson, SmsHomeAdvertise.class);
         } else {
             SmsHomeAdvertise advertise = new SmsHomeAdvertise();
             advertise.setType(type);
             bannerList = advertiseService.list(new QueryWrapper<>(advertise));
-            redisService.set(RedisKey.appletBannerKey + type, JsonUtil.objectToJson(bannerList));
-            redisService.expire(RedisKey.appletBannerKey + type, 24 * 60 * 60);
+            redisService.set(Rediskey.appletBannerKey + type, JsonUtil.objectToJson(bannerList));
+            redisService.expire(Rediskey.appletBannerKey + type, 24 * 60 * 60);
         }
         //  List<SmsHomeAdvertise> bannerList = advertiseService.list(null, type, null, 5, 1);
         return new CommonResult().success(bannerList);
@@ -85,7 +87,6 @@ public class SingelHomeController {
     @IgnoreAuth
     @ApiOperation(value = "登录以后返回token")
     @GetMapping(value = "/login")
-    @ResponseBody
     public Object login(UmsMember umsMember) {
         if (umsMember == null) {
             return new CommonResult().validateFailed("用户名或密码错误");
@@ -102,31 +103,117 @@ public class SingelHomeController {
 
     }
 
-    @IgnoreAuth
-    @ApiOperation("注册")
-    @RequestMapping(value = "/reg")
-    @ResponseBody
-    public Object register(UmsMember umsMember) {
-        if (umsMember == null) {
-            return new CommonResult().validateFailed("用户名或密码错误");
-        }
-        return memberService.register(umsMember);
-    }
-
-    @IgnoreAuth
-    @ApiOperation("获取验证码")
-    @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
-    @ResponseBody
-    public Object getAuthCode(@RequestParam String telephone) {
-        return memberService.generateAuthCode(telephone);
-    }
-
+    /* @IgnoreAuth
+     @ApiOperation("获取验证码")
+     @RequestMapping(value = "/getAuthCode", method = RequestMethod.GET)
+     @ResponseBody
+     public Object getAuthCode(@RequestParam String telephone) {
+         return memberService.generateAuthCode(telephone);
+     }
+ */
     @ApiOperation("修改密码")
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-    @ResponseBody
     public Object updatePassword(@RequestParam String telephone,
                                  @RequestParam String password,
                                  @RequestParam String authCode) {
         return memberService.updatePassword(telephone, password, authCode);
+    }
+
+    @IgnoreAuth
+    @ApiOperation(value = "手机号 密码登录")
+    @PostMapping(value = "/login")
+    public Object login(@RequestParam String phone,
+                        @RequestParam String password) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (password == null || "".equals(password)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        try {
+
+            Map<String, Object> token = memberService.login(phone, password);
+            if (token.get("token") == null) {
+                return new CommonResult().validateFailed("用户名或密码错误");
+            }
+            return new CommonResult().success(token);
+        } catch (AuthenticationException e) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        } catch (Exception e) {
+            return new CommonResult().validateFailed(e.getMessage());
+        }
+
+    }
+
+    @IgnoreAuth
+    @ApiOperation(value = "手机和验证码登录")
+    @PostMapping(value = "/loginByCode")
+    public Object loginByCode(@RequestParam String phone,
+                              @RequestParam String authCode) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (authCode == null || "".equals(authCode)) {
+            return new CommonResult().validateFailed("手机验证码为空");
+        }
+        try {
+
+            Map<String, Object> token = memberService.loginByCode(phone, authCode);
+            if (token.get("token") == null) {
+                return new CommonResult().validateFailed("用户名或密码错误");
+            }
+            return new CommonResult().success(token);
+        } catch (AuthenticationException e) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        } catch (Exception e) {
+            return new CommonResult().validateFailed(e.getMessage());
+        }
+
+    }
+
+    @IgnoreAuth
+    @ApiOperation("注册")
+    @PostMapping(value = "/reg")
+    public Object register(@RequestParam String phone,
+                           @RequestParam String password,
+                           @RequestParam String confimpassword,
+                           @RequestParam String authCode) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (password == null || "".equals(password)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (confimpassword == null || "".equals(confimpassword)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (authCode == null || "".equals(authCode)) {
+            return new CommonResult().validateFailed("手机验证码为空");
+        }
+
+        return memberService.register(phone, password, confimpassword, authCode);
+    }
+
+    /**
+     * 发送短信验证码
+     *
+     * @param phone
+     * @return
+     */
+    @IgnoreAuth
+    @ApiOperation("获取验证码")
+    @PostMapping(value = "/sms/codes")
+    public Object sendSmsCode(@RequestParam String phone) {
+        try {
+            if (!PhoneUtil.checkPhone(phone)) {
+                throw new IllegalArgumentException("手机号格式不正确");
+            }
+            SmsCode smsCode = memberService.generateCode(phone);
+
+            return new CommonResult().success(smsCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new CommonResult().failed(e.getMessage());
+        }
     }
 }

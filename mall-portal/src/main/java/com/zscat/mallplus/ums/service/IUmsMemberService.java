@@ -3,6 +3,7 @@ package com.zscat.mallplus.ums.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.SmsCode;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,7 @@ public interface IUmsMemberService extends IService<UmsMember> {
      */
     CommonResult generateAuthCode(String telephone);
 
+
     /**
      * 修改密码
      */
@@ -68,6 +70,8 @@ public interface IUmsMemberService extends IService<UmsMember> {
 
     Object register(UmsMember umsMember);
 
+    SmsCode generateCode(String phone);
 
+    Map<String,Object> loginByCode(String phone, String authCode);
 }
 

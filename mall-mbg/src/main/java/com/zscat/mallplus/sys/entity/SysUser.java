@@ -79,5 +79,9 @@ public class SysUser extends BaseEntity implements Serializable {
     @TableField(exist = false)
     private String roleIds;
 
+    @TableField(exist = false)
+    private String confimpassword;
 
+    @TableField(exist = false)
+    private String code;
 }

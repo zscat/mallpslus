@@ -2,7 +2,6 @@ package com.zscat.mallplus.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.sys.entity.*;
 import com.zscat.mallplus.sys.mapper.*;
 import com.zscat.mallplus.sys.service.ISysRolePermissionService;
@@ -13,6 +12,9 @@ import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.JwtTokenUtil;
 import com.zscat.mallplus.util.UserUtils;
+import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
+import com.zscat.mallplus.vo.Rediskey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -238,8 +240,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         } else {
             return JsonUtil.jsonToList(redisService.get(String.format(Rediskey.menuList, id)), SysPermission.class);
         }
+    }
 
-
+    @Override
+    public List<SysPermission> listPerms() {
+        if (!redisService.exists(String.format(Rediskey.allMenuList, "admin"))) {
+            List<SysPermission> list = permissionMapper.selectList(new QueryWrapper<>());
+            String key = String.format(Rediskey.allMenuList, "admin");
+            redisService.set(key, JsonUtil.objectToJson(list));
+            return list;
+        } else {
+            return JsonUtil.jsonToList(redisService.get(String.format(Rediskey.allMenuList, "admin")), SysPermission.class);
+        }
     }
 
     @Override
@@ -247,44 +259,46 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         redisService.remove(String.format(Rediskey.menuTreesList, id));
         redisService.remove(String.format(Rediskey.menuList, id));
         redisService.remove(String.format(Rediskey.allTreesList, "admin"));
+        redisService.remove(String.format(Rediskey.allMenuList, "admin"));
     }
 
-    //    @Override
-//    public Object reg(SysUser umsAdmin) {
-//        if (ValidatorUtils.empty(umsAdmin.getUsername())) {
-//            return new CommonResult().failed("手机号为空");
-//        }
-//        if (ValidatorUtils.empty(umsAdmin.getPassword())) {
-//            return new CommonResult().failed("密码为空");
-//        }
-//        //验证验证码
-//        if (!verifyAuthCode(umsAdmin.getCode(), umsAdmin.getUsername())) {
-//            return new CommonResult().failed("验证码错误");
-//        }
-//        if (!umsAdmin.getPassword().equals(umsAdmin.getConfimpassword())){
-//            return new CommonResult().failed("密码不一致");
-//        }
-//        umsAdmin.setCreateTime(new Date());
-//        umsAdmin.setStatus(1);
-//        //查询是否有相同用户名的用户
-//
-//        List<SysUser> umsAdminList = adminMapper.selectList(new QueryWrapper<SysUser>().eq("username",umsAdmin.getUsername()));
-//        if (umsAdminList.size() > 0) {
-//            return new CommonResult().failed("手机号已注册");
-//        }
-//        //将密码进行加密操作
-//        if (StringUtils.isEmpty(umsAdmin.getPassword())){
-//            umsAdmin.setPassword("123456");
-//        }
-//        String md5Password = passwordEncoder.encode(umsAdmin.getPassword());
-//        umsAdmin.setPassword(md5Password);
-//        adminMapper.insert(umsAdmin);
-//        SysUserRole roleRelation = new SysUserRole();
-//        roleRelation.setAdminId(umsAdmin.getId());
-//        roleRelation.setRoleId(5l);
-//        adminRoleRelationMapper.insert(roleRelation);
-//        return  new CommonResult().failed("注册成功");
-//    }
+    @Override
+    public Object reg(SysUser umsAdmin) {
+        if (ValidatorUtils.empty(umsAdmin.getUsername())) {
+            return new CommonResult().failed("手机号为空");
+        }
+        if (ValidatorUtils.empty(umsAdmin.getPassword())) {
+            return new CommonResult().failed("密码为空");
+        }
+        //验证验证码
+        if (!verifyAuthCode(umsAdmin.getCode(), umsAdmin.getUsername())) {
+            return new CommonResult().failed("验证码错误");
+        }
+        if (!umsAdmin.getPassword().equals(umsAdmin.getConfimpassword())) {
+            return new CommonResult().failed("密码不一致");
+        }
+        umsAdmin.setCreateTime(new Date());
+        umsAdmin.setStatus(1);
+        //查询是否有相同用户名的用户
+
+        List<SysUser> umsAdminList = adminMapper.selectList(new QueryWrapper<SysUser>().eq("username", umsAdmin.getUsername()));
+        if (umsAdminList.size() > 0) {
+            return new CommonResult().failed("手机号已注册");
+        }
+        //将密码进行加密操作
+        if (StringUtils.isEmpty(umsAdmin.getPassword())) {
+            umsAdmin.setPassword("123456");
+        }
+        String md5Password = passwordEncoder.encode(umsAdmin.getPassword());
+        umsAdmin.setPassword(md5Password);
+        adminMapper.insert(umsAdmin);
+        SysUserRole roleRelation = new SysUserRole();
+        roleRelation.setAdminId(umsAdmin.getId());
+        roleRelation.setRoleId(5l);
+        adminRoleRelationMapper.insert(roleRelation);
+        return new CommonResult().failed("注册成功");
+    }
+
     //对输入的验证码进行校验
     public boolean verifyAuthCode(String authCode, String telephone) {
         if (StringUtils.isEmpty(authCode)) {
@@ -364,7 +378,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return "sms:admin:count:" + LocalDate.now().toString() + ":" + phone;
     }
 
-    private String smsRedisKey(String str) {
+    private String smsRediskey(String str) {
         return "sms:admin:" + str;
     }
 

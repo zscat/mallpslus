@@ -13,14 +13,15 @@ import com.zscat.mallplus.pms.entity.PmsProductCategory;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
-import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
-import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
-import com.zscat.mallplus.util.DateUtils;
+import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +61,23 @@ public class SingePmsController extends ApiBaseAction {
     @Resource
     private ICmsSubjectCommentService commentService;
 
+    @Resource
+    private RedisService redisService;
+
     @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
     @IgnoreAuth
     @GetMapping(value = "/goods/detail")
     @ApiOperation(value = "查询商品详情信息")
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        PmsProductAndGroup productResult = pmsProductService.getProductAndGroup(id);
+        PmsProductParam goods = null;
+        try {
+            goods = JsonUtil.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Map<String, Object> map = new HashMap<>();
+        /*PmsProductAndGroup productResult = pmsProductService.getProductAndGroup(id);
+
         SmsGroup queryGoods = new SmsGroup();
         queryGoods.setGoodsId(id);
         SmsGroup group = groupService.getOne(new QueryWrapper<>(queryGoods));
@@ -79,9 +90,9 @@ public class SingePmsController extends ApiBaseAction {
             } else {
                 map.put("isGroup", 2);
             }
-        }
+        }*/
 
-        map.put("goods", productResult);
+        map.put("goods", goods);
         return new CommonResult().success(map);
     }
 

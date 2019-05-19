@@ -2,7 +2,6 @@ package com.zscat.mallplus.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.cms.service.ICmsPrefrenceAreaProductRelationService;
 import com.zscat.mallplus.cms.service.ICmsSubjectProductRelationService;
 import com.zscat.mallplus.pms.entity.*;
@@ -13,6 +12,7 @@ import com.zscat.mallplus.pms.vo.PmsProductResult;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.UserUtils;
+import com.zscat.mallplus.vo.Rediskey;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

@@ -6,6 +6,7 @@ import com.zscat.mallplus.sys.entity.SysUser;
 import com.zscat.mallplus.sys.mapper.SysStoreMapper;
 import com.zscat.mallplus.sys.mapper.SysUserMapper;
 import com.zscat.mallplus.sys.service.ISysStoreService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +30,18 @@ public class SysStoreServiceImpl extends ServiceImpl<SysStoreMapper, SysStore> i
     @Resource
     private SysUserMapper userMapper;
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     @Override
     public boolean saveStore(SysStore entity) {
         storeMapper.insert(entity);
         SysUser user = new SysUser();
-        user.setUsername("admin");
+        user.setUsername(entity.getName());
         user.setStatus(1);
-        user.setPassword("123456");
+        user.setSupplyId(1L);
+        user.setPassword(passwordEncoder.encode(entity.getSupportName()));
         user.setCreateTime(new Date());
         user.setIcon(entity.getLogo());
         user.setNickName(entity.getName());

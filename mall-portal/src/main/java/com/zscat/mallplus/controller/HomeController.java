@@ -5,7 +5,6 @@ import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.constant.RedisKey;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.HomeContentResult;
 import com.zscat.mallplus.pms.entity.PmsProduct;
@@ -19,6 +18,7 @@ import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +61,13 @@ public class HomeController {
     @RequestMapping(value = "/content", method = RequestMethod.GET)
     public Object content() {
         HomeContentResult contentResult = null;
-        String bannerJson = redisService.get(RedisKey.HomeContentResult);
+        String bannerJson = redisService.get(Rediskey.HomeContentResult);
         if (bannerJson != null) {
             contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
         } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(RedisKey.HomeContentResult, JsonUtil.objectToJson(contentResult));
-            redisService.expire(RedisKey.HomeContentResult, 24 * 60 * 60);
+            redisService.set(Rediskey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.expire(Rediskey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);
     }
@@ -78,13 +78,13 @@ public class HomeController {
     @RequestMapping(value = "/pc/content", method = RequestMethod.GET)
     public Object pcContent() {
         HomeContentResult contentResult = null;
-        String bannerJson = redisService.get(RedisKey.HomeContentResult);
+        String bannerJson = redisService.get(Rediskey.HomeContentResult);
         if (bannerJson != null) {
             contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
         } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(RedisKey.HomeContentResult, JsonUtil.objectToJson(contentResult));
-            redisService.expire(RedisKey.HomeContentResult, 24 * 60 * 60);
+            redisService.set(Rediskey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.expire(Rediskey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);
     }

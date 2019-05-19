@@ -6,17 +6,21 @@ import com.zscat.mallplus.config.WxAppletProperties;
 import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.single.ApiBaseAction;
 import com.zscat.mallplus.sys.mapper.SysAreaMapper;
+import com.zscat.mallplus.ums.entity.Sms;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.mapper.UmsMemberMemberTagRelationMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.ums.service.SmsService;
 import com.zscat.mallplus.util.CharUtil;
 import com.zscat.mallplus.util.CommonUtil;
 import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.util.JwtTokenUtil;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.MemberDetails;
+import com.zscat.mallplus.vo.SmsCode;
+import lombok.Data;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +41,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
@@ -50,10 +53,12 @@ import java.util.Random;
  * @author zscat
  * @since 2019-04-19
  */
+@Data
 @Service
 public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember> implements IUmsMemberService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsMemberServiceImpl.class);
+
     @Resource
     private UmsMemberMapper memberMapper;
     @Resource
@@ -64,7 +69,8 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
      private AuthenticationManager authenticationManager;*/
     @Resource
     private UserDetailsService userDetailsService;
-
+    @Resource
+    private SmsService smsService;
     @Resource
     private SysAreaMapper areaMapper;
     @Resource
@@ -75,6 +81,10 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     private Long AUTH_CODE_EXPIRE_SECONDS;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
+    @Value("${aliyun.sms.expire-minute:1}")
+    private Integer expireMinute;
+    @Value("${aliyun.sms.day-count:30}")
+    private Integer dayCount;
     @Resource
     private UmsMemberMemberTagRelationMapper umsMemberMemberTagRelationMapper;
     @Autowired
@@ -103,6 +113,88 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         umsMember.setPassword(password);
         this.register(umsMember);
         return new CommonResult().success("注册成功", null);
+    }
+
+    @Override
+    public SmsCode generateCode(String phone) {
+        //生成流水号
+        String uuid = UUID.randomUUID().toString();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            sb.append(random.nextInt(10));
+        }
+        Map<String, String> map = new HashMap<>(2);
+        map.put("code", sb.toString());
+        map.put("phone", phone);
+
+        //短信验证码缓存15分钟，
+        redisService.set(REDIS_KEY_PREFIX_AUTH_CODE + phone, sb.toString());
+        redisService.expire(REDIS_KEY_PREFIX_AUTH_CODE + phone, expireMinute * 60);
+
+
+        //存储sys_sms
+        saveSmsAndSendCode(phone, sb.toString());
+        SmsCode smsCode = new SmsCode();
+        smsCode.setKey(uuid);
+        return smsCode;
+    }
+
+    /**
+     * 保存短信记录，并发送短信
+     *
+     * @param phone
+     * @param code
+     */
+    private void saveSmsAndSendCode(String phone, String code) {
+        checkTodaySendCount(phone);
+
+        Sms sms = new Sms();
+        sms.setPhone(phone);
+        sms.setParams(code);
+        Map<String, String> params = new HashMap<>();
+        params.put("code", code);
+        smsService.save(sms, params);
+
+        //异步调用阿里短信接口发送短信
+        CompletableFuture.runAsync(() -> {
+            try {
+                smsService.sendSmsMsg(sms);
+            } catch (Exception e) {
+                params.put("err", e.getMessage());
+                smsService.save(sms, params);
+                e.printStackTrace();
+                LOGGER.error("发送短信失败：{}", e.getMessage());
+            }
+
+        });
+
+        // 当天发送验证码次数+1
+        String countKey = countKey(phone);
+        redisService.increment(countKey, 1L);
+        redisService.expire(countKey, 1 * 3600 * 24);
+    }
+
+    /**
+     * 获取当天发送验证码次数
+     * 限制号码当天次数
+     *
+     * @param phone
+     * @return
+     */
+    private void checkTodaySendCount(String phone) {
+        String value = redisService.get(countKey(phone));
+        if (value != null) {
+            Integer count = Integer.valueOf(value);
+            if (count > dayCount) {
+                throw new IllegalArgumentException("已超过当天最大次数");
+            }
+        }
+
+    }
+
+    private String countKey(String phone) {
+        return "sms:count:" + LocalDate.now().toString() + ":" + phone;
     }
 
     @Override
@@ -283,24 +375,78 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
 
     }
 
+
     @Override
-    public Map<String, Object> login(String username, String password) {
+    public String refreshToken(String oldToken) {
+        String token = oldToken.substring(tokenHead.length());
+        if (jwtTokenUtil.canRefresh(token)) {
+            return jwtTokenUtil.refreshToken(token);
+        }
+        return null;
+    }
+
+    //替换字符串
+    public String getCode(String appid, String uri, String scope) {
+        return String.format(wxAppletProperties.getGetCode(), appid, uri, scope);
+    }
+
+    //替换字符串
+    public String getWebAccess(String code) {
+
+        return String.format(wxAppletProperties.getWebAccessTokenhttps(),
+                wxAppletProperties.getAppId(),
+                wxAppletProperties.getSecret(),
+                code);
+    }
+
+    //替换字符串
+    public String getUserMessage(String accessToken, String openid) {
+        return String.format(wxAppletProperties.getUserMessage(), accessToken, openid);
+    }
+
+    @Override
+    public Map<String, Object> loginByCode(String phone, String authCode) {
         Map<String, Object> tokenMap = new HashMap<>();
         String token = null;
-        //密码需要客户端加密后传递
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, passwordEncoder.encode(password));
         try {
-           /* Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            UmsMember member = this.getByUsername(username);
-            token = jwtTokenUtil.generateToken(userDetails);*/
+            UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
 
+            UmsMember member = this.getByUsername(phone);
+            //验证验证码
+            if (!verifyAuthCode(authCode, member.getPhone())) {
+                throw new ApiMallPlusException("验证码错误");
+            }
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            token = jwtTokenUtil.generateToken(userDetails);
+            tokenMap.put("userInfo", member);
+        } catch (AuthenticationException e) {
+            LOGGER.warn("登录异常:{}", e.getMessage());
+
+        }
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+
+        return tokenMap;
+    }
+
+    @Override
+    public Map<String, Object> login(String username, String password) {
+
+        Map<String, Object> tokenMap = new HashMap<>();
+        String token = null;
+        try {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (!passwordEncoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("密码不正确");
             }
             UmsMember member = this.getByUsername(username);
+            //验证验证码
+           /* if (!verifyAuthCode(user.getCode(), member.getPhone())) {
+                throw  new ApiMallPlusException("验证码错误");
+            }*/
+
             //   Authentication authentication = authenticationManager.authenticate(authenticationToken);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
@@ -318,35 +464,5 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return tokenMap;
 
     }
-
-    @Override
-    public String refreshToken(String oldToken) {
-        String token = oldToken.substring(tokenHead.length());
-        if (jwtTokenUtil.canRefresh(token)) {
-            return jwtTokenUtil.refreshToken(token);
-        }
-        return null;
-    }
-
-    //替换字符串
-    public String getCode(String APPID, String REDIRECT_URI, String SCOPE) {
-        return String.format(wxAppletProperties.getGetCode(), APPID, REDIRECT_URI, SCOPE);
-    }
-
-    //替换字符串
-    public String getWebAccess(String CODE) {
-
-        return String.format(wxAppletProperties.getWebAccessTokenhttps(),
-                wxAppletProperties.getAppId(),
-                wxAppletProperties.getSecret(),
-                CODE);
-    }
-
-    //替换字符串
-    public String getUserMessage(String access_token, String openid) {
-        return String.format(wxAppletProperties.getUserMessage(), access_token, openid);
-    }
-
-
 }
 

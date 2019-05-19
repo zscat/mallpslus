@@ -146,7 +146,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         }
 
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
-            String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+            String authToken = authHeader.substring(this.tokenHead.length());
             String username = jwtTokenUtil.getUserNameFromToken(authToken);
             LOGGER.info("checking username:{}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -186,6 +186,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     private String formMapKey(Object userId, String mothedName, String requestType,
                               String ip, String params, String token) {
+
         return "\"time\"" + ":\"" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS").format(new Date())
                 + "\",\"name\"" + ":\"" + mothedName + "\",\"uid\":\"" + userId
                 + "\",\"type\":\"" + requestType + "\",\"ip\":\"" + ip

@@ -56,7 +56,7 @@ public class SysStoreController {
     @GetMapping(value = "/list")
     public Object getSysStoreByPage(SysStore entity,
                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+                                    @RequestParam(value = "pageSize", defaultValue = "30") Integer pageSize
     ) {
         try {
             return new CommonResult().success(ISysStoreService.page(new Page<SysStore>(pageNum, pageSize), new QueryWrapper<>(entity)));

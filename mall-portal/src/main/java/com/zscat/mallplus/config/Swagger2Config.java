@@ -22,16 +22,16 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.macro.mall.portal.single"))
+                .apis(RequestHandlerSelectors.basePackage("com.zscat.mallplus.single"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("mall前台系统")
-                .description("mall前台系统")
-                .contact("mall")
+                .title("mallplus前台系统")
+                .description("mallplus前台系统")
+                .contact("mallplus 951449465")
                 .version("1.0")
                 .build();
     }
