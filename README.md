@@ -50,6 +50,9 @@ mall
 ├── 小前端项目`wechatapp`地址 请加群下载
 ```
 
+关注公众号
+<img src="https://images.gitee.com/uploads/images/2019/0519/174631_65c2a4e8_134431.png" width="80px" height="80px" />
+
 后台功能列表
 <img src="https://images.gitee.com/uploads/images/2019/0519/170418_d276b6b4_134431.png"  />
 小程序功能列表
