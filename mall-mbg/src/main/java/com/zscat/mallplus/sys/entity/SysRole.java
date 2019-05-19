@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_role")
-public class SysRole extends BaseEntity implements Serializable  {
+public class SysRole extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -2,33 +2,32 @@ package
 
     ${package}.${
 
-module }.model;
-#if(${hasBigDecimal})
-#end
-
-
-/**
- * @Description:${comments}
- *
- * @author ${author}
- * @email ${email}
- * @date ${datetime}
- */
-@Data
-@TableName("${tableName}")
-public class ${Module}${className} extends BaseEntity implements Serializable {
-private static final long serialVersionUID=1L;
-
-#foreach ($column in $columns)
-
-@ApiModelProperty(value = "$column.comments")
-    #if($column.columnName == $pk.columnName)
-    @TableId(value = "$column.columnName", type = IdType.AUTO)
+        module }.model;
+    #if(${hasBigDecimal})
     #end
-    #if($column.columnName != $pk.columnName)
-    @TableField("$column.columnName")
-    #end
-private $column.attrType $column.attrname;
-#end
 
-}
+        /**
+         * @Description:${comments}
+         *
+         * @author ${author}
+         * @email ${email}
+         * @date ${datetime}
+         */
+        @Data
+        @TableName("${tableName}")
+        public class ${Module}${className} extends BaseEntity implements Serializable{
+        private static final long serialVersionUID=1L;
+
+    #foreach ($column in $columns)
+
+            @ApiModelProperty(value="$column.comments")
+        #if($column.columnName == $pk.columnName)
+                @TableId(value="$column.columnName",type=IdType.AUTO)
+        #end
+        #if($column.columnName != $pk.columnName)
+                @TableField("$column.columnName")
+        #end
+            private $column.attrType $column.attrname;
+    #end
+
+        }

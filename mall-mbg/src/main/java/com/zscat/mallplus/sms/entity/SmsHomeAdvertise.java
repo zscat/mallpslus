@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("sms_home_advertise")
-public class SmsHomeAdvertise extends BaseEntity implements Serializable  {
+public class SmsHomeAdvertise extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

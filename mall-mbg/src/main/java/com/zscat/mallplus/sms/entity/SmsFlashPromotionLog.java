@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("sms_flash_promotion_log")
-public class SmsFlashPromotionLog extends BaseEntity implements Serializable  {
+public class SmsFlashPromotionLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

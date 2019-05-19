@@ -20,7 +20,7 @@ import java.math.BigDecimal;
  */
 @Data
 @TableName("sms_flash_promotion_product_relation")
-public class SmsFlashPromotionProductRelation extends BaseEntity implements Serializable  {
+public class SmsFlashPromotionProductRelation extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

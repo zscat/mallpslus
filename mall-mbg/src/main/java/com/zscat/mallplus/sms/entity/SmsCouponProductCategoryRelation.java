@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("sms_coupon_product_category_relation")
-public class SmsCouponProductCategoryRelation extends BaseEntity implements Serializable  {
+public class SmsCouponProductCategoryRelation extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

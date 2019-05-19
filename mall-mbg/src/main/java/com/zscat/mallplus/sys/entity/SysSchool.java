@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-14
  */
 @TableName("sys_school")
-public class SysSchool extends BaseEntity implements Serializable  {
+public class SysSchool extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

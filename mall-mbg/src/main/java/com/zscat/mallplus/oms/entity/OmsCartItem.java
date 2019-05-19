@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-04-17
  */
 @TableName("oms_cart_item")
-public class OmsCartItem extends BaseEntity implements Serializable  {
+public class OmsCartItem extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

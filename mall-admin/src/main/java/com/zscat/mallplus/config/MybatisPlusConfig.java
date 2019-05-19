@@ -6,24 +6,26 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
-import com.zscat.mallplus.utils.ValidatorUtils;
+import com.google.common.collect.Lists;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 //Spring boot方式
 @EnableTransactionManagement
 @Configuration
 @MapperScan("com.zscat.mallplus.*.mapper*")
 public class MybatisPlusConfig {
-
+    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("columns", "tables", "information_schema.columns", "information_schema.tables", "sys_user", "sys_store", "sys_permission");
+    @Autowired
+    private ApiContext apiContext;
 
     /**
      * 分页插件
@@ -42,7 +44,13 @@ public class MybatisPlusConfig {
 
             @Override
             public Expression getTenantId() {
-                return new LongValue(2L);
+                // 从当前系统上下文中取出当前请求的服务商ID，通过解析器注入到SQL中。
+                Long currentProviderId = apiContext.getCurrentProviderId();
+                if (null == currentProviderId) {
+                    currentProviderId = 1L;
+                    System.out.println("#1129 getCurrentProviderId error.");
+                }
+                return new LongValue(currentProviderId);
             }
 
             @Override
@@ -52,11 +60,12 @@ public class MybatisPlusConfig {
 
             @Override
             public boolean doTableFilter(String tableName) {
-                Map<String, String> tab = Constant.Tables;
+                return IGNORE_TENANT_TABLES.stream().anyMatch((e) -> e.equalsIgnoreCase(tableName));
+               /* Map<String, String> tab = Constant.Tables;
                 if (ValidatorUtils.notEmpty(tab.get(tableName)) && tab.get(tableName).equals("1")) {
                     return false;
                 }
-                return true;
+                return true;*/
             }
         });
 

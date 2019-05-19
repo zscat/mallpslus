@@ -20,4 +20,7 @@ public class Rediskey {
     public static String orderDetailResult = "orderDetailResult";
 
     public static String PmsProductConsult = "PmsProductConsult";
+
+
+    public static String GOODSDETAIL = "GOODSDETAIL:%s";
 }

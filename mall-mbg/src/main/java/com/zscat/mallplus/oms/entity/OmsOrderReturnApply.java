@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-04-17
  */
 @TableName("oms_order_return_apply")
-public class OmsOrderReturnApply extends BaseEntity implements Serializable  {
+public class OmsOrderReturnApply extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

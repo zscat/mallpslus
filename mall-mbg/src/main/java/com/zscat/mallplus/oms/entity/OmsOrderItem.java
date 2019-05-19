@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * @since 2019-04-17
  */
 @TableName("oms_order_item")
-public class OmsOrderItem extends BaseEntity implements Serializable  {
+public class OmsOrderItem extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

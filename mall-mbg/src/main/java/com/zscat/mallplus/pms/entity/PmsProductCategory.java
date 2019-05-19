@@ -21,7 +21,7 @@ import java.util.List;
  */
 @TableName("pms_product_category")
 @Data
-public class PmsProductCategory extends BaseEntity implements Serializable  {
+public class PmsProductCategory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

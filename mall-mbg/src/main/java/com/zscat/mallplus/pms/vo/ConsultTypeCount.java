@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
-public class ConsultTypeCount extends BaseEntity implements Serializable  {
+public class ConsultTypeCount extends BaseEntity implements Serializable {
     private int all;
     private int goods;
     private int general;

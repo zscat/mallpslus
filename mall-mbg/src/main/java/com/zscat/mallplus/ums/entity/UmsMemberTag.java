@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("ums_member_tag")
-public class UmsMemberTag extends BaseEntity implements Serializable  {
+public class UmsMemberTag extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-17
  */
 @TableName("oms_order_operate_history")
-public class OmsOrderOperateHistory extends BaseEntity implements Serializable  {
+public class OmsOrderOperateHistory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

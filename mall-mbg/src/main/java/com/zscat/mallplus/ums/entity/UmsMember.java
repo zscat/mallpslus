@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Data
 @TableName("ums_member")
-public class UmsMember extends BaseEntity implements Serializable  {
+public class UmsMember extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

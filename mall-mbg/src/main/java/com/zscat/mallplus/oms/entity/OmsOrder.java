@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Data
 @TableName("oms_order")
-public class OmsOrder extends BaseEntity implements Serializable  {
+public class OmsOrder extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

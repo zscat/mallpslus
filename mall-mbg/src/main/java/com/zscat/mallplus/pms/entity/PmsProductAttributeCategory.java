@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Data
 @TableName("pms_product_attribute_category")
-public class PmsProductAttributeCategory extends BaseEntity implements Serializable  {
+public class PmsProductAttributeCategory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableField(exist = false)

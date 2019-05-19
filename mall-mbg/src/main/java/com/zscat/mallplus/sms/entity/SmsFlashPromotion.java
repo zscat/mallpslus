@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sms_flash_promotion")
-public class SmsFlashPromotion extends BaseEntity implements Serializable  {
+public class SmsFlashPromotion extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

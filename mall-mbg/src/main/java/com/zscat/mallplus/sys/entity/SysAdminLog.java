@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-14
  */
 @TableName("sys_admin_log")
-public class SysAdminLog extends BaseEntity implements Serializable  {
+public class SysAdminLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

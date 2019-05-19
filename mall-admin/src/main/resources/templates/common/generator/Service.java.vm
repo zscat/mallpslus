@@ -2,7 +2,7 @@ package
 
     ${package}.${
 
-module }.service;
+        module }.service;
     ${package}.${module}.entity.${Module}${className};
 
 /**
@@ -13,6 +13,6 @@ module }.service;
  * @date ${datetime}
  */
 
-public interface I${Module}${className}Service extends IService<${Module}${className}> {
+        public interface I${Module}${className}Service extends IService<${Module}${className}>{
 
-}
+        }

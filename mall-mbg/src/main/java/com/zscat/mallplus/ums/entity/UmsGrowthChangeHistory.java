@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("ums_growth_change_history")
-public class UmsGrowthChangeHistory extends BaseEntity implements Serializable  {
+public class UmsGrowthChangeHistory extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

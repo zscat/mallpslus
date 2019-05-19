@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-14
  */
 @TableName("sys_web_log")
-public class SysWebLog extends BaseEntity implements Serializable  {
+public class SysWebLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,22 +1,23 @@
 package com.zscat.mallplus.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.zscat.mallplus.utils.BaseEntity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author zscat
  * @since 2019-05-18
  */
 @TableName("sys_store")
-public class SysStore  implements Serializable  {
+public class SysStore implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -112,8 +113,8 @@ public class SysStore  implements Serializable  {
     private String contactQrcode;
 
     private String description;
-
-    private Long id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @TableField("industry_one")
     private Long industryOne;
@@ -386,11 +387,11 @@ public class SysStore  implements Serializable  {
         this.description = description;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -410,45 +411,5 @@ public class SysStore  implements Serializable  {
         this.addressCity = addressCity;
     }
 
-    @Override
-    public String toString() {
-        return "SysStore{" +
-        ", smsQuantity=" + smsQuantity +
-        ", registerType=" + registerType +
-        ", expireTime=" + expireTime +
-        ", tryTime=" + tryTime +
-        ", contactMobile=" + contactMobile +
-        ", addressProvince=" + addressProvince +
-        ", buyPlanTimes=" + buyPlanTimes +
-        ", createTime=" + createTime +
-        ", isChecked=" + isChecked +
-        ", isDeleted=" + isDeleted +
-        ", servicePhone=" + servicePhone +
-        ", addressLat=" + addressLat +
-        ", contactName=" + contactName +
-        ", deleteTime=" + deleteTime +
-        ", diyProfile=" + diyProfile +
-        ", industryTwo=" + industryTwo +
-        ", isStar=" + isStar +
-        ", isTry=" + isTry +
-        ", logo=" + logo +
-        ", addressDetail=" + addressDetail +
-        ", planId=" + planId +
-        ", supportName=" + supportName +
-        ", name=" + name +
-        ", status=" + status +
-        ", uid=" + uid +
-        ", type=" + type +
-        ", contactQq=" + contactQq +
-        ", addressLng=" + addressLng +
-        ", lastLoginTime=" + lastLoginTime +
-        ", supportPhone=" + supportPhone +
-        ", addressArea=" + addressArea +
-        ", contactQrcode=" + contactQrcode +
-        ", description=" + description +
-        ", id=" + id +
-        ", industryOne=" + industryOne +
-        ", addressCity=" + addressCity +
-        "}";
-    }
+
 }

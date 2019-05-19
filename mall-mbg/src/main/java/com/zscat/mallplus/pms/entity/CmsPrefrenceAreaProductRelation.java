@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-17
  */
 @TableName("cms_prefrence_area_product_relation")
-public class CmsPrefrenceAreaProductRelation extends BaseEntity implements Serializable  {
+public class CmsPrefrenceAreaProductRelation extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

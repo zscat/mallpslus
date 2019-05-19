@@ -246,6 +246,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void removePermissRedis(Long id) {
         redisService.remove(String.format(Rediskey.menuTreesList, id));
         redisService.remove(String.format(Rediskey.menuList, id));
+        redisService.remove(String.format(Rediskey.allTreesList, "admin"));
     }
 
     //    @Override

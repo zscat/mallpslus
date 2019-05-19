@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-14
  */
 @TableName("sys_user_permission")
-public class SysUserPermission extends BaseEntity implements Serializable  {
+public class SysUserPermission extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

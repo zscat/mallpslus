@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("ums_member_receive_address")
-public class UmsMemberReceiveAddress extends BaseEntity implements Serializable  {
+public class UmsMemberReceiveAddress extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

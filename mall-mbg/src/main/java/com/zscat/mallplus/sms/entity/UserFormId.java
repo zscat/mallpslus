@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  *
  * @author yang.liu
  */
-public class UserFormId extends BaseEntity implements Serializable  {
+public class UserFormId extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 4565156634543900140L;
 
     private Long id;

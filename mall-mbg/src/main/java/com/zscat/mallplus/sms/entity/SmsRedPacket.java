@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sms_red_packet")
-public class SmsRedPacket extends BaseEntity implements Serializable  {
+public class SmsRedPacket extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-17
  */
 @TableName("cms_topic")
-public class CmsTopic extends BaseEntity implements Serializable  {
+public class CmsTopic extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

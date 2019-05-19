@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("sms_home_brand")
-public class SmsHomeBrand extends BaseEntity implements Serializable  {
+public class SmsHomeBrand extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

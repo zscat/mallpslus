@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("ums_member_task")
-public class UmsMemberTask extends BaseEntity implements Serializable  {
+public class UmsMemberTask extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

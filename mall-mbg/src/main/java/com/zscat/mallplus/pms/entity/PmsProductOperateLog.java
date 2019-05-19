@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("pms_product_operate_log")
-public class PmsProductOperateLog extends BaseEntity implements Serializable  {
+public class PmsProductOperateLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

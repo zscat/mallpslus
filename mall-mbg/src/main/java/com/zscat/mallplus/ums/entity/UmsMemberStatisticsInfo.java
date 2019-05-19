@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("ums_member_statistics_info")
-public class UmsMemberStatisticsInfo extends BaseEntity implements Serializable  {
+public class UmsMemberStatisticsInfo extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

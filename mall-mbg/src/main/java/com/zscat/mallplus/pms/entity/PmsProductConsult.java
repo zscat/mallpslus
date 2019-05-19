@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("pms_product_consult")
-public class PmsProductConsult extends BaseEntity implements Serializable  {
+public class PmsProductConsult extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -136,13 +136,7 @@ public class PmsProductConsult extends BaseEntity implements Serializable  {
         this.memberName = memberName;
     }
 
-    public Long getStoreId() {
-        return storeId;
-    }
 
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
-    }
 
     public String getEmail() {
         return email;
@@ -200,22 +194,5 @@ public class PmsProductConsult extends BaseEntity implements Serializable  {
         this.isDel = isDel;
     }
 
-    @Override
-    public String toString() {
-        return "PmsProductConsult{" +
-                ", id=" + id +
-                ", goodsId=" + goodsId +
-                ", goodsName=" + goodsName +
-                ", memberId=" + memberId +
-                ", memberName=" + memberName +
-                ", storeId=" + storeId +
-                ", email=" + email +
-                ", consultContent=" + consultContent +
-                ", consultAddtime=" + consultAddtime +
-                ", consultReply=" + consultReply +
-                ", consultReplyTime=" + consultReplyTime +
-                ", isanonymous=" + isanonymous +
-                ", isDel=" + isDel +
-                "}";
-    }
+
 }

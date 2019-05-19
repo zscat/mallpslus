@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("pms_small_navicon_category")
-public class PmsSmallNaviconCategory extends BaseEntity implements Serializable  {
+public class PmsSmallNaviconCategory extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 

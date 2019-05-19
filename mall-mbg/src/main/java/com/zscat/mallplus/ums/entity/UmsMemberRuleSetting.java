@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * @since 2019-04-19
  */
 @TableName("ums_member_rule_setting")
-public class UmsMemberRuleSetting extends BaseEntity implements Serializable  {
+public class UmsMemberRuleSetting extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

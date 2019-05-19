@@ -18,7 +18,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("pms_comment")
-public class PmsComment extends BaseEntity implements Serializable  {
+public class PmsComment extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

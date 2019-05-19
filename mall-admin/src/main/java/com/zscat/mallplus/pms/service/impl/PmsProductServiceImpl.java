@@ -2,6 +2,7 @@ package com.zscat.mallplus.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.bo.Rediskey;
 import com.zscat.mallplus.cms.service.ICmsPrefrenceAreaProductRelationService;
 import com.zscat.mallplus.cms.service.ICmsSubjectProductRelationService;
 import com.zscat.mallplus.pms.entity.*;
@@ -9,6 +10,8 @@ import com.zscat.mallplus.pms.mapper.*;
 import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
+import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -70,6 +73,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
 
     @Resource
     private PmsProductVertifyRecordMapper productVertifyRecordMapper;
+    @Resource
+    private RedisService redisService;
 
     @Override
     public int create(PmsProductParam productParam) {
@@ -97,6 +102,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         //关联优选
         relateAndInsertList(prefrenceAreaProductRelationDao, productParam.getPrefrenceAreaProductRelationList(), productId);
         count = 1;
+        redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
         return count;
     }
 
@@ -125,11 +131,13 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
 
     @Override
     public int update(Long id, PmsProductParam productParam) {
+
         int count;
         //更新商品信息
         PmsProduct product = productParam;
         product.setId(id);
         productMapper.updateById(product);
+        redisService.remove(String.format(Rediskey.GOODSDETAIL, product.getId()));
         //会员价格
         memberPriceMapper.delete(new QueryWrapper<>(new PmsMemberPrice()).eq("product_id", id));
         relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), id);
@@ -158,6 +166,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         prefrenceAreaProductRelationMapper.delete(new QueryWrapper<>(new CmsPrefrenceAreaProductRelation()).eq("product_id", id));
         relateAndInsertList(prefrenceAreaProductRelationDao, productParam.getPrefrenceAreaProductRelationList(), id);
         count = 1;
+
+        redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
         return count;
     }
 

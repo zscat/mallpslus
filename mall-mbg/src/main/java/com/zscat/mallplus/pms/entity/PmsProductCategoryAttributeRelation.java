@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("pms_product_category_attribute_relation")
-public class PmsProductCategoryAttributeRelation extends BaseEntity implements Serializable  {
+public class PmsProductCategoryAttributeRelation extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

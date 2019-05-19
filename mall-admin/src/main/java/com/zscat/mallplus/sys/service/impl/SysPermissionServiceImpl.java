@@ -47,25 +47,29 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         List<Tree<SysPermission>> trees = Lists.newArrayList();
         List<SysPermission> menuDOs;
         if (!redisService.exists(String.format(Rediskey.allTreesList, "admin"))) {
-            menuDOs = permissionMapper.selectList(new QueryWrapper<>());
+            List<Long> types = Lists.newArrayList(1L, 0L);
+            menuDOs = permissionMapper.selectList(new QueryWrapper<SysPermission>().in("type", types).orderByAsc("sort"));
             redisService.set(String.format(Rediskey.allTreesList, "admin"), JsonUtil.objectToJson(menuDOs));
         } else {
-            menuDOs = JsonUtil.jsonToList(redisService.get(String.format(Rediskey.menuTreesList, "admin")), SysPermission.class);
+            menuDOs = JsonUtil.jsonToList(redisService.get(String.format(Rediskey.allTreesList, "admin")), SysPermission.class);
         }
-        for (SysPermission sysMenuDO : menuDOs) {
-            Tree<SysPermission> tree = new Tree<SysPermission>();
-            tree.setId(sysMenuDO.getId().toString());
-            tree.setParentId(sysMenuDO.getPid().toString());
-            tree.setTitle(sysMenuDO.getName());
-            Map<String, Object> attributes = new HashMap<>(16);
-            attributes.put("url", sysMenuDO.getUri());
-            attributes.put("icon", sysMenuDO.getIcon());
-            tree.setMeta(attributes);
-            trees.add(tree);
+        if (menuDOs != null && menuDOs.size() > 0) {
+            for (SysPermission sysMenuDO : menuDOs) {
+                Tree<SysPermission> tree = new Tree<SysPermission>();
+                tree.setId(sysMenuDO.getId().toString());
+                tree.setParentId(sysMenuDO.getPid().toString());
+                tree.setTitle(sysMenuDO.getName());
+                Map<String, Object> attributes = new HashMap<>(16);
+                attributes.put("url", sysMenuDO.getUri());
+                attributes.put("icon", sysMenuDO.getIcon());
+                tree.setMeta(attributes);
+                trees.add(tree);
+            }
+            // 默认顶级菜单为０，根据数据库实际情况调整
+            List<Tree<SysPermission>> list = BuildTree.buildList(trees, "0");
+            return list;
         }
-        // 默认顶级菜单为０，根据数据库实际情况调整
-        List<Tree<SysPermission>> list = BuildTree.buildList(trees, "0");
-        return list;
+        return new ArrayList<>();
     }
 
     @Override

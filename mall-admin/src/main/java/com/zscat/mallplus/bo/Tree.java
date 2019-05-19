@@ -113,12 +113,12 @@ public class Tree<T> {
         return children;
     }
 
-    public void setChildren(boolean isChildren) {
-        this.hasChildren = isChildren;
-    }
-
     public void setChildren(List<Tree<T>> children) {
         this.children = children;
+    }
+
+    public void setChildren(boolean isChildren) {
+        this.hasChildren = isChildren;
     }
 
     public boolean isHasParent() {

@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-17
  */
 @TableName("oms_company_address")
-public class OmsCompanyAddress extends BaseEntity implements Serializable  {
+public class OmsCompanyAddress extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

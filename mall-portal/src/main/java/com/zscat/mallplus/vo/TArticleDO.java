@@ -9,7 +9,7 @@ import java.util.Date;
  * @email 951449465@qq.com
  * @date 2017-10-15 15:07:36
  */
-public class TArticleDO extends BaseEntity implements Serializable  {
+public class TArticleDO extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     //
     private Long id;
@@ -35,16 +35,20 @@ public class TArticleDO extends BaseEntity implements Serializable  {
     private Long villageid;
     //用户名
     private String username;
+
     public TArticleDO() {
 
     }
+
     public TArticleDO(String title) {
         this.title = title;
     }
+
     public TArticleDO(String title, String summary) {
         this.title = title;
         this.summary = summary;
     }
+
     public TArticleDO(String title, String summary, String content, String img) {
         this.title = title;
         this.summary = summary;

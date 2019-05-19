@@ -19,7 +19,7 @@ import java.util.Date;
  * @since 2019-04-19
  */
 @TableName("sms_group")
-public class SmsGroup extends BaseEntity implements Serializable  {
+public class SmsGroup extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

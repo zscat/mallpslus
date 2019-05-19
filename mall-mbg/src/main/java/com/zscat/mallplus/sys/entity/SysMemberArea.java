@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-14
  */
 @TableName("sys_member_area")
-public class SysMemberArea extends BaseEntity implements Serializable  {
+public class SysMemberArea extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

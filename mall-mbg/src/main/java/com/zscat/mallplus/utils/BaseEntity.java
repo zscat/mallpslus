@@ -13,13 +13,13 @@ public class BaseEntity {
      * 昵称
      */
     @TableField("store_id")
-    private Long storeId;
+    private Integer storeId;
 
-    public Long getStoreId() {
+    public Integer getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(Long storeId) {
+    public void setStoreId(Integer storeId) {
         this.storeId = storeId;
     }
 }

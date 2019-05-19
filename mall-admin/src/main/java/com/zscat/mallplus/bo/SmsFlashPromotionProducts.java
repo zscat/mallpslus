@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class SmsFlashPromotionProducts extends BaseEntity implements Serializable  {
+public class SmsFlashPromotionProducts implements Serializable {
     private Long id;
     private BigDecimal flashPromotionPrice;
     private Integer flashPromotionCount;

@@ -3,6 +3,7 @@ package com.zscat.mallplus.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.config.ApiContext;
 import com.zscat.mallplus.sys.entity.SysStore;
 import com.zscat.mallplus.sys.service.ISysStoreService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -11,7 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,6 +34,22 @@ import java.util.List;
 public class SysStoreController {
     @Resource
     private ISysStoreService ISysStoreService;
+    @Autowired
+    private ApiContext apiContext;
+
+    @SysLog(MODULE = "sys", REMARK = "根据条件查询所有列表")
+    @ApiOperation("根据条件查询所有列表")
+    @GetMapping(value = "/setStoreId/{id}")
+    public Object setStoreId(@ApiParam("id") @PathVariable Long id) {
+        try {
+            apiContext.setCurrentProviderId(id);
+            return new CommonResult().success();
+        } catch (Exception e) {
+            log.error("根据条件查询所有列表：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+    }
+
 
     @SysLog(MODULE = "sys", REMARK = "根据条件查询所有列表")
     @ApiOperation("根据条件查询所有列表")

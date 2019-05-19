@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 2019-04-19
  */
 @TableName("ums_integration_consume_setting")
-public class UmsIntegrationConsumeSetting extends BaseEntity implements Serializable  {
+public class UmsIntegrationConsumeSetting extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

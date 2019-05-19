@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @since 2019-04-14
  */
 @TableName("sys_user_role")
-public class SysUserRole extends BaseEntity implements Serializable  {
+public class SysUserRole extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

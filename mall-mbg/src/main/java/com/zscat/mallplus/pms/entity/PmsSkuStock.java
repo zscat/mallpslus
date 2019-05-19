@@ -18,7 +18,7 @@ import java.math.BigDecimal;
  * @since 2019-04-19
  */
 @TableName("pms_sku_stock")
-public class PmsSkuStock extends BaseEntity implements Serializable  {
+public class PmsSkuStock extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
