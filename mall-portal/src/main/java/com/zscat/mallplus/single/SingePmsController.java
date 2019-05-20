@@ -113,7 +113,7 @@ public class SingePmsController extends ApiBaseAction {
     }
 
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐品牌")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐品牌")
     @GetMapping(value = "/recommendBrand/list")
@@ -124,7 +124,7 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页新品")
     @IgnoreAuth
     @ApiOperation(value = "查询首页新品")
     @GetMapping(value = "/newProductList/list")
@@ -135,7 +135,7 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐商品")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐商品")
     @GetMapping(value = "/hotProductList/list")
@@ -146,7 +146,7 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(advertiseService.getHotProductList(1,1));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐文章")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐文章")
     @GetMapping(value = "/recommendSubjectList/list")
