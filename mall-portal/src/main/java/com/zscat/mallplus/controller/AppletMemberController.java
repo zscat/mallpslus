@@ -34,19 +34,15 @@ import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
-import com.zscat.mallplus.vo.IndexData;
-import com.zscat.mallplus.vo.OrderStatusCount;
-import com.zscat.mallplus.vo.Rediskey;
-import com.zscat.mallplus.vo.TArticleDO;
+import com.zscat.mallplus.vo.*;
 import com.zscat.mallplus.vo.pms.CateProduct;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.Data;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +53,7 @@ import java.util.*;
  * 会员登录注册管理Controller
  * https://github.com/shenzhuan/mallplus on 2018/8/3.
  */
+@Data
 @RestController
 @Api(tags = "AppletMemberController", description = "小程序登录首页")
 @RequestMapping("/api/applet")
@@ -117,6 +114,20 @@ public class AppletMemberController extends ApiBaseAction {
 
     }
 
+    @Autowired
+    private ApiContext apiContext;
+
+    @SysLog(MODULE = "applet", REMARK = "切换店铺")
+    @ApiOperation("切换店铺")
+    @GetMapping(value = "/bindStoreId/{id}")
+    public Object bindStoreId(@ApiParam("id") @PathVariable Long id) {
+        try {
+            apiContext.setCurrentProviderId(id);
+            return new CommonResult().success();
+        } catch (Exception e) {
+            return new CommonResult().failed(e.getMessage());
+        }
+    }
     /**
      * 小程序主页
      *

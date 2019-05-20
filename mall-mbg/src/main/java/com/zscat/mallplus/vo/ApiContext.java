@@ -1,4 +1,4 @@
-package com.zscat.mallplus.config;
+package com.zscat.mallplus.vo;
 
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Component;
