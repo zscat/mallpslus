@@ -38,7 +38,7 @@ import java.util.Map;
  * @Description:
  */
 @RestController
-@Api(tags = "CmsController", description = "商品关系管理")
+@Api(tags = "SingePmsController", description = "商品关系管理")
 @RequestMapping("/api/single/pms")
 public class SingePmsController extends ApiBaseAction {
 
@@ -60,6 +60,8 @@ public class SingePmsController extends ApiBaseAction {
     private ICmsSubjectService subjectService;
     @Resource
     private ICmsSubjectCommentService commentService;
+    @Autowired
+    private ISmsHomeAdvertiseService advertiseService;
 
     @Resource
     private RedisService redisService;
@@ -118,6 +120,50 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(productCategoryService.page(new Page<PmsProductCategory>(pageNum, pageSize), new QueryWrapper<>(productCategory)));
     }
 
+
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐品牌")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页推荐品牌")
+    @GetMapping(value = "/recommendBrand/list")
+    public Object getRecommendBrandList(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询首页新品")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页新品")
+    @GetMapping(value = "/newProductList/list")
+    public Object getNewProductList(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐商品")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页推荐商品")
+    @GetMapping(value = "/hotProductList/list")
+    public Object getHotProductList(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+        return new CommonResult().success(advertiseService.getHotProductList(1,1));
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐文章")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页推荐文章")
+    @GetMapping(value = "/recommendSubjectList/list")
+    public Object getRecommendSubjectList(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+        return new CommonResult().success(advertiseService.getRecommendSubjectList(1,1));
+    }
     @ApiOperation("创建商品")
     @SysLog(MODULE = "pms", REMARK = "创建商品")
     @PostMapping(value = "/createGoods")
