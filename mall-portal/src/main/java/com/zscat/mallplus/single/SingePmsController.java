@@ -15,6 +15,7 @@ import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
+import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
@@ -24,6 +25,7 @@ import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -121,49 +123,6 @@ public class SingePmsController extends ApiBaseAction {
     }
 
 
-    @SysLog(MODULE = "pms", REMARK = "查询首页推荐品牌")
-    @IgnoreAuth
-    @ApiOperation(value = "查询首页推荐品牌")
-    @GetMapping(value = "/recommendBrand/list")
-    public Object getRecommendBrandList(
-            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-
-        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
-    }
-
-    @SysLog(MODULE = "pms", REMARK = "查询首页新品")
-    @IgnoreAuth
-    @ApiOperation(value = "查询首页新品")
-    @GetMapping(value = "/newProductList/list")
-    public Object getNewProductList(
-            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-
-        return new CommonResult().success(advertiseService.getRecommendBrandList(1,1));
-    }
-
-    @SysLog(MODULE = "pms", REMARK = "查询首页推荐商品")
-    @IgnoreAuth
-    @ApiOperation(value = "查询首页推荐商品")
-    @GetMapping(value = "/hotProductList/list")
-    public Object getHotProductList(
-            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-
-        return new CommonResult().success(advertiseService.getHotProductList(1,1));
-    }
-
-    @SysLog(MODULE = "pms", REMARK = "查询首页推荐文章")
-    @IgnoreAuth
-    @ApiOperation(value = "查询首页推荐文章")
-    @GetMapping(value = "/recommendSubjectList/list")
-    public Object getRecommendSubjectList(
-            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-
-        return new CommonResult().success(advertiseService.getRecommendSubjectList(1,1));
-    }
     @ApiOperation("创建商品")
     @SysLog(MODULE = "pms", REMARK = "创建商品")
     @PostMapping(value = "/createGoods")
