@@ -65,7 +65,7 @@ public class JedisConfig extends CachingConfigurerSupport {
         }
 
         logger.info("JedisPool注入成功！");
-        logger.info("redis地址：" + host + ":" + port);
+        logger.info("redis地址：" + host + ":" + port + ":" + password);
         return jedisPool;
     }
 

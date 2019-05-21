@@ -104,15 +104,16 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public CommonResult register(String username, String password, String telephone, String authCode) {
+    public CommonResult register(String phone, String password, String confim, String authCode) {
 
         //没有该用户进行添加操作
         UmsMember umsMember = new UmsMember();
-        umsMember.setUsername(username);
-        umsMember.setPhone(telephone);
+        umsMember.setUsername(phone);
+        umsMember.setPhone(phone);
         umsMember.setPassword(password);
-        this.register(umsMember);
-        return new CommonResult().success("注册成功", null);
+        umsMember.setConfimpassword(confim);
+        umsMember.setPhonecode(authCode);
+        return  this.register(umsMember);
     }
 
     @Override
@@ -200,9 +201,9 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     @Override
     public CommonResult register(UmsMember user) {
         //验证验证码
-        /*if (!verifyAuthCode(authCode, telephone)) {
+        if (!verifyAuthCode(user.getPhonecode(), user.getPhone())) {
             return new CommonResult().failed("验证码错误");
-        }*/
+        }
         if (!user.getPassword().equals(user.getConfimpassword())) {
             return new CommonResult().failed("密码不一致");
         }
@@ -300,7 +301,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         try {
             String code = req.getParameter("code");
             if (StringUtils.isEmpty(code)) {
-                System.out.println("code is empty");
+                return ApiBaseAction.toResponsFail("登录失败");
             }
             String userInfos = req.getParameter("userInfo");
 
@@ -314,7 +315,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             Map<String, Object> resultObj = new HashMap<String, Object>();
             //
             //获取openid
-            String requestUrl = this.getWebAccess(code);//通过自定义工具类组合出小程序需要的登录凭证 code
+            String requestUrl = this.getWebAccess(code);
 
             JSONObject sessionData = CommonUtil.httpsRequest(requestUrl, "GET", null);
 

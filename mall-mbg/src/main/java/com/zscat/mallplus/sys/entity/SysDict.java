@@ -27,12 +27,12 @@ public class SysDict implements Serializable {
     /**
      * 标签
      */
-    private String keys;
+    private String keyname;
 
     /**
      * 值
      */
-    private String values;
+    private String valuename;
 
     /**
      * 状态   0：隐藏   1：显示

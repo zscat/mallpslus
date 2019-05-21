@@ -19,6 +19,7 @@
         <HikariCP.version>3.2.0</HikariCP.version>
     </properties>
     <dependencies>
+
         <!-- MyBatis 生成器 -->
         <dependency>
             <groupId>org.mybatis.generator</groupId>
@@ -76,6 +77,11 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
         </dependency>
     </dependencies>
 

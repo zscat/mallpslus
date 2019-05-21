@@ -231,7 +231,7 @@
             },
             add${className}() {
                 //手动将router,改成$router
-                this.router.push({path: '/${module}/add${className}'})
+                this.qwertyrouter.push({path: '/${module}/add${className}'})
             }
         }
     }

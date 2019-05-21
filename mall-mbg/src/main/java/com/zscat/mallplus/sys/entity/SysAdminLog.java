@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-14
  */
+@Data
 @TableName("sys_admin_log")
 public class SysAdminLog extends BaseEntity implements Serializable {
 
@@ -73,91 +75,6 @@ public class SysAdminLog extends BaseEntity implements Serializable {
      */
     private String params;
 
+    private Long timeMin;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getOperationDesc() {
-        return operationDesc;
-    }
-
-    public void setOperationDesc(String operationDesc) {
-        this.operationDesc = operationDesc;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getParams() {
-        return params;
-    }
-
-    public void setParams(String params) {
-        this.params = params;
-    }
-
-    @Override
-    public String toString() {
-        return "SysAdminLog{" +
-                ", id=" + id +
-                ", userId=" + userId +
-                ", userName=" + userName +
-                ", serviceName=" + serviceName +
-                ", method=" + method +
-                ", operationDesc=" + operationDesc +
-                ", createTime=" + createTime +
-                ", ip=" + ip +
-                ", params=" + params +
-                "}";
-    }
 }
