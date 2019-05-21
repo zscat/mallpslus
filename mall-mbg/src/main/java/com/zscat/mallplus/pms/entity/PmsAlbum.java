@@ -1,10 +1,10 @@
 package com.zscat.mallplus.pms.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -16,6 +16,7 @@ import java.io.Serializable;
  * @author zscat
  * @since 2019-04-19
  */
+@Data
 @TableName("pms_album")
 public class PmsAlbum extends BaseEntity implements Serializable {
 
@@ -26,74 +27,14 @@ public class PmsAlbum extends BaseEntity implements Serializable {
 
     private String name;
 
-    @TableField("cover_pic")
-    private String coverPic;
 
-    @TableField("pic_count")
-    private Integer picCount;
+    private String pic;
+
+    private String type;
 
     private Integer sort;
 
     private String description;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCoverPic() {
-        return coverPic;
-    }
-
-    public void setCoverPic(String coverPic) {
-        this.coverPic = coverPic;
-    }
-
-    public Integer getPicCount() {
-        return picCount;
-    }
-
-    public void setPicCount(Integer picCount) {
-        this.picCount = picCount;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "PmsAlbum{" +
-                ", id=" + id +
-                ", name=" + name +
-                ", coverPic=" + coverPic +
-                ", picCount=" + picCount +
-                ", sort=" + sort +
-                ", description=" + description +
-                "}";
-    }
 }

@@ -17,24 +17,25 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+
 /**
  * <p>
- * 相册表
+ * <p>
  * </p>
  *
  * @author zscat
- * @since 2019-04-19
+ * @since ${date}
  */
 @Slf4j
 @RestController
-@Api(tags = "PmsAlbumController", description = "相册表管理")
+@Api(tags = "PmsAlbumController", description = "管理")
 @RequestMapping("/pms/PmsAlbum")
 public class PmsAlbumController {
     @Resource
     private IPmsAlbumService IPmsAlbumService;
 
-    @SysLog(MODULE = "pms", REMARK = "根据条件查询所有相册表列表")
-    @ApiOperation("根据条件查询所有相册表列表")
+    @SysLog(MODULE = "pms", REMARK = "查询pms_album表")
+    @ApiOperation("查询pms_album表")
     @GetMapping(value = "/list")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:read')")
     public Object getPmsAlbumByPage(PmsAlbum entity,
@@ -44,84 +45,84 @@ public class PmsAlbumController {
         try {
             return new CommonResult().success(IPmsAlbumService.page(new Page<PmsAlbum>(pageNum, pageSize), new QueryWrapper<>(entity)));
         } catch (Exception e) {
-            log.error("根据条件查询所有相册表列表：%s", e.getMessage(), e);
+            log.error("分页获取pms_album列表：%s", e.getMessage(), e);
         }
         return new CommonResult().failed();
     }
 
-    @SysLog(MODULE = "pms", REMARK = "保存相册表")
-    @ApiOperation("保存相册表")
+    @SysLog(MODULE = "pms", REMARK = "保存pms_album表")
+    @ApiOperation("保存pms_album表")
     @PostMapping(value = "/create")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:create')")
-    public Object savePmsAlbum(@RequestBody PmsAlbum entity) {
+    public Object saveAlbum(@RequestBody PmsAlbum entity) {
         try {
             if (IPmsAlbumService.save(entity)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
-            log.error("保存相册表：%s", e.getMessage(), e);
+            log.error("保存pms_album表：%s", e.getMessage(), e);
             return new CommonResult().failed();
         }
         return new CommonResult().failed();
     }
 
-    @SysLog(MODULE = "pms", REMARK = "更新相册表")
-    @ApiOperation("更新相册表")
+    @SysLog(MODULE = "pms", REMARK = "更新pms_album")
+    @ApiOperation("更新pms_album")
     @PostMapping(value = "/update/{id}")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:update')")
-    public Object updatePmsAlbum(@RequestBody PmsAlbum entity) {
+    public Object updateAlbum(@RequestBody PmsAlbum entity) {
         try {
             if (IPmsAlbumService.updateById(entity)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
-            log.error("更新相册表：%s", e.getMessage(), e);
+            log.error("更新：%s", e.getMessage(), e);
             return new CommonResult().failed();
         }
         return new CommonResult().failed();
     }
 
-    @SysLog(MODULE = "pms", REMARK = "删除相册表")
-    @ApiOperation("删除相册表")
+    @SysLog(MODULE = "pms", REMARK = "删除pms_album数据")
+    @ApiOperation("删除相册表数据")
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:delete')")
-    public Object deletePmsAlbum(@ApiParam("相册表id") @PathVariable Long id) {
+    public Object deleteRole(@ApiParam("相册表_id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
-                return new CommonResult().paramFailed("相册表id");
+                return new CommonResult().paramFailed("PmsAlbum_id");
             }
             if (IPmsAlbumService.removeById(id)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
-            log.error("删除相册表：%s", e.getMessage(), e);
+            log.error("删除相册表数据：%s", e.getMessage(), e);
             return new CommonResult().failed();
         }
         return new CommonResult().failed();
     }
 
-    @SysLog(MODULE = "pms", REMARK = "给相册表分配相册表")
-    @ApiOperation("查询相册表明细")
+    @SysLog(MODULE = "pms", REMARK = "根据ID查询pms_album")
+    @ApiOperation("根据ID查询pms_album")
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:read')")
-    public Object getPmsAlbumById(@ApiParam("相册表id") @PathVariable Long id) {
+    public Object getRoleById(@ApiParam("相册表_id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
-                return new CommonResult().paramFailed("相册表id");
+                return new CommonResult().paramFailed("PmsAlbum_id");
             }
-            PmsAlbum coupon = IPmsAlbumService.getById(id);
-            return new CommonResult().success(coupon);
+            PmsAlbum pmsAlbum = IPmsAlbumService.getById(id);
+            return new CommonResult().success(pmsAlbum);
         } catch (Exception e) {
-            log.error("查询相册表明细：%s", e.getMessage(), e);
+            log.error("pms_album表明细：%s", e.getMessage(), e);
             return new CommonResult().failed();
         }
 
     }
 
-    @ApiOperation(value = "批量删除相册表")
+    @ApiOperation(value = "批量删除PmsAlbum表")
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
-    @SysLog(MODULE = "pms", REMARK = "批量删除相册表")
+    @SysLog(MODULE = "pms", REMARK = "批量删除PmsAlbum表")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:delete')")
     public Object deleteBatch(@RequestParam("ids") List<Long> ids) {
         boolean count = IPmsAlbumService.removeByIds(ids);
@@ -131,5 +132,6 @@ public class PmsAlbumController {
             return new CommonResult().failed();
         }
     }
+
 
 }

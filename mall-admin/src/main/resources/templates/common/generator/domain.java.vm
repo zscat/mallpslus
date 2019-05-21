@@ -1,10 +1,12 @@
-package
+package ${package}.${module}.model;
 
-    ${package}.${
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+import java.math.BigDecimal;
 
-        module }.model;
-    #if(${hasBigDecimal})
-    #end
+import java.io.Serializable;
 
         /**
          * @Description:${comments}

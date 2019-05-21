@@ -74,12 +74,12 @@ public class MpGenerator {
         };
         List<FileOutConfig> focList = new ArrayList<>();
         // 调整 xml 生成目录演示
-       /* focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
+        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 return "/Users/shenzhuan/gen/" + tableInfo.getEntityName() + "Mapper.xml";
             }
-        });*/
+        });
 
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
@@ -94,7 +94,7 @@ public class MpGenerator {
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
-        mpg.setTemplate(new TemplateConfig().setXml(null));
+        //  mpg.setTemplate(new TemplateConfig().setXml(null));
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
@@ -132,7 +132,7 @@ public class MpGenerator {
 //                    "ums_member_member_tag_relation","ums_member_product_category_relation",
 //                    "ums_member_receive_address", "ums_member_rule_setting","ums_member_statistics_info","ums_member_tag",
 //            "ums_member_task","ums_growth_change_history","ums_integration_change_history","ums_integration_consume_setting"}); // 需要生成的表
-        strategy.setInclude(new String[]{"sys_store"});
+        strategy.setInclude(new String[]{"sys_dict"});
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");

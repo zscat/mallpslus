@@ -18,8 +18,7 @@
     import SingleUpload from '@/components/Upload/singleUpload'
     import {formatDate} from '@/utils/date';
 
-    const default
-        ${className}= {
+    const default${className}= {
         name: ''
     };
     export default {
@@ -56,7 +55,7 @@
         },
         created() {
             if (this.isEdit) {
-                get${className}(this.$route.query.id).then(response = > {
+                get${className}(this.$route.query.id).then(response => {
                     this.${classname} = response.data;
             })
                 ;
@@ -68,17 +67,17 @@
         },
         methods: {
             onSubmit(formName) {
-                this.qwertyrefs[formName].validate((valid) = > {
+                this.qwertyrefs[formName].validate((valid) => {
                     if(valid) {
                         this.$confirm('是否提交数据', '提示', {
                             confirmButtonText: '确定',
                             cancelButtonText: '取消',
                             type: 'warning'
-                        }).then(() = > {
+                        }).then(() => {
                             if(this.isEdit
                     )
                         {
-                            update${className}(this.$route.query.id, this.${classname}).then(response = > {
+                            update${className}(this.$route.query.id, this.${classname}).then(response => {
                                 if(response.code == 200
                         )
                             {
@@ -104,7 +103,7 @@
                         }
                     else
                         {
-                            create${className}(this.${classname}).then(response = > {
+                            create${className}(this.${classname}).then(response => {
                                 if(response.code == 200
                         )
                             {
