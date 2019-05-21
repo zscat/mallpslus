@@ -20,4 +20,54 @@
         id, user_id, user_name, service_name, method, operation_desc, create_time, ip, params
     </sql>
 
+    <select id="getRoleListByUserId" resultType="com.zscat.mallplus.vo.LogStatisc">
+           SELECT method, count(1) count,
+        sum(time_min) as sum,
+        sum(case when time_min>100 then time_min else 0 end) as count1,
+        sum(case when time_min>300 then time_min else 0 end) as count2,
+        sum(case when time_min>600 then time_min else 0 end) as count3,
+        sum(case when time_min>1000 then time_min else 0 end) as count4,
+        sum(case when time_min>1500 then time_min else 0 end) as count5,
+        sum(case when time_min>3000 then time_min else 0 end) as count6,
+        sum(case when time_min>100 then 1 else 0 end) as sum1,
+        sum(case when time_min>300 then 1 else 0 end) as sum2,
+        sum(case when time_min>600 then 1 else 0 end) as sum3,
+        sum(case when time_min>1000 then 1 else 0 end) as sum4,
+        sum(case when time_min>1500 then 1 else 0 end) as sum5,
+        sum(case when time_min>3000 then 1 else 0 end) as sum6
+         from sys_admin_log group by method
+    </select>
+
+    <sql id="query_order_where">
+
+            <if test="startTime != null and startTime !=''.toString()">
+                and o.create_time &gt;= to_timestamp(#{startTime}, 'YYYY/MM/DD HH24:MI:SS')
+            </if>
+            <if test="endTime != null and endTime !=''.toString()">
+                and o.create_time &lt;= to_timestamp(#{endTime}, 'YYYY/MM/DD HH24:MI:SS')
+            </if>
+
+        <if test="keyType==1">
+            <if test="keyword!=null and keyword !=''.toString()">
+                and o.order_no like concat('%',#{keyword},'%')
+            </if>
+        </if>
+        <if test="keyType==2">
+            <if test="keyword!=null and keyword !=''.toString()">
+                and buyer_name like concat('%',#{keyword},'%')
+            </if>
+        </if>
+        <if test="keyType==3">
+            and express_sn like concat('%',#{keyword},'%')
+        </if>
+        <if test="keyType==4">
+            and title like concat('%',#{keyword},'%')
+        </if>
+        <if test="keyType==5">
+            and goods_code like concat('%',#{keyword},'%')
+        </if>
+        <if test="status != null and status != ''.toString() and status !='0'.toString()">
+            and o.status = #{status}
+        </if>
+    </sql>
 </mapper>
