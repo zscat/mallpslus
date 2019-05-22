@@ -20,4 +20,43 @@
         id, user_id, user_name, service_name, method, operation_desc, create_time, ip, params
     </sql>
 
+    <select id="getLogStatisc" resultType="com.zscat.mallplus.vo.LogStatisc">
+        SELECT method, count(1) count,
+        sum(time_min) as sum,
+        sum(time_min)/count(1) avgMin ,
+        sum(case when time_min>100 then time_min else 0 end) as sum1,
+        sum(case when time_min>300 then time_min else 0 end) as sum2,
+        sum(case when time_min>600 then time_min else 0 end) as sum3,
+        sum(case when time_min>1000 then time_min else 0 end) as sum4,
+        sum(case when time_min>1500 then time_min else 0 end) as sum5,
+        sum(case when time_min>3000 then time_min else 0 end) as sum6,
+        sum(case when time_min>100 then 1 else 0 end) as count1,
+        sum(case when time_min>300 then 1 else 0 end) as count2,
+        sum(case when time_min>600 then 1 else 0 end) as count3,
+        sum(case when time_min>1000 then 1 else 0 end) as count4,
+        sum(case when time_min>1500 then 1 else 0 end) as count5,
+        sum(case when time_min>3000 then 1 else 0 end) as count6
+        from sys_web_log
+        where 1=1
+        <include refid="query_order_where"/>
+        group by method  order by avgMin desc
+        limit 100
+    </select>
+
+
+    <sql id="query_order_where">
+        <if test="startTime != null and startTime !=''.toString()">
+            and  DATE_FORMAT(create_time,'%Y-%m-%d') >= DATE_FORMAT(#{startTime},'%Y-%m-%d')
+
+        </if>
+        <if test="endTime != null and endTime !=''.toString()">
+            and DATE_FORMAT(#{endTime},'%Y-%m-%d') >= DATE_FORMAT(create_time,'%Y-%m-%d')
+        </if>
+
+
+        <if test="keyword!=null and keyword !=''.toString()">
+            and method like concat('%',#{keyword},'%')
+        </if>
+
+    </sql>
 </mapper>

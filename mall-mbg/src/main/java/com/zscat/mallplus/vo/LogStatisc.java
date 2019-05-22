@@ -11,6 +11,7 @@ import lombok.Data;
 public class LogStatisc {
     private String method;
     private int count;
+    private int avgMin;
     private int count1;
     private int count2;
     private int count3;

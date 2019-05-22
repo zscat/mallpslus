@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.sys.entity.SysWebLog;
+import com.zscat.mallplus.sys.service.ISysAdminLogService;
 import com.zscat.mallplus.sys.service.ISysWebLogService;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
+import com.zscat.mallplus.vo.LogParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,6 +34,20 @@ import java.util.List;
 public class SysWebLogController {
     @Resource
     private ISysWebLogService ISysWebLogService;
+
+    @SysLog(MODULE = "sys", REMARK = "根据条件查询接口统计")
+    @ApiOperation("根据条件查询所有列表")
+    @GetMapping(value = "/logStatic")
+    @PreAuthorize("hasAuthority('sys:SysAdminLog:read')")
+    public Object logStatic(LogParam entity
+    ) {
+        try {
+            return new CommonResult().success(ISysWebLogService.selectPageExt(entity));
+        } catch (Exception e) {
+            log.error("根据条件查询所有列表：%s", e.getMessage(), e);
+        }
+        return new CommonResult().failed();
+    }
 
     @SysLog(MODULE = "sys", REMARK = "根据条件查询所有列表")
     @ApiOperation("根据条件查询所有列表")

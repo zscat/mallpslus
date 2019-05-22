@@ -2,6 +2,10 @@ package com.zscat.mallplus.sys.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zscat.mallplus.sys.entity.SysWebLog;
+import com.zscat.mallplus.vo.LogParam;
+import com.zscat.mallplus.vo.LogStatisc;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.zscat.mallplus.sys.entity.SysWebLog;
  */
 public interface SysWebLogMapper extends BaseMapper<SysWebLog> {
 
+    List<LogStatisc> getLogStatisc(LogParam entity);
 }
