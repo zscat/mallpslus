@@ -55,12 +55,4 @@ public class CmsPrefrenceAreaProductRelation extends BaseEntity implements Seria
         this.productId = productId;
     }
 
-    @Override
-    public String toString() {
-        return "CmsPrefrenceAreaProductRelation{" +
-                ", id=" + id +
-                ", prefrenceAreaId=" + prefrenceAreaId +
-                ", productId=" + productId +
-                "}";
-    }
 }

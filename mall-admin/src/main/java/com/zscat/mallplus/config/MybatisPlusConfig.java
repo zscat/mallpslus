@@ -24,7 +24,7 @@ import java.util.List;
 @Configuration
 @MapperScan("com.zscat.mallplus.*.mapper*")
 public class MybatisPlusConfig {
-    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("sys_permission_category" , "columns", "tables", "information_schema.columns", "information_schema.tables", "sys_user", "sys_store", "sys_permission");
+    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("sys_permission_category", "columns", "tables", "information_schema.columns", "information_schema.tables", "sys_user", "sys_store", "sys_permission");
     @Autowired
     private ApiContext apiContext;
 

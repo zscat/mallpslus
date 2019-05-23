@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @since 2019-04-17
  */
 @Service
-public class CmsPrefrenceAreaProductRelationServiceImpl extends ServiceImpl<CmsPrefrenceAreaProductRelationMapper, CmsPrefrenceAreaProductRelation> implements ICmsPrefrenceAreaProductRelationService {
+public class CmsPrefrenceAreaProductRelationServiceImpl extends
+        ServiceImpl<CmsPrefrenceAreaProductRelationMapper, CmsPrefrenceAreaProductRelation> implements ICmsPrefrenceAreaProductRelationService {
 
 }
