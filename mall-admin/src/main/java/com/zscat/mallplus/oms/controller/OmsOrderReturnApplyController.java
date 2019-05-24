@@ -53,7 +53,6 @@ public class OmsOrderReturnApplyController {
     @SysLog(MODULE = "oms", REMARK = "保存订单退货申请")
     @ApiOperation("保存订单退货申请")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('oms:OmsOrderReturnApply:create')")
     public Object saveOmsOrderReturnApply(@RequestBody OmsOrderReturnApply entity) {
         try {
             if (IOmsOrderReturnApplyService.save(entity)) {
@@ -69,7 +68,6 @@ public class OmsOrderReturnApplyController {
     @SysLog(MODULE = "oms", REMARK = "更新订单退货申请")
     @ApiOperation("更新订单退货申请")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('oms:OmsOrderReturnApply:update')")
     public Object updateOmsOrderReturnApply(@RequestBody OmsOrderReturnApply entity) {
         try {
             if (IOmsOrderReturnApplyService.updateById(entity)) {
@@ -85,7 +83,6 @@ public class OmsOrderReturnApplyController {
     @SysLog(MODULE = "oms", REMARK = "删除订单退货申请")
     @ApiOperation("删除订单退货申请")
     @DeleteMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('oms:OmsOrderReturnApply:delete')")
     public Object deleteOmsOrderReturnApply(@ApiParam("订单退货申请id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

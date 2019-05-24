@@ -52,7 +52,6 @@ public class OmsOrderSettingController {
     @SysLog(MODULE = "oms", REMARK = "保存订单设置表")
     @ApiOperation("保存订单设置表")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('oms:OmsOrderSetting:create')")
     public Object saveOmsOrderSetting(@RequestBody OmsOrderSetting entity) {
         try {
             if (IOmsOrderSettingService.save(entity)) {
@@ -68,7 +67,6 @@ public class OmsOrderSettingController {
     @SysLog(MODULE = "oms", REMARK = "更新订单设置表")
     @ApiOperation("更新订单设置表")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('oms:OmsOrderSetting:update')")
     public Object updateOmsOrderSetting(@RequestBody OmsOrderSetting entity) {
         try {
             if (IOmsOrderSettingService.updateById(entity)) {

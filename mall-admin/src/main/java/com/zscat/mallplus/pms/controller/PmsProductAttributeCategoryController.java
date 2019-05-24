@@ -54,9 +54,11 @@ public class PmsProductAttributeCategoryController {
     @ApiOperation("保存产品属性分类表")
     @PostMapping(value = "/create")
     @PreAuthorize("hasAuthority('pms:PmsProductAttributeCategory:create')")
-    public Object savePmsProductAttributeCategory(@RequestBody PmsProductAttributeCategory entity) {
+    public Object create(@RequestParam String name) {
         try {
-            if (IPmsProductAttributeCategoryService.save(entity)) {
+            PmsProductAttributeCategory productAttributeCategory = new PmsProductAttributeCategory();
+            productAttributeCategory.setName(name);
+            if (IPmsProductAttributeCategoryService.save(productAttributeCategory)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {
@@ -70,9 +72,12 @@ public class PmsProductAttributeCategoryController {
     @ApiOperation("更新产品属性分类表")
     @PostMapping(value = "/update/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductAttributeCategory:update')")
-    public Object updatePmsProductAttributeCategory(@RequestBody PmsProductAttributeCategory entity) {
+    public Object updatePmsProductAttributeCategory(@PathVariable Long id, @RequestParam String name) {
         try {
-            if (IPmsProductAttributeCategoryService.updateById(entity)) {
+            PmsProductAttributeCategory productAttributeCategory = new PmsProductAttributeCategory();
+            productAttributeCategory.setName(name);
+            productAttributeCategory.setId(id);
+            if (IPmsProductAttributeCategoryService.updateById(productAttributeCategory)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {

@@ -36,7 +36,6 @@ public class OmsCompanyAddressController {
     @SysLog(MODULE = "oms", REMARK = "根据条件查询所有公司收发货地址表列表")
     @ApiOperation("根据条件查询所有公司收发货地址表列表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('oms:OmsCompanyAddress:read')")
     public Object getOmsCompanyAddressByPage(OmsCompanyAddress entity,
                                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
@@ -52,7 +51,6 @@ public class OmsCompanyAddressController {
     @SysLog(MODULE = "oms", REMARK = "保存公司收发货地址表")
     @ApiOperation("保存公司收发货地址表")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('oms:OmsCompanyAddress:create')")
     public Object saveOmsCompanyAddress(@RequestBody OmsCompanyAddress entity) {
         try {
             if (IOmsCompanyAddressService.save(entity)) {

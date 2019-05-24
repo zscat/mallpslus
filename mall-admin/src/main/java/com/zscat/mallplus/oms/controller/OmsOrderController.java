@@ -52,37 +52,7 @@ public class OmsOrderController {
         return new CommonResult().failed();
     }
 
-    @SysLog(MODULE = "oms", REMARK = "保存订单表")
-    @ApiOperation("保存订单表")
-    @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('oms:OmsOrder:create')")
-    public Object saveOmsOrder(@RequestBody OmsOrder entity) {
-        try {
-            if (IOmsOrderService.save(entity)) {
-                return new CommonResult().success();
-            }
-        } catch (Exception e) {
-            log.error("保存订单表：%s", e.getMessage(), e);
-            return new CommonResult().failed();
-        }
-        return new CommonResult().failed();
-    }
 
-    @SysLog(MODULE = "oms", REMARK = "更新订单表")
-    @ApiOperation("更新订单表")
-    @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('oms:OmsOrder:update')")
-    public Object updateOmsOrder(@RequestBody OmsOrder entity) {
-        try {
-            if (IOmsOrderService.updateById(entity)) {
-                return new CommonResult().success();
-            }
-        } catch (Exception e) {
-            log.error("更新订单表：%s", e.getMessage(), e);
-            return new CommonResult().failed();
-        }
-        return new CommonResult().failed();
-    }
 
     @SysLog(MODULE = "oms", REMARK = "删除订单表")
     @ApiOperation("删除订单表")
@@ -106,7 +76,6 @@ public class OmsOrderController {
     @SysLog(MODULE = "oms", REMARK = "给订单表分配订单表")
     @ApiOperation("查询订单表明细")
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('oms:OmsOrder:read')")
     public Object getOmsOrderById(@ApiParam("订单表id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
