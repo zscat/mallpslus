@@ -77,24 +77,10 @@ public class SingePmsController extends ApiBaseAction {
         try {
             goods = JsonUtil.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            goods = pmsProductService.getGoodsRedisById(id);
         }
         Map<String, Object> map = new HashMap<>();
-        /*PmsProductAndGroup productResult = pmsProductService.getProductAndGroup(id);
 
-        SmsGroup queryGoods = new SmsGroup();
-        queryGoods.setGoodsId(id);
-        SmsGroup group = groupService.getOne(new QueryWrapper<>(queryGoods));
-        if (group != null) {
-            Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
-            Long nowT = System.currentTimeMillis();
-            if (group != null && nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
-                map.put("group", group);
-                map.put("isGroup", 1);
-            } else {
-                map.put("isGroup", 2);
-            }
-        }*/
 
         map.put("goods", goods);
         return new CommonResult().success(map);
@@ -151,5 +137,15 @@ public class SingePmsController extends ApiBaseAction {
         }
     }
 
+
+    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页推荐商品")
+    @GetMapping(value = "/initGoodsRedis")
+    public Object initGoodsRedis() {
+
+        return pmsProductService.initGoodsRedis();
+
+    }
 
 }

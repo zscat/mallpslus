@@ -217,7 +217,9 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             return new CommonResult().failed("该用户已经存在");
         }
         //没有该用户进行添加操作
+
         UmsMember umsMember = new UmsMember();
+        umsMember.setMemberLevelId(4L);
         umsMember.setUsername(user.getUsername());
         umsMember.setPhone(user.getPhone());
         umsMember.setPassword(passwordEncoder.encode(user.getPassword()));

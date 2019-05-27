@@ -3,6 +3,7 @@ package com.zscat.mallplus.pms.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
+import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
 
 /**
@@ -18,4 +19,7 @@ public interface IPmsProductService extends IService<PmsProduct> {
     PmsProductAndGroup getProductAndGroup(Long id);
 
     PmsProductResult getUpdateInfo(Long id);
+
+    Object initGoodsRedis();
+    PmsProductParam getGoodsRedisById(Long id) ;
 }

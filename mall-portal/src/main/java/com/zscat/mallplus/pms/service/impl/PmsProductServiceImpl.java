@@ -2,16 +2,25 @@ package com.zscat.mallplus.pms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zscat.mallplus.pms.entity.PmsProduct;
-import com.zscat.mallplus.pms.mapper.PmsProductMapper;
-import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.cms.service.ICmsPrefrenceAreaProductRelationService;
+import com.zscat.mallplus.cms.service.ICmsSubjectProductRelationService;
+import com.zscat.mallplus.pms.entity.*;
+import com.zscat.mallplus.pms.mapper.*;
+import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
+import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
 import com.zscat.mallplus.sms.entity.SmsGroup;
 import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
 import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
+import com.zscat.mallplus.sms.service.ISmsHomeBrandService;
+import com.zscat.mallplus.sms.service.ISmsHomeNewProductService;
+import com.zscat.mallplus.sms.service.ISmsHomeRecommendProductService;
+import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.DateUtils;
+import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.vo.Rediskey;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +39,56 @@ import java.util.*;
 public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProduct> implements IPmsProductService {
 
     @Resource
+    private IPmsBrandService brandService;
+    @Resource
+    private ISmsHomeBrandService homeBrandService;
+    @Resource
+    private ISmsHomeNewProductService homeNewProductService;
+    @Resource
+    private ISmsHomeRecommendProductService homeRecommendProductService;
+    @Resource
     private PmsProductMapper productMapper;
+    @Resource
+    private IPmsMemberPriceService memberPriceDao;
+    @Resource
+    private PmsMemberPriceMapper memberPriceMapper;
+    @Resource
+    private IPmsProductLadderService productLadderDao;
+    @Resource
+    private PmsProductLadderMapper productLadderMapper;
+    @Resource
+    private IPmsProductFullReductionService productFullReductionDao;
+    @Resource
+    private PmsProductFullReductionMapper productFullReductionMapper;
+    @Resource
+    private IPmsSkuStockService skuStockDao;
+    @Resource
+    private PmsSkuStockMapper skuStockMapper;
+    @Resource
+    private IPmsProductAttributeValueService productAttributeValueDao;
+    @Resource
+    private PmsProductAttributeValueMapper productAttributeValueMapper;
+    @Resource
+    private ICmsSubjectProductRelationService subjectProductRelationDao;
+    @Resource
+    private CmsSubjectProductRelationMapper subjectProductRelationMapper;
+    @Resource
+    private ICmsPrefrenceAreaProductRelationService prefrenceAreaProductRelationDao;
+    @Resource
+    private CmsPrefrenceAreaProductRelationMapper prefrenceAreaProductRelationMapper;
+
+    @Resource
+    private PmsProductVertifyRecordMapper productVertifyRecordDao;
+
+    @Resource
+    private PmsProductVertifyRecordMapper productVertifyRecordMapper;
+
     @Resource
     private SmsGroupMapper groupMapper;
     @Resource
     private SmsGroupMemberMapper groupMemberMapper;
+    @Resource
+    private RedisService redisService;
 
     @Override
     public PmsProductAndGroup getProductAndGroup(Long id) {
@@ -106,5 +160,71 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     @Override
     public PmsProductResult getUpdateInfo(Long id) {
         return (PmsProductResult) productMapper.selectById(id);
+    }
+
+    @Override
+    public Object initGoodsRedis() {
+        List<PmsProduct> list = productMapper.selectList(new QueryWrapper<>());
+        for (PmsProduct goods : list) {
+            PmsProductParam param = new PmsProductParam();
+            BeanUtils.copyProperties(goods, param);
+
+            List<PmsProductLadder> productLadderList = productLadderMapper.selectList(new QueryWrapper<PmsProductLadder>().eq("product_id", goods.getId()));
+
+            List<PmsProductFullReduction> productFullReductionList = productFullReductionMapper.selectList(new QueryWrapper<PmsProductFullReduction>().eq("product_id", goods.getId()));
+
+            List<PmsMemberPrice> memberPriceList = memberPriceMapper.selectList(new QueryWrapper<PmsMemberPrice>().eq("product_id", goods.getId()));
+
+            List<PmsSkuStock> skuStockList = skuStockMapper.selectList(new QueryWrapper<PmsSkuStock>().eq("product_id", goods.getId()));
+
+            List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()));
+
+            List<CmsSubjectProductRelation> subjectProductRelationList = subjectProductRelationMapper.selectList(new QueryWrapper<CmsSubjectProductRelation>().eq("product_id", goods.getId()));
+
+            List<CmsPrefrenceAreaProductRelation> prefrenceAreaProductRelationList = prefrenceAreaProductRelationMapper.selectList(new QueryWrapper<CmsPrefrenceAreaProductRelation>().eq("product_id", goods.getId()));
+
+            param.setMemberPriceList(memberPriceList);
+            param.setPrefrenceAreaProductRelationList(prefrenceAreaProductRelationList);
+            param.setProductAttributeValueList(productAttributeValueList);
+            param.setProductFullReductionList(productFullReductionList);
+            param.setProductLadderList(productLadderList);
+            param.setSkuStockList(skuStockList);
+            param.setSubjectProductRelationList(subjectProductRelationList);
+            redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtil.objectToJson(param));
+        }
+        return 1;
+    }
+
+    @Override
+    public PmsProductParam getGoodsRedisById(Long id) {
+        PmsProduct goods = productMapper.selectById(id);
+
+        PmsProductParam param = new PmsProductParam();
+        BeanUtils.copyProperties(goods, param);
+
+        List<PmsProductLadder> productLadderList = productLadderMapper.selectList(new QueryWrapper<PmsProductLadder>().eq("product_id", goods.getId()));
+
+        List<PmsProductFullReduction> productFullReductionList = productFullReductionMapper.selectList(new QueryWrapper<PmsProductFullReduction>().eq("product_id", goods.getId()));
+
+        List<PmsMemberPrice> memberPriceList = memberPriceMapper.selectList(new QueryWrapper<PmsMemberPrice>().eq("product_id", goods.getId()));
+
+        List<PmsSkuStock> skuStockList = skuStockMapper.selectList(new QueryWrapper<PmsSkuStock>().eq("product_id", goods.getId()));
+
+        List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()));
+
+        List<CmsSubjectProductRelation> subjectProductRelationList = subjectProductRelationMapper.selectList(new QueryWrapper<CmsSubjectProductRelation>().eq("product_id", goods.getId()));
+
+        List<CmsPrefrenceAreaProductRelation> prefrenceAreaProductRelationList = prefrenceAreaProductRelationMapper.selectList(new QueryWrapper<CmsPrefrenceAreaProductRelation>().eq("product_id", goods.getId()));
+
+        param.setMemberPriceList(memberPriceList);
+        param.setPrefrenceAreaProductRelationList(prefrenceAreaProductRelationList);
+        param.setProductAttributeValueList(productAttributeValueList);
+        param.setProductFullReductionList(productFullReductionList);
+        param.setProductLadderList(productLadderList);
+        param.setSkuStockList(skuStockList);
+        param.setSubjectProductRelationList(subjectProductRelationList);
+        redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtil.objectToJson(param));
+
+        return param;
     }
 }
