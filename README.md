@@ -58,6 +58,15 @@ mall
 小程序功能列表
 <img src="https://images.gitee.com/uploads/images/2019/0519/170631_20a127ce_134431.png"  />
 
+
+ **_uniapp_** 
+
+uni-app 是一个使用 Vue.js 开发跨平台应用的前端框架，开发者编写一套代码，可编译到iOS、Android、H5、小程序等多个平台。
+
+<img src="https://images.gitee.com/uploads/images/2019/0528/141610_0b812292_134431.jpeg"/>
+
+
+
 ## 目前h5项目已实现功能
 1. 首页数据的展示
 2. 分类页数据的展示
