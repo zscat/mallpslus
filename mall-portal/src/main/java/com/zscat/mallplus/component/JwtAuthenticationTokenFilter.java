@@ -112,7 +112,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         sysLog.setOperationDesc(authHeader);
         sysLog.setUserName(username);
         sysLog.setTimeMin((endTime - startTime));
-        if (!"OPTIONS".equals(requestType)) {
+        if (!"OPTIONS".equals(requestType) && !interfaceName.contains("webjars")
+                && !interfaceName.contains("api-docs")) {
             fopSystemOperationLogService.insert(sysLog);
         }
     }

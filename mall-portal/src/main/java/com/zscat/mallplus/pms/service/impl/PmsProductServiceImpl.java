@@ -10,8 +10,7 @@ import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
-import com.zscat.mallplus.sms.entity.SmsGroup;
-import com.zscat.mallplus.sms.entity.SmsGroupMember;
+import com.zscat.mallplus.sms.entity.*;
 import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
 import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
 import com.zscat.mallplus.sms.service.ISmsHomeBrandService;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -226,5 +226,30 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtil.objectToJson(param));
 
         return param;
+    }
+    @Override
+    public List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) {
+        List<SmsHomeBrand> brands = homeBrandService.list(new QueryWrapper<>());
+        List<Long> ids = brands.stream()
+                .map(SmsHomeBrand::getId)
+                .collect(Collectors.toList());
+        return (List<PmsBrand>) brandService.listByIds(ids);
+
+    }
+    @Override
+    public List<PmsProduct> getNewProductList(int pageNum, int pageSize) {
+        List<SmsHomeNewProduct> brands = homeNewProductService.list(new QueryWrapper<>());
+        List<Long> ids = brands.stream()
+                .map(SmsHomeNewProduct::getId)
+                .collect(Collectors.toList());
+        return (List<PmsProduct>) productMapper.selectBatchIds(ids);
+    }
+    @Override
+    public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {
+        List<SmsHomeRecommendProduct> brands = homeRecommendProductService.list(new QueryWrapper<>());
+        List<Long> ids = brands.stream()
+                .map(SmsHomeRecommendProduct::getId)
+                .collect(Collectors.toList());
+        return (List<PmsProduct>)productMapper.selectBatchIds(ids);
     }
 }

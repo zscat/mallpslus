@@ -3,6 +3,8 @@ package com.zscat.mallplus.cms.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 
+import java.util.List;
+
 /**
  * <p>
  * 专题表 服务类
@@ -13,4 +15,5 @@ import com.zscat.mallplus.cms.entity.CmsSubject;
  */
 public interface ICmsSubjectService extends IService<CmsSubject> {
 
+    List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) ;
 }

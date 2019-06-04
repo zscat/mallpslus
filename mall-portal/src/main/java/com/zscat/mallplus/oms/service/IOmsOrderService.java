@@ -8,6 +8,7 @@ import com.zscat.mallplus.oms.vo.OrderParam;
 import com.zscat.mallplus.oms.vo.TbThanks;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.CartParam;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -62,4 +63,6 @@ public interface IOmsOrderService extends IService<OmsOrder> {
     ConfirmOrderResult submitPreview(OrderParam orderParam);
 
     int payOrder(TbThanks tbThanks);
+
+    Object addCart(CartParam cartParam);
 }

@@ -2,8 +2,6 @@ package com.zscat.mallplus.component;
 
 
 import com.zscat.mallplus.sys.entity.SysAdminLog;
-import com.zscat.mallplus.sys.entity.SysWebLog;
-import com.zscat.mallplus.sys.mapper.SysWebLogMapper;
 import com.zscat.mallplus.sys.service.ISysAdminLogService;
 import com.zscat.mallplus.util.IpAddressUtil;
 import com.zscat.mallplus.util.JwtTokenUtil;
@@ -113,7 +111,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         sysLog.setOperationDesc(authHeader);
         sysLog.setUserName(username);
         sysLog.setTimeMin((endTime - startTime));
-        if (!"OPTIONS".equals(requestType)) {
+        if (!"OPTIONS".equals(requestType) && !interfaceName.contains("webjars")
+                && !interfaceName.contains("api-docs")) {
             fopSystemOperationLogService.save(sysLog);
         }
     }

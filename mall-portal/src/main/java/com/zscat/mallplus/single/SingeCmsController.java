@@ -8,9 +8,11 @@ import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.entity.CmsSubjectCategory;
 import com.zscat.mallplus.cms.entity.CmsSubjectComment;
+import com.zscat.mallplus.cms.entity.CmsTopic;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
+import com.zscat.mallplus.cms.service.ICmsTopicService;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
@@ -47,7 +49,8 @@ public class SingeCmsController extends ApiBaseAction {
     private IPmsProductAttributeCategoryService productAttributeCategoryService;
     @Resource
     private IPmsProductCategoryService productCategoryService;
-
+    @Resource
+    private ICmsTopicService topicService;
 
     @Resource
     private ICmsSubjectCategoryService subjectCategoryService;
@@ -84,6 +87,34 @@ public class SingeCmsController extends ApiBaseAction {
                               @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(commentService.page(new Page<CmsSubjectComment>(pageNum, pageSize), new QueryWrapper<>(subjectComment)));
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询首页推荐文章")
+    @GetMapping(value = "/recommendSubjectList/list")
+    public Object getRecommendSubjectList(
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+        return new CommonResult().success(subjectService.getRecommendSubjectList(1,1));
+    }
+    @SysLog(MODULE = "cms", REMARK = "查询文章评论列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询文章评论列表")
+    @GetMapping(value = "/topic/list")
+    public Object subjectList(CmsTopic topic,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                              @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+        return new CommonResult().success(topicService.page(new Page<CmsTopic>(pageNum, pageSize), new QueryWrapper<>(topic)));
+    }
+    @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
+    @IgnoreAuth
+    @GetMapping(value = "/topic/detail")
+    @ApiOperation(value = "查询商品详情信息")
+    public Object topicDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        CmsTopic productResult = topicService.getById(id);
+        return new CommonResult().success(productResult);
     }
 
     @SysLog(MODULE = "cms", REMARK = "创建文章")

@@ -340,6 +340,11 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 umsMember.setStatus(1);
                 umsMember.setBlance(new BigDecimal(0));
                 umsMember.setIntegration(0);
+                umsMember.setMemberLevelId(4L);
+
+                umsMember.setCity(me.get("country").toString()+"-"+me.get("province").toString()+"-"+me.get("city").toString());
+
+                umsMember.setGender((Integer) me.get("gender"));
                 umsMember.setHistoryIntegration(0);
                 umsMember.setWeixinOpenid(sessionData.getString("openid"));
                 if (StringUtils.isEmpty(me.get("avatarUrl").toString())) {

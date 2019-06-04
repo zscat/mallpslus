@@ -10,6 +10,7 @@ import com.zscat.mallplus.oms.vo.GroupAndOrderVo;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.CartParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +72,12 @@ public class SingeOmsController extends ApiBaseAction {
     public Object bookOrder(GroupAndOrderVo orderParam) {
         UmsMember member = this.getCurrentMember();
         return orderService.generateSingleOrder(orderParam, member);
+    }
+    @ApiOperation("添加商品到购物车")
+    @RequestMapping(value = "/addCart")
+    @ResponseBody
+    public Object addCart(CartParam cartParam) {
+        return orderService.addCart(cartParam);
+
     }
 }

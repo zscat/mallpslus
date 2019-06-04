@@ -78,8 +78,10 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
     @TableField("lock_stock")
     private Integer lockStock;
 
-//    private String meno;
-
+    @TableField(exist = false)
+    private String meno;
+@TableField("product_name")
+private String productName;
 
     public Long getId() {
         return id;
@@ -87,6 +89,14 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public Long getProductId() {
@@ -185,30 +195,30 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
         this.lockStock = lockStock;
     }
 
-//    public String getMeno() {
-//        int sstock = (this.stock-this.lockStock)>0?(this.stock-this.lockStock):0;
-//        StringBuffer sb = new StringBuffer("价格:" + this.price + "元,库存:" + sstock + ",规格:" + this.sp1);
-//        if (this.sp2 != null) {
-//            sb.append("," + this.sp2);
-//        }
-//        if (this.sp3 != null) {
-//            sb.append("," + this.sp3);
-//        }
-//        return sb.toString();
-//    }
-//    public String getMeno1() {
-//        StringBuffer sb = new StringBuffer("规格:" + this.sp1);
-//        if (this.sp2 != null) {
-//            sb.append("," + this.sp2);
-//        }
-//        if (this.sp3 != null) {
-//            sb.append("," + this.sp3);
-//        }
-//        return sb.toString();
-//    }
-//    public void setMeno(String meno) {
-//        this.meno = meno;
-//    }
+    public String getMeno() {
+        int sstock = (this.stock-this.lockStock)>0?(this.stock-this.lockStock):0;
+        StringBuffer sb = new StringBuffer("价格:" + this.price + "元,库存:" + sstock + ",规格:" + this.sp1);
+        if (this.sp2 != null) {
+            sb.append("," + this.sp2);
+        }
+        if (this.sp3 != null) {
+            sb.append("," + this.sp3);
+        }
+        return sb.toString();
+    }
+    public String getMeno1() {
+        StringBuffer sb = new StringBuffer("规格:" + this.sp1);
+        if (this.sp2 != null) {
+            sb.append("," + this.sp2);
+        }
+        if (this.sp3 != null) {
+            sb.append("," + this.sp3);
+        }
+        return sb.toString();
+    }
+    public void setMeno(String meno) {
+        this.meno = meno;
+    }
 
     @Override
     public String toString() {
