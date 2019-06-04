@@ -1,7 +1,6 @@
 package com.zscat.mallplus.component;
 
 
-import com.zscat.mallplus.sys.entity.SysAdminLog;
 import com.zscat.mallplus.sys.entity.SysWebLog;
 import com.zscat.mallplus.sys.mapper.SysWebLogMapper;
 import com.zscat.mallplus.util.IpAddressUtil;
@@ -103,7 +102,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 + ",\"cost\":\"" + (endTime - startTime) + "ms\"");
         int startIntercept = fullUrl.replace("//", "a").indexOf("/") + 1;
 
-        String interfaceName = fullUrl.substring(startIntercept);
+        String interfaceName = fullUrl.substring(startIntercept,20);
         sysLog.setCreateTime(new Date());
         sysLog.setIp(IpAddressUtil.getIpAddr(request));
         sysLog.setMethod(interfaceName);
