@@ -7,6 +7,8 @@ import java.util.Map;
 
 @Component
 public class ApiContext {
+
+
     private static final String KEY_CURRENT_PROVIDER_ID = "KEY_CURRENT_PROVIDER_ID";
     private static final Map<String, Object> mContext = Maps.newConcurrentMap();
 
