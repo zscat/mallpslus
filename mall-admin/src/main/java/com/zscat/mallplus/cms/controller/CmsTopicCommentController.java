@@ -83,7 +83,7 @@ public class CmsTopicCommentController {
 
     @SysLog(MODULE = "cms", REMARK = "删除专题评论表")
     @ApiOperation("删除专题评论表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsTopicComment:delete')")
     public Object deleteCmsTopicComment(@ApiParam("专题评论表id") @PathVariable Long id) {
         try {

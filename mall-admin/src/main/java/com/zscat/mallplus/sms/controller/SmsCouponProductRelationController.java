@@ -83,7 +83,7 @@ public class SmsCouponProductRelationController {
 
     @SysLog(MODULE = "sms", REMARK = "删除优惠券和产品的关系表")
     @ApiOperation("删除优惠券和产品的关系表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsCouponProductRelation:delete')")
     public Object deleteSmsCouponProductRelation(@ApiParam("优惠券和产品的关系表id") @PathVariable Long id) {
         try {

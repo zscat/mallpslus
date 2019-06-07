@@ -116,10 +116,10 @@ public class ApiEncryptDataInit implements ApplicationContextAware {
             methodType = HttpMethodTypePrefixConstant.PUT;
             uri.append(formatUri(method.getAnnotation(PutMapping.class).value()[0]));
 
-        } else if (method.isAnnotationPresent(DeleteMapping.class)) {
+        } else if (method.isAnnotationPresent(GetMapping.class)) {
 
             methodType = HttpMethodTypePrefixConstant.DELETE;
-            uri.append(formatUri(method.getAnnotation(DeleteMapping.class).value()[0]));
+            uri.append(formatUri(method.getAnnotation(GetMapping.class).value()[0]));
 
         }
 

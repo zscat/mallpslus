@@ -103,7 +103,7 @@ public class SmsGroupController {
 
     @SysLog(MODULE = "sms", REMARK = "删除")
     @ApiOperation("删除")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsGroup:delete')")
     public Object deleteSmsGroup(@ApiParam("id") @PathVariable Long id) {
         try {

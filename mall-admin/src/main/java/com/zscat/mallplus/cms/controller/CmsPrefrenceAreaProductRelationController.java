@@ -83,7 +83,7 @@ public class CmsPrefrenceAreaProductRelationController {
 
     @SysLog(MODULE = "cms", REMARK = "删除优选专区和产品关系表")
     @ApiOperation("删除优选专区和产品关系表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsPrefrenceAreaProductRelation:delete')")
     public Object deleteCmsPrefrenceAreaProductRelation(@ApiParam("优选专区和产品关系表id") @PathVariable Long id) {
         try {

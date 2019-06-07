@@ -87,7 +87,7 @@ public class SysRoleController extends ApiController {
 
     @SysLog(MODULE = "sys", REMARK = "删除角色")
     @ApiOperation("删除角色")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sys:role:delete')")
     public Object deleteRole(@ApiParam("角色id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class PmsProductAttributeValueController {
 
     @SysLog(MODULE = "pms", REMARK = "删除存储产品参数信息的表")
     @ApiOperation("删除存储产品参数信息的表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductAttributeValue:delete')")
     public Object deletePmsProductAttributeValue(@ApiParam("存储产品参数信息的表id") @PathVariable Long id) {
         try {

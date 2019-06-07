@@ -83,7 +83,7 @@ public class UmsIntegrationChangeHistoryController {
 
     @SysLog(MODULE = "ums", REMARK = "删除积分变化历史记录表")
     @ApiOperation("删除积分变化历史记录表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsIntegrationChangeHistory:delete')")
     public Object deleteUmsIntegrationChangeHistory(@ApiParam("积分变化历史记录表id") @PathVariable Long id) {
         try {

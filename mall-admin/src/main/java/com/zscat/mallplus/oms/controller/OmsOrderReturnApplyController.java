@@ -82,7 +82,7 @@ public class OmsOrderReturnApplyController {
 
     @SysLog(MODULE = "oms", REMARK = "删除订单退货申请")
     @ApiOperation("删除订单退货申请")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     public Object deleteOmsOrderReturnApply(@ApiParam("订单退货申请id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

@@ -1,6 +1,7 @@
 package com.zscat.mallplus.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.entity.CmsSubject;
@@ -60,6 +61,8 @@ public class HomeController {
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
     @RequestMapping(value = "/content", method = RequestMethod.GET)
     public Object content() {
+        List<UmsMember> log =  memberService.list(new QueryWrapper<UmsMember>().ne("id",2).last("limit 5"));
+
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(Rediskey.HomeContentResult);
         if (bannerJson != null) {

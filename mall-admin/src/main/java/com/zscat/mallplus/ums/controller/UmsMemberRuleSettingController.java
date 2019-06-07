@@ -83,7 +83,7 @@ public class UmsMemberRuleSettingController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员积分成长规则表")
     @ApiOperation("删除会员积分成长规则表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberRuleSetting:delete')")
     public Object deleteUmsMemberRuleSetting(@ApiParam("会员积分成长规则表id") @PathVariable Long id) {
         try {

@@ -81,7 +81,7 @@ import java.util.List;
 
         @SysLog(MODULE="${module}",REMARK="删除${tableName}数据")
         @ApiOperation("删除${comments}数据")
-        @DeleteMapping(value="/delete/{id}")
+        @GetMapping(value="/delete/{id}")
         @PreAuthorize("hasAuthority('${module}:${Module}${className}:delete')")
         public Object deleteRole(@ApiParam("${comments}_id")@PathVariable Long id){
         try{

@@ -83,7 +83,7 @@ public class PmsSmallNaviconCategoryController {
 
     @SysLog(MODULE = "pms", REMARK = "删除pms_small_navicon_category数据")
     @ApiOperation("删除小程序首页nav管理数据")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsSmallNaviconCategory:delete')")
     public Object deleteRole(@ApiParam("小程序首页nav管理_id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class SysAreaController {
 
     @SysLog(MODULE = "sys", REMARK = "删除")
     @ApiOperation("删除")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sys:SysArea:delete')")
     public Object deleteRole(@ApiParam("id") @PathVariable Long id) {
         try {

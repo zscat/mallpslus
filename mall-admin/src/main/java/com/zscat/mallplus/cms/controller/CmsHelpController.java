@@ -83,7 +83,7 @@ public class CmsHelpController {
 
     @SysLog(MODULE = "cms", REMARK = "删除帮助表")
     @ApiOperation("删除帮助表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsHelp:delete')")
     public Object deleteCmsHelp(@ApiParam("帮助表id") @PathVariable Long id) {
         try {

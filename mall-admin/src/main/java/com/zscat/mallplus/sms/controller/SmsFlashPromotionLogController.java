@@ -83,7 +83,7 @@ public class SmsFlashPromotionLogController {
 
     @SysLog(MODULE = "sms", REMARK = "删除限时购通知记录")
     @ApiOperation("删除限时购通知记录")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotionLog:delete')")
     public Object deleteSmsFlashPromotionLog(@ApiParam("限时购通知记录id") @PathVariable Long id) {
         try {

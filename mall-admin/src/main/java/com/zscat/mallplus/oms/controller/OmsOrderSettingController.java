@@ -81,7 +81,7 @@ public class OmsOrderSettingController {
 
     @SysLog(MODULE = "oms", REMARK = "删除订单设置表")
     @ApiOperation("删除订单设置表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('oms:OmsOrderSetting:delete')")
     public Object deleteOmsOrderSetting(@ApiParam("订单设置表id") @PathVariable Long id) {
         try {

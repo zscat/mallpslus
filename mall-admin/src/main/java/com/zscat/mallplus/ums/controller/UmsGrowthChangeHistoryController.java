@@ -83,7 +83,7 @@ public class UmsGrowthChangeHistoryController {
 
     @SysLog(MODULE = "ums", REMARK = "删除成长值变化历史记录表")
     @ApiOperation("删除成长值变化历史记录表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsGrowthChangeHistory:delete')")
     public Object deleteUmsGrowthChangeHistory(@ApiParam("成长值变化历史记录表id") @PathVariable Long id) {
         try {

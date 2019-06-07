@@ -83,7 +83,7 @@ public class UmsMemberBlanceLogController {
 
     @SysLog(MODULE = "ums", REMARK = "删除")
     @ApiOperation("删除")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberBlanceLog:delete')")
     public Object deleteUmsMemberBlanceLog(@ApiParam("id") @PathVariable Long id) {
         try {

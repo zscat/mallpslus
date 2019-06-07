@@ -83,7 +83,7 @@ public class SmsCouponHistoryController {
 
     @SysLog(MODULE = "sms", REMARK = "删除优惠券使用、领取历史表")
     @ApiOperation("删除优惠券使用、领取历史表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsCouponHistory:delete')")
     public Object deleteSmsCouponHistory(@ApiParam("优惠券使用、领取历史表id") @PathVariable Long id) {
         try {

@@ -121,7 +121,7 @@ public class SmsFlashPromotionController {
 
     @SysLog(MODULE = "sms", REMARK = "删除sms_flash_promotion数据")
     @ApiOperation("删除限时购表数据")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:delete')")
     public Object deleteRole(@ApiParam("限时购表_id") @PathVariable Long id) {
         try {

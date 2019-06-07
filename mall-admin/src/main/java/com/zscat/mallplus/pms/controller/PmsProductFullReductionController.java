@@ -83,7 +83,7 @@ public class PmsProductFullReductionController {
 
     @SysLog(MODULE = "pms", REMARK = "删除产品满减表(只针对同商品)")
     @ApiOperation("删除产品满减表(只针对同商品)")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductFullReduction:delete')")
     public Object deletePmsProductFullReduction(@ApiParam("产品满减表(只针对同商品)id") @PathVariable Long id) {
         try {

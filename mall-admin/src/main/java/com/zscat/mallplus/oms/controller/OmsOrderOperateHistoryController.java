@@ -83,7 +83,7 @@ public class OmsOrderOperateHistoryController {
 
     @SysLog(MODULE = "oms", REMARK = "删除订单操作历史记录")
     @ApiOperation("删除订单操作历史记录")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('oms:OmsOrderOperateHistory:delete')")
     public Object deleteOmsOrderOperateHistory(@ApiParam("订单操作历史记录id") @PathVariable Long id) {
         try {

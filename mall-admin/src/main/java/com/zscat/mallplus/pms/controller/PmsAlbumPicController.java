@@ -83,7 +83,7 @@ public class PmsAlbumPicController {
 
     @SysLog(MODULE = "pms", REMARK = "删除画册图片表")
     @ApiOperation("删除画册图片表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsAlbumPic:delete')")
     public Object deletePmsAlbumPic(@ApiParam("画册图片表id") @PathVariable Long id) {
         try {

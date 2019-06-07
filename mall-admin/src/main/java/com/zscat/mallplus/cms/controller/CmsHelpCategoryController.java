@@ -83,7 +83,7 @@ public class CmsHelpCategoryController {
 
     @SysLog(MODULE = "cms", REMARK = "删除帮助分类表")
     @ApiOperation("删除帮助分类表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsHelpCategory:delete')")
     public Object deleteCmsHelpCategory(@ApiParam("帮助分类表id") @PathVariable Long id) {
         try {

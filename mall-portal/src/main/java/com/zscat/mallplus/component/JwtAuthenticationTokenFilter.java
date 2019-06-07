@@ -102,7 +102,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 + ",\"cost\":\"" + (endTime - startTime) + "ms\"");
         int startIntercept = fullUrl.replace("//", "a").indexOf("/") + 1;
 
-        String interfaceName = fullUrl.substring(startIntercept,20);
+        String interfaceName = fullUrl.substring(startIntercept,40);
         sysLog.setCreateTime(new Date());
         sysLog.setIp(IpAddressUtil.getIpAddr(request));
         sysLog.setMethod(interfaceName);

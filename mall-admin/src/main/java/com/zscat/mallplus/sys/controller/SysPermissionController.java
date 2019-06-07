@@ -111,7 +111,7 @@ public class SysPermissionController extends BaseController {
 
     @SysLog(MODULE = "sys", REMARK = "删除后台用户权限表")
     @ApiOperation("删除后台用户权限表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sys:SysPermission:delete')")
     public Object deleteRole(@ApiParam("后台用户权限表id") @PathVariable Long id) {
         try {

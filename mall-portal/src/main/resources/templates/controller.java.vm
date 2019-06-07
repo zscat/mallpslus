@@ -78,7 +78,7 @@ public Object update${entity}(@RequestBody ${entity} entity){
         }
 @SysLog(MODULE = "${package.ModuleName}", REMARK = "删除$!{table.comment}")
 @ApiOperation("删除$!{table.comment}")
-@DeleteMapping(value = "/delete/{id}")
+@GetMapping(value = "/delete/{id}")
 @PreAuthorize("hasAuthority('${package.ModuleName}:${entity}:delete')")
 public Object delete${entity}(@ApiParam("$!{table.comment}id") @PathVariable Long id){
         try{

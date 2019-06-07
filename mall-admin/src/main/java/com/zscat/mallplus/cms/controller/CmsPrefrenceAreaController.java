@@ -83,7 +83,7 @@ public class CmsPrefrenceAreaController {
 
     @SysLog(MODULE = "cms", REMARK = "删除优选专区")
     @ApiOperation("删除优选专区")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsPrefrenceArea:delete')")
     public Object deleteCmsPrefrenceArea(@ApiParam("优选专区id") @PathVariable Long id) {
         try {

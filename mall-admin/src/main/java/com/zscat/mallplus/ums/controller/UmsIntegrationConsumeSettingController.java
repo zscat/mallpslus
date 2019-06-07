@@ -83,7 +83,7 @@ public class UmsIntegrationConsumeSettingController {
 
     @SysLog(MODULE = "ums", REMARK = "删除积分消费设置")
     @ApiOperation("删除积分消费设置")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsIntegrationConsumeSetting:delete')")
     public Object deleteUmsIntegrationConsumeSetting(@ApiParam("积分消费设置id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class PmsBrandController {
 
     @SysLog(MODULE = "pms", REMARK = "删除品牌表")
     @ApiOperation("删除品牌表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsBrand:delete')")
     public Object deletePmsBrand(@ApiParam("品牌表id") @PathVariable Long id) {
         try {

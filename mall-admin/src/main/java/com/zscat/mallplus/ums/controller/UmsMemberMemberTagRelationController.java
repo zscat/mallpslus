@@ -83,7 +83,7 @@ public class UmsMemberMemberTagRelationController {
 
     @SysLog(MODULE = "ums", REMARK = "删除用户和标签关系表")
     @ApiOperation("删除用户和标签关系表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberMemberTagRelation:delete')")
     public Object deleteUmsMemberMemberTagRelation(@ApiParam("用户和标签关系表id") @PathVariable Long id) {
         try {

@@ -98,7 +98,7 @@ public class SysStoreController {
 
     @SysLog(MODULE = "sys", REMARK = "删除")
     @ApiOperation("删除")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     public Object deleteSysStore(@ApiParam("id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

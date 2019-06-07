@@ -83,7 +83,7 @@ public class PmsFeightTemplateController {
 
     @SysLog(MODULE = "pms", REMARK = "删除运费模版")
     @ApiOperation("删除运费模版")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsFeightTemplate:delete')")
     public Object deletePmsFeightTemplate(@ApiParam("运费模版id") @PathVariable Long id) {
         try {

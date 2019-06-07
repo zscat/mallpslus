@@ -83,7 +83,7 @@ public class UmsMemberReceiveAddressController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员收货地址表")
     @ApiOperation("删除会员收货地址表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberReceiveAddress:delete')")
     public Object deleteUmsMemberReceiveAddress(@ApiParam("会员收货地址表id") @PathVariable Long id) {
         try {

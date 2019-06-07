@@ -83,7 +83,7 @@ public class SmsHomeBrandController {
 
     @SysLog(MODULE = "sms", REMARK = "删除首页推荐品牌表")
     @ApiOperation("删除首页推荐品牌表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeBrand:delete')")
     public Object deleteSmsHomeBrand(@ApiParam("首页推荐品牌表id") @PathVariable Long id) {
         try {

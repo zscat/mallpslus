@@ -84,7 +84,7 @@ public class PmsAlbumController {
 
     @SysLog(MODULE = "pms", REMARK = "删除pms_album数据")
     @ApiOperation("删除相册表数据")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:delete')")
     public Object deleteRole(@ApiParam("相册表_id") @PathVariable Long id) {
         try {

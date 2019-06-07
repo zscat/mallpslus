@@ -80,7 +80,7 @@ public class SysPermissionCategoryController {
 
     @SysLog(MODULE = "sys", REMARK = "删除sys_permission_category数据")
     @ApiOperation("删除权限类别表数据")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     public Object deleteRole(@ApiParam("权限类别表_id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

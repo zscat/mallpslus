@@ -83,7 +83,7 @@ public class SmsHomeRecommendSubjectController {
 
     @SysLog(MODULE = "sms", REMARK = "删除首页推荐专题表")
     @ApiOperation("删除首页推荐专题表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeRecommendSubject:delete')")
     public Object deleteSmsHomeRecommendSubject(@ApiParam("首页推荐专题表id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class PmsProductVertifyRecordController {
 
     @SysLog(MODULE = "pms", REMARK = "删除商品审核记录")
     @ApiOperation("删除商品审核记录")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductVertifyRecord:delete')")
     public Object deletePmsProductVertifyRecord(@ApiParam("商品审核记录id") @PathVariable Long id) {
         try {

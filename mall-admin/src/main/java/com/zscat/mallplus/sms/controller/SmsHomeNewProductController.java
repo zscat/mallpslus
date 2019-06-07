@@ -83,7 +83,7 @@ public class SmsHomeNewProductController {
 
     @SysLog(MODULE = "sms", REMARK = "删除新鲜好物表")
     @ApiOperation("删除新鲜好物表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeNewProduct:delete')")
     public Object deleteSmsHomeNewProduct(@ApiParam("新鲜好物表id") @PathVariable Long id) {
         try {

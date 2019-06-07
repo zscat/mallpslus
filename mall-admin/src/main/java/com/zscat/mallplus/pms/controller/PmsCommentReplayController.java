@@ -83,7 +83,7 @@ public class PmsCommentReplayController {
 
     @SysLog(MODULE = "pms", REMARK = "删除产品评价回复表")
     @ApiOperation("删除产品评价回复表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsCommentReplay:delete')")
     public Object deletePmsCommentReplay(@ApiParam("产品评价回复表id") @PathVariable Long id) {
         try {

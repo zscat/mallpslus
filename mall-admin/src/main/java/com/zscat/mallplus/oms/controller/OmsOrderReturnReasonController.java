@@ -83,7 +83,7 @@ public class OmsOrderReturnReasonController {
 
     @SysLog(MODULE = "oms", REMARK = "删除退货原因表")
     @ApiOperation("删除退货原因表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('oms:OmsOrderReturnReason:delete')")
     public Object deleteOmsOrderReturnReason(@ApiParam("退货原因表id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class UmsMemberLevelController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员等级表")
     @ApiOperation("删除会员等级表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberLevel:delete')")
     public Object deleteUmsMemberLevel(@ApiParam("会员等级表id") @PathVariable Long id) {
         try {

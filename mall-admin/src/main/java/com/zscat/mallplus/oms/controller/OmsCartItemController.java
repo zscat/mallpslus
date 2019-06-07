@@ -83,7 +83,7 @@ public class OmsCartItemController {
 
     @SysLog(MODULE = "oms", REMARK = "删除购物车表")
     @ApiOperation("删除购物车表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('oms:OmsCartItem:delete')")
     public Object deleteOmsCartItem(@ApiParam("购物车表id") @PathVariable Long id) {
         try {

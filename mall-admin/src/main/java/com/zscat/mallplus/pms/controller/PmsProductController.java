@@ -92,7 +92,7 @@ public class PmsProductController {
 
     @SysLog(MODULE = "pms", REMARK = "删除商品信息")
     @ApiOperation("删除商品信息")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProduct:delete')")
     public Object deletePmsProduct(@ApiParam("商品信息id") @PathVariable Long id) {
         try {

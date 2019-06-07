@@ -83,7 +83,7 @@ public class UmsMemberProductCategoryRelationController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员与产品分类关系表（用户喜欢的分类）")
     @ApiOperation("删除会员与产品分类关系表（用户喜欢的分类）")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberProductCategoryRelation:delete')")
     public Object deleteUmsMemberProductCategoryRelation(@ApiParam("会员与产品分类关系表（用户喜欢的分类）id") @PathVariable Long id) {
         try {

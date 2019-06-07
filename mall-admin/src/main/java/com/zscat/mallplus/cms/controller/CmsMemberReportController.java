@@ -83,7 +83,7 @@ public class CmsMemberReportController {
 
     @SysLog(MODULE = "cms", REMARK = "删除用户举报表")
     @ApiOperation("删除用户举报表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsMemberReport:delete')")
     public Object deleteCmsMemberReport(@ApiParam("用户举报表id") @PathVariable Long id) {
         try {

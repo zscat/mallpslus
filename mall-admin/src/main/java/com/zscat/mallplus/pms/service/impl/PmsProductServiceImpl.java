@@ -10,7 +10,6 @@ import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.vo.Rediskey;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +80,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         int count;
         //创建商品
         PmsProduct product = productParam;
+        product.setCreateTime(new Date());
         product.setId(null);
         productMapper.insert(product);
         //根据促销类型设置价格：、阶梯价格、满减价格
@@ -102,7 +102,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         //关联优选
         relateAndInsertList(prefrenceAreaProductRelationDao, productParam.getPrefrenceAreaProductRelationList(), productId);
         count = 1;
-        redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
+    //    redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
         return count;
     }
 
@@ -167,7 +167,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         relateAndInsertList(prefrenceAreaProductRelationDao, productParam.getPrefrenceAreaProductRelationList(), id);
         count = 1;
 
-        redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
+     //   redisService.set(String.format(Rediskey.GOODSDETAIL, product.getId()), JsonUtil.objectToJson(productParam));
         return count;
     }
 
@@ -186,6 +186,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         record.setStatus(verifyStatus);
         record.setVertifyMan(UserUtils.getCurrentMember().getUsername());
         productVertifyRecordMapper.insert(record);
+        redisService.remove(String.format(Rediskey.GOODSDETAIL, product.getId()));
         return count;
     }
 
@@ -193,15 +194,19 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     public int updatePublishStatus(List<Long> ids, Integer publishStatus) {
         PmsProduct record = new PmsProduct();
         record.setPublishStatus(publishStatus);
-
+        clerGoodsRedis(ids);
         return productMapper.update(record, new QueryWrapper<PmsProduct>().in("id", ids));
     }
-
+    public void clerGoodsRedis(List<Long> ids) {
+        for (Long id : ids){
+            redisService.remove(String.format(Rediskey.GOODSDETAIL, id));
+        }
+    }
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
         PmsProduct record = new PmsProduct();
         record.setRecommandStatus(recommendStatus);
-
+        clerGoodsRedis(ids);
         return productMapper.update(record, new QueryWrapper<PmsProduct>().in("id", ids));
     }
 
@@ -209,7 +214,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     public int updateNewStatus(List<Long> ids, Integer newStatus) {
         PmsProduct record = new PmsProduct();
         record.setNewStatus(newStatus);
-
+        clerGoodsRedis(ids);
         return productMapper.update(record, new QueryWrapper<PmsProduct>().in("id", ids));
     }
 
@@ -217,7 +222,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     public int updateDeleteStatus(List<Long> ids, Integer deleteStatus) {
         PmsProduct record = new PmsProduct();
         record.setDeleteStatus(deleteStatus);
-
+        clerGoodsRedis(ids);
         return productMapper.update(record, new QueryWrapper<PmsProduct>().in("id", ids));
     }
 

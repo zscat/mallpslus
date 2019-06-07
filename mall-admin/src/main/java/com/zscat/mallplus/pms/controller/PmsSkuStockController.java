@@ -83,7 +83,7 @@ public class PmsSkuStockController {
 
     @SysLog(MODULE = "pms", REMARK = "删除sku的库存")
     @ApiOperation("删除sku的库存")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsSkuStock:delete')")
     public Object deletePmsSkuStock(@ApiParam(name = "pid", value = "sku的库存id", required = true) @PathVariable Long id) {
         try {

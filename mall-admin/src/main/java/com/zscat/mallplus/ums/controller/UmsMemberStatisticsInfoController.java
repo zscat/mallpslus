@@ -83,7 +83,7 @@ public class UmsMemberStatisticsInfoController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员统计信息")
     @ApiOperation("删除会员统计信息")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberStatisticsInfo:delete')")
     public Object deleteUmsMemberStatisticsInfo(@ApiParam("会员统计信息id") @PathVariable Long id) {
         try {

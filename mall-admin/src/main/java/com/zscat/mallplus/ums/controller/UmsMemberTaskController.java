@@ -83,7 +83,7 @@ public class UmsMemberTaskController {
 
     @SysLog(MODULE = "ums", REMARK = "删除会员任务表")
     @ApiOperation("删除会员任务表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('ums:UmsMemberTask:delete')")
     public Object deleteUmsMemberTask(@ApiParam("会员任务表id") @PathVariable Long id) {
         try {

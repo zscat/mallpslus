@@ -1,5 +1,6 @@
 package com.macro.mall.portal;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import lombok.extern.log4j.Log4j2;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest(classes = MallPortalApplicationTests.class)
@@ -22,11 +22,8 @@ public class MallPortalApplicationTests {
 
     @Test
     public void contextLoads() {
-        String ids = "1,2,3,4";
-        List<UmsMember> ll = (List<UmsMember>) sysAdminLogMapper.listByIds(Arrays.asList(ids.split(",")));
-        for (UmsMember log : ll) {
-            System.out.println(log.getUsername());
-        }
+       List<UmsMember> log =  sysAdminLogMapper.list(new QueryWrapper<UmsMember>().ne("id",2).last("limit 5"));
+
     }
 
 }

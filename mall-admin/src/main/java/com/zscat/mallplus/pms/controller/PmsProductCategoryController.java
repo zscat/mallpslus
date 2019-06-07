@@ -95,7 +95,7 @@ public class PmsProductCategoryController {
 
     @SysLog(MODULE = "pms", REMARK = "删除产品分类")
     @ApiOperation("删除产品分类")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductCategory:delete')")
     public Object deletePmsProductCategory(@ApiParam("产品分类id") @PathVariable Long id) {
         try {

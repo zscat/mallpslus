@@ -108,7 +108,7 @@ public class SysUserController extends ApiController {
 
     @SysLog(MODULE = "sys", REMARK = "删除用户")
     @ApiOperation("删除用户")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     public Object deleteUser(@ApiParam("用户id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

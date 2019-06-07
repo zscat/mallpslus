@@ -83,7 +83,7 @@ public class PmsProductCategoryAttributeRelationController {
 
     @SysLog(MODULE = "pms", REMARK = "删除产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）")
     @ApiOperation("删除产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductCategoryAttributeRelation:delete')")
     public Object deletePmsProductCategoryAttributeRelation(@ApiParam("产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class SmsRedPacketController {
 
     @SysLog(MODULE = "sms", REMARK = "删除红包")
     @ApiOperation("删除红包")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsRedPacket:delete')")
     public Object deleteSmsRedPacket(@ApiParam("红包id") @PathVariable Long id) {
         try {

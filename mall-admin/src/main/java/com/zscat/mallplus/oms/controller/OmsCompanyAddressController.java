@@ -81,7 +81,7 @@ public class OmsCompanyAddressController {
 
     @SysLog(MODULE = "oms", REMARK = "删除公司收发货地址表")
     @ApiOperation("删除公司收发货地址表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('oms:OmsCompanyAddress:delete')")
     public Object deleteOmsCompanyAddress(@ApiParam("公司收发货地址表id") @PathVariable Long id) {
         try {

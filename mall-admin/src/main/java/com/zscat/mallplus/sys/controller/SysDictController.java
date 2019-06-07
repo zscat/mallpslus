@@ -84,7 +84,7 @@ public class SysDictController {
 
     @SysLog(MODULE = "sys", REMARK = "删除系统配置信息表")
     @ApiOperation("删除系统配置信息表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sys:SysDict:delete')")
     public Object deleteSysDict(@ApiParam("系统配置信息表id") @PathVariable Long id) {
         try {

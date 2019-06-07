@@ -128,7 +128,7 @@ public class SmsFlashPromotionProductRelationController {
 
     @SysLog(MODULE = "sms", REMARK = "删除商品限时购与商品关系表")
     @ApiOperation("删除商品限时购与商品关系表")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:delete')")
     public Object deleteSmsFlashPromotionProductRelation(@ApiParam("商品限时购与商品关系表id") @PathVariable Long id) {
         try {

@@ -83,7 +83,7 @@ public class CmsTopicMemberController {
 
     @SysLog(MODULE = "cms", REMARK = "删除")
     @ApiOperation("删除")
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('cms:CmsTopicMember:delete')")
     public Object deleteCmsTopicMember(@ApiParam("id") @PathVariable Long id) {
         try {
