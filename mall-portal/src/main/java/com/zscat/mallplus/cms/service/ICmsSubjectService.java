@@ -16,4 +16,6 @@ import java.util.List;
 public interface ICmsSubjectService extends IService<CmsSubject> {
 
     List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) ;
+
+    int countByToday(Long id);
 }

@@ -125,10 +125,9 @@ public class SingeCmsController extends ApiBaseAction {
         UmsMember member = this.getCurrentMember();
         if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
-            CmsSubject newSubject = new CmsSubject();
-            newSubject.setMemberId(member.getId());
-            List<CmsSubject> subjects = subjectService.list(new QueryWrapper<>(newSubject));
-            if (subjects != null && subjects.size() > memberLevel.getArticlecount()) {
+
+            int subjectCounts = subjectService.countByToday(member.getId());
+            if (subjectCounts > memberLevel.getArticlecount()) {
                 commonResult = new CommonResult().failed("你今天已经有发" + memberLevel.getArticlecount() + "篇文章");
                 return commonResult;
             }

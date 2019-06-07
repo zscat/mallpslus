@@ -44,4 +44,9 @@ public class CmsSubjectServiceImpl extends ServiceImpl<CmsSubjectMapper, CmsSubj
                 .collect(Collectors.toList());
         return (List<CmsSubject>) subjectMapper.selectBatchIds(ids);
     }
+
+    @Override
+    public int countByToday(Long id){
+       return subjectMapper.countByToday(id);
+    }
 }

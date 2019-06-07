@@ -33,4 +33,8 @@
         member_id, reward
     </sql>
 
+    <select id="countByToday" resultType="java.lang.Integer">
+        select count(1) from cms_subject where member_id =#{memberId} and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+    </select>
+
 </mapper>

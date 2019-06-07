@@ -13,4 +13,5 @@ import com.zscat.mallplus.cms.entity.CmsSubject;
  */
 public interface CmsSubjectMapper extends BaseMapper<CmsSubject> {
 
+    int countByToday(Long memberId);
 }
