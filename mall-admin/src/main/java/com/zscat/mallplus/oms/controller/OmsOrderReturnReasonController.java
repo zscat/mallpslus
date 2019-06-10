@@ -119,7 +119,7 @@ public class OmsOrderReturnReasonController {
     }
 
     @ApiOperation(value = "批量删除退货原因表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除退货原因表")
     @PreAuthorize("hasAuthority('oms:OmsOrderReturnReason:delete')")

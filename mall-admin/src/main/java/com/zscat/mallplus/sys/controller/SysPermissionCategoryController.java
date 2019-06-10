@@ -114,7 +114,7 @@ public class SysPermissionCategoryController {
     }
 
     @ApiOperation(value = "批量删除SysPermissionCategory表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "sys", REMARK = "批量删除SysPermissionCategory表")
     public Object deleteBatch(@RequestParam("ids") List<Long> ids) {

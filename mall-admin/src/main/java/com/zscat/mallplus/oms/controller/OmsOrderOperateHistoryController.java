@@ -119,7 +119,7 @@ public class OmsOrderOperateHistoryController {
     }
 
     @ApiOperation(value = "批量删除订单操作历史记录")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除订单操作历史记录")
     @PreAuthorize("hasAuthority('oms:OmsOrderOperateHistory:delete')")

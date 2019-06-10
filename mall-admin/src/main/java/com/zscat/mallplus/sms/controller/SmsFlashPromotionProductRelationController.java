@@ -164,7 +164,7 @@ public class SmsFlashPromotionProductRelationController {
     }
 
     @ApiOperation(value = "批量删除商品限时购与商品关系表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品限时购与商品关系表")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:delete')")

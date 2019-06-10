@@ -119,7 +119,7 @@ public class UmsMemberReceiveAddressController {
     }
 
     @ApiOperation(value = "批量删除会员收货地址表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除会员收货地址表")
     @PreAuthorize("hasAuthority('ums:UmsMemberReceiveAddress:delete')")

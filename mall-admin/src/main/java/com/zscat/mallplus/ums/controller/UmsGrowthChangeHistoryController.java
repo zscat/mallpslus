@@ -119,7 +119,7 @@ public class UmsGrowthChangeHistoryController {
     }
 
     @ApiOperation(value = "批量删除成长值变化历史记录表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除成长值变化历史记录表")
     @PreAuthorize("hasAuthority('ums:UmsGrowthChangeHistory:delete')")

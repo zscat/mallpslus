@@ -120,7 +120,7 @@ public class SysDictController {
     }
 
     @ApiOperation(value = "批量删除系统配置信息表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除系统配置信息表")
     @PreAuthorize("hasAuthority('sys:SysDict:delete')")

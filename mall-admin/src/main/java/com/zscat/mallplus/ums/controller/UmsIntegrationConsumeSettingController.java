@@ -119,7 +119,7 @@ public class UmsIntegrationConsumeSettingController {
     }
 
     @ApiOperation(value = "批量删除积分消费设置")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除积分消费设置")
     @PreAuthorize("hasAuthority('ums:UmsIntegrationConsumeSetting:delete')")

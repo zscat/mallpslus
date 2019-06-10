@@ -120,7 +120,7 @@ public class PmsAlbumController {
     }
 
     @ApiOperation(value = "批量删除PmsAlbum表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除PmsAlbum表")
     @PreAuthorize("hasAuthority('pms:PmsAlbum:delete')")

@@ -117,7 +117,7 @@ public class OmsOrderReturnApplyController {
     }
 
     @ApiOperation(value = "批量删除订单退货申请")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除订单退货申请")
     @PreAuthorize("hasAuthority('oms:OmsOrderReturnApply:delete')")

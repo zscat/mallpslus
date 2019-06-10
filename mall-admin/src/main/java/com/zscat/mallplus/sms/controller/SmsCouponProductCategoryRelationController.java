@@ -119,7 +119,7 @@ public class SmsCouponProductCategoryRelationController {
     }
 
     @ApiOperation(value = "批量删除优惠券和产品分类关系表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除优惠券和产品分类关系表")
     @PreAuthorize("hasAuthority('sms:SmsCouponProductCategoryRelation:delete')")

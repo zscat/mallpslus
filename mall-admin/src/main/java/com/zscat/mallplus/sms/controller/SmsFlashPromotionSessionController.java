@@ -123,7 +123,7 @@ public class SmsFlashPromotionSessionController {
     }
 
     @ApiOperation(value = "批量删除限时购场次表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除限时购场次表")
     @PreAuthorize("hasAuthority('sms:SmsFlashPromotionSession:delete')")

@@ -127,7 +127,7 @@ public class SmsHomeAdvertiseController {
     }
 
     @ApiOperation(value = "批量删除首页轮播广告表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除首页轮播广告表")
     @PreAuthorize("hasAuthority('sms:SmsHomeAdvertise:delete')")

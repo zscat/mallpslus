@@ -119,7 +119,7 @@ public class PmsSkuStockController {
     }
 
     @ApiOperation(value = "批量删除sku的库存")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除sku的库存")
     @PreAuthorize("hasAuthority('pms:PmsSkuStock:delete')")

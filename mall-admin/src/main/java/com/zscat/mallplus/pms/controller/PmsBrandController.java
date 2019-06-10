@@ -119,7 +119,7 @@ public class PmsBrandController {
     }
 
     @ApiOperation(value = "批量删除品牌表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除品牌表")
     @PreAuthorize("hasAuthority('pms:PmsBrand:delete')")

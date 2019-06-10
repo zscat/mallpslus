@@ -119,7 +119,7 @@ public class CmsPrefrenceAreaController {
     }
 
     @ApiOperation(value = "批量删除优选专区")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除优选专区")
     @PreAuthorize("hasAuthority('cms:CmsPrefrenceArea:delete')")

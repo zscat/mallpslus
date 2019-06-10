@@ -119,7 +119,7 @@ public class OmsOrderItemController {
     }
 
     @ApiOperation(value = "批量删除订单中所包含的商品")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除订单中所包含的商品")
     @PreAuthorize("hasAuthority('oms:OmsOrderItem:delete')")

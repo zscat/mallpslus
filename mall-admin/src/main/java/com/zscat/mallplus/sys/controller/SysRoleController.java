@@ -123,7 +123,7 @@ public class SysRoleController extends ApiController {
     }
 
     @ApiOperation(value = "批量删除角色")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除角色")
     @PreAuthorize("hasAuthority('sys:role:delete')")

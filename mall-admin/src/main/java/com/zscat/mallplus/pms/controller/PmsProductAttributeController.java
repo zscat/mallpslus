@@ -138,7 +138,7 @@ public class PmsProductAttributeController {
     }
 
     @ApiOperation(value = "批量删除商品属性参数表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品属性参数表")
     @PreAuthorize("hasAuthority('pms:PmsProductAttribute:delete')")

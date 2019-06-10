@@ -139,7 +139,7 @@ public class SmsGroupController {
     }
 
     @ApiOperation(value = "批量删除")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除")
     @PreAuthorize("hasAuthority('sms:SmsGroup:delete')")

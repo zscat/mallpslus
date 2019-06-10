@@ -119,7 +119,7 @@ public class UmsMemberLevelController {
     }
 
     @ApiOperation(value = "批量删除会员等级表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除会员等级表")
     @PreAuthorize("hasAuthority('ums:UmsMemberLevel:delete')")

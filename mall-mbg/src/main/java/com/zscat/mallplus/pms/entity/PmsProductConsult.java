@@ -92,8 +92,7 @@ public class PmsProductConsult extends BaseEntity implements Serializable {
      */
     private Boolean isanonymous;
 
-    @TableField("is_del")
-    private Boolean isDel;
+
 
 
     public Long getId() {
@@ -186,13 +185,7 @@ public class PmsProductConsult extends BaseEntity implements Serializable {
         this.isanonymous = isanonymous;
     }
 
-    public Boolean getDel() {
-        return isDel;
-    }
 
-    public void setDel(Boolean isDel) {
-        this.isDel = isDel;
-    }
 
 
 }

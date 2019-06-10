@@ -119,7 +119,7 @@ public class PmsFeightTemplateController {
     }
 
     @ApiOperation(value = "批量删除运费模版")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除运费模版")
     @PreAuthorize("hasAuthority('pms:PmsFeightTemplate:delete')")

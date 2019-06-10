@@ -119,7 +119,7 @@ public class PmsMemberPriceController {
     }
 
     @ApiOperation(value = "批量删除商品会员价格表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品会员价格表")
     @PreAuthorize("hasAuthority('pms:PmsMemberPrice:delete')")

@@ -119,7 +119,7 @@ public class SmsHomeNewProductController {
     }
 
     @ApiOperation(value = "批量删除新鲜好物表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除新鲜好物表")
     @PreAuthorize("hasAuthority('sms:SmsHomeNewProduct:delete')")

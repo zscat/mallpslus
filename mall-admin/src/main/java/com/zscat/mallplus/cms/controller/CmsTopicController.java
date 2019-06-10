@@ -123,7 +123,7 @@ public class CmsTopicController {
     }
 
     @ApiOperation(value = "批量删除话题表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除话题表")
     @PreAuthorize("hasAuthority('cms:CmsTopic:delete')")

@@ -119,7 +119,7 @@ public class UmsMemberProductCategoryRelationController {
     }
 
     @ApiOperation(value = "批量删除会员与产品分类关系表（用户喜欢的分类）")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除会员与产品分类关系表（用户喜欢的分类）")
     @PreAuthorize("hasAuthority('ums:UmsMemberProductCategoryRelation:delete')")

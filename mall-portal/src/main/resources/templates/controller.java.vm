@@ -112,7 +112,7 @@ public Object get${entity}ById(@ApiParam("$!{table.comment}id") @PathVariable Lo
 
         }
 @ApiOperation(value = "批量删除$!{table.comment}")
-@RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+@RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
 @ResponseBody
 @SysLog(MODULE = "pms", REMARK = "批量删除$!{table.comment}")
 @PreAuthorize("hasAuthority('${package.ModuleName}:${entity}:delete')")

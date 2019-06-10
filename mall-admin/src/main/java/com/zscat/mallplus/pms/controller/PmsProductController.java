@@ -128,7 +128,7 @@ public class PmsProductController {
     }
 
     @ApiOperation(value = "批量删除商品信息")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品信息")
     @PreAuthorize("hasAuthority('pms:PmsProduct:delete')")

@@ -119,7 +119,7 @@ public class PmsProductCategoryAttributeRelationController {
     }
 
     @ApiOperation(value = "批量删除产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除产品的分类和属性的关系表，用于设置分类筛选条件（只支持一级分类）")
     @PreAuthorize("hasAuthority('pms:PmsProductCategoryAttributeRelation:delete')")
