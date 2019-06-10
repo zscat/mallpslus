@@ -11,7 +11,6 @@ import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
 import com.zscat.mallplus.pms.entity.PmsProductCategory;
-import com.zscat.mallplus.pms.entity.PmsSmallNaviconCategory;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
@@ -175,21 +174,27 @@ public class AppletMemberController extends ApiBaseAction {
                 queryT.setType(2);
                 bannerList = advertiseService.list(new QueryWrapper<>(queryT));
                 redisService.set(Rediskey.appletBannerKey + "2", JsonUtil.objectToJson(bannerList));
-                redisService.expire(Rediskey.appletBannerKey + "2", 24 * 60 * 60);
+                redisService.expire(Rediskey.appletBannerKey + "2", 24);
             }
             //获取轮播结束
             //获取分类
-            List<PmsSmallNaviconCategory> nav_icon_list = null;
-            PmsSmallNaviconCategory queryT_small = new PmsSmallNaviconCategory();
-            String navIconJson = redisService.get(Rediskey.appletNavIconKey);
-            if (navIconJson != null) {
-                nav_icon_list = JsonUtil.jsonToList(navIconJson, PmsSmallNaviconCategory.class);
-            }
-            if (navIconJson == null || nav_icon_list.size() <= 0) {
-                nav_icon_list = smallNaviconCategoryService.list(new QueryWrapper<>(queryT_small));
-                redisService.set(Rediskey.appletNavIconKey, JsonUtil.objectToJson(nav_icon_list));
-                redisService.expire(Rediskey.appletNavIconKey, 24 * 60 * 60);
-            }
+            List<TArticleDO> nav_icon_list = new ArrayList<>();
+            TArticleDO c1 = new TArticleDO("我的公告", "/pages/topic-list/topic-list", "navigate", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/86/863a7db352a936743faf8edd5162bb5c.png");
+            TArticleDO c2 = new TArticleDO("商品分类", "/pages/cat/cat", "switchTab", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/35/3570994c06e61b1f0cf719bdb52a0053.png");
+            TArticleDO c3 = new TArticleDO("购物车", "/pages/cart/cart", "switchTab", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/c2/c2b01cf78f79cbfba192d5896eeaecbe.png");
+            TArticleDO c4 = new TArticleDO("我的订单", "/pages/order/order?status=9", "navigate", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/7c/7c80acbbd479b099566cc6c3d34fbcb8.png");
+            TArticleDO c5 = new TArticleDO("用户中心", "/pages/user/user", "switchTab", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/46/46eabbff1e7dc5e416567fc45d4d5df3.png");
+            TArticleDO c6 = new TArticleDO("优惠劵", "/pages/coupon/coupon?status=0", "navigate", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/13/13312a6d56c202330f8c282d8cf84ada.png");
+            TArticleDO c7 = new TArticleDO("我的收藏", "/pages/favorite/favorite", "navigate", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/ca/cab6d8d4785e43bd46dcbb52ddf66f61.png");
+            TArticleDO c8 = new TArticleDO("售后订单", "/pages/order/order?status=4", "navigate", "http://www.91weiyi.xyz/addons/zjhj_mall/core/web/uploads/image/cf/cfb32a65d845b4e9a9778020ed2ccac6.png");
+            nav_icon_list.add(c1);
+            nav_icon_list.add(c2);
+            nav_icon_list.add(c3);
+            nav_icon_list.add(c4);
+            nav_icon_list.add(c5);
+            nav_icon_list.add(c6);
+            nav_icon_list.add(c7);
+            nav_icon_list.add(c8);
             //获取分类结束
             //获取秒杀活动商品
             //查询当前在线秒杀活动

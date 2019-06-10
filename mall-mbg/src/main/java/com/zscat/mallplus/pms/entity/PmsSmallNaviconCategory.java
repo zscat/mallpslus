@@ -25,7 +25,7 @@ public class PmsSmallNaviconCategory extends BaseEntity implements Serializable 
 
     @ApiModelProperty(value = "小程序首页分类ID")
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "分类名称")
     @TableField("title")

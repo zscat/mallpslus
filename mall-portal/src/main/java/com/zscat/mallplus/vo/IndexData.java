@@ -21,7 +21,7 @@ import java.util.List;
 public class IndexData {
     private List<TArticleDO> module_list;
     private List<SmsHomeAdvertise> banner_list;
-    private List<PmsSmallNaviconCategory> nav_icon_list;
+    private List<TArticleDO> nav_icon_list;
     private List<PmsProductAttributeCategory> cat_list;
     private HomeFlashPromotion homeFlashPromotion;
     private List<HomeProductAttr> new_products;
