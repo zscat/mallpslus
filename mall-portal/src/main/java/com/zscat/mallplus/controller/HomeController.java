@@ -15,6 +15,7 @@ import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.service.ISmsCouponService;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
+import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtil;
@@ -54,14 +55,15 @@ public class HomeController {
 
     @Autowired
     private RedisService redisService;
-
+    @Autowired
+    private UmsMemberMapper memberMapper;
 
     @IgnoreAuth
     @ApiOperation("首页内容页信息展示")
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
     @RequestMapping(value = "/content", method = RequestMethod.GET)
     public Object content() {
-        List<UmsMember> log =  memberService.list(new QueryWrapper<UmsMember>().ne("id",2).last("limit 5"));
+        List<UmsMember> log =  memberMapper.selectList(new QueryWrapper<UmsMember>().ne("id",2).last("limit 5"));
 
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(Rediskey.HomeContentResult);

@@ -30,3 +30,9 @@ SELECT * from sms_coupon_product_category_relation;
 
 SELECT * from oms_order_setting;
 
+
+接口需求
+1、会员获得的君米排位赛。描述：获得的君米是会员发帖其他人给予的打赏（自身购买的除外），每篇文章每位会员只能打赏一次。
+2、后台设计两个奖品栏，第二栏为VIP会员追加的奖励。
+3、此活动是所有会员的评选，设计关系的关联。
+4、排位名次前端需求按君米数实时更新。
