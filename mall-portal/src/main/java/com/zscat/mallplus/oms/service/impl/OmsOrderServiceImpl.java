@@ -1034,7 +1034,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setPrice(pmsSkuStock.getPrice());
                 cartItem.setProductSkuCode(pmsSkuStock.getSkuCode());
                 cartItem.setQuantity(cartParam.getTotal());
-                cartItem.setProductAttr(pmsSkuStock.getMeno1());
+              //  cartItem.setProductAttr(pmsSkuStock.getMeno1());
                 cartItem.setProductPic(pmsSkuStock.getPic());
                 cartItem.setSp1(pmsSkuStock.getSp1());
                 cartItem.setSp2(pmsSkuStock.getSp2());

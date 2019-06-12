@@ -34,7 +34,7 @@ public class PmsProductAttributeController {
 
     @SysLog(MODULE = "pms", REMARK = "根据条件查询所有商品属性参数表列表")
     @ApiOperation("根据条件查询所有商品属性参数表列表")
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/listAll")
     @PreAuthorize("hasAuthority('pms:PmsProductAttribute:read')")
     public Object getPmsProductAttributeByPage(PmsProductAttribute entity,
                                                @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -59,7 +59,7 @@ public class PmsProductAttributeController {
                           @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         PmsProductAttribute entity = new PmsProductAttribute();
         entity.setProductAttributeCategoryId(cid);
-
+        entity.setType(type);
         try {
             return new CommonResult().success(IPmsProductAttributeService.page(new Page<PmsProductAttribute>(pageNum, pageSize), new QueryWrapper<>(entity)));
         } catch (Exception e) {
