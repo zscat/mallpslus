@@ -252,4 +252,9 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
                 .collect(Collectors.toList());
         return (List<PmsProduct>)productMapper.selectBatchIds(ids);
     }
+
+    @Override
+    public  Integer countGoodsByToday(Long id){
+        return productMapper.countGoodsByToday(id);
+    }
 }

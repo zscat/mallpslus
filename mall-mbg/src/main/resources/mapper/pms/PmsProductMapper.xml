@@ -197,4 +197,10 @@
         product_category_name, supply_id, create_time, school_id
     </sql>
 
+    <select id="countGoodsByToday"  resultType="java.lang.Integer">
+        select count(*) from pms_product where member_id = #{id}
+        and DATE_FORMAT(create_time,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')
+
+    </select>
+
 </mapper>

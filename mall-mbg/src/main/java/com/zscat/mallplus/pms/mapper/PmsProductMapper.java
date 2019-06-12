@@ -24,4 +24,6 @@ public interface PmsProductMapper extends BaseMapper<PmsProduct> {
     List<PromotionProduct> getPromotionProductList(@Param("ids") List<Long> ids);
 
     PmsProductResult getUpdateInfo(Long id);
+
+    Integer countGoodsByToday(@Param("id") Long id);
 }

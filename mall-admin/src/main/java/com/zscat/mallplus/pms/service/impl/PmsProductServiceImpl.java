@@ -92,7 +92,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         //满减价格
         relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), productId);
         //处理sku的编码
-        handleSkuStockCode(productParam.getSkuStockList(), productId);
+        handleSkuStockCode(productParam.getSkuStockList(), product);
         //添加sku库存信息
         relateAndInsertList(skuStockDao, productParam.getSkuStockList(), productId);
         //添加商品参数,添加自定义商品规格
@@ -106,17 +106,18 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         return count;
     }
 
-    private void handleSkuStockCode(List<PmsSkuStock> skuStockList, Long productId) {
+    private void handleSkuStockCode(List<PmsSkuStock> skuStockList, PmsProduct product) {
         if (CollectionUtils.isEmpty(skuStockList)) return;
         for (int i = 0; i < skuStockList.size(); i++) {
             PmsSkuStock skuStock = skuStockList.get(i);
+            skuStock.setProductName(product.getName());
             if (StringUtils.isEmpty(skuStock.getSkuCode())) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
                 StringBuilder sb = new StringBuilder();
                 //日期
                 sb.append(sdf.format(new Date()));
                 //四位商品id
-                sb.append(String.format("%04d", productId));
+                sb.append(String.format("%04d", product.getId()));
                 //三位索引id
                 sb.append(String.format("%03d", i + 1));
                 skuStock.setSkuCode(sb.toString());
@@ -151,7 +152,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), id);
         //修改sku库存信息
         skuStockMapper.delete(new QueryWrapper<>(new PmsSkuStock()).eq("product_id", id));
-        handleSkuStockCode(productParam.getSkuStockList(), id);
+        handleSkuStockCode(productParam.getSkuStockList(), product);
         relateAndInsertList(skuStockDao, productParam.getSkuStockList(), id);
         //修改商品参数,添加自定义商品规格
 

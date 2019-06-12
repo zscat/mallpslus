@@ -55,7 +55,7 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
     private String sp2;
 
     private String sp3;
-
+    private String sp4;
     /**
      * 展示图片
      */
@@ -195,6 +195,14 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
         this.lockStock = lockStock;
     }
 
+    public String getSp4() {
+        return sp4;
+    }
+
+    public void setSp4(String sp4) {
+        this.sp4 = sp4;
+    }
+
     public String getMeno() {
         int sstock = (this.stock - this.lockStock) > 0 ? (this.stock - this.lockStock) : 0;
         StringBuffer sb = new StringBuffer("价格:" + this.price + "元,库存:" + sstock + ",规格:" + this.sp1);
@@ -203,6 +211,9 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
         }
         if (this.sp3 != null) {
             sb.append("," + this.sp3);
+        }
+        if (this.sp4 != null) {
+            sb.append("," + this.sp4);
         }
         return sb.toString();
     }
@@ -214,6 +225,9 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
         }
         if (this.sp3 != null) {
             sb.append("," + this.sp3);
+        }
+        if (this.sp4 != null) {
+            sb.append("," + this.sp4);
         }
         return sb.toString();
     }

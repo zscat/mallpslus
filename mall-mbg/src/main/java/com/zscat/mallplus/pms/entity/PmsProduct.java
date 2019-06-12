@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-19
  */
+@Data
 @TableName("pms_product")
 public class PmsProduct extends BaseEntity implements Serializable {
 
@@ -26,6 +28,8 @@ public class PmsProduct extends BaseEntity implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @TableField("member_id")
+    private Long memberId;
     @TableField("brand_id")
     private Long brandId;
 
@@ -598,54 +602,5 @@ public class PmsProduct extends BaseEntity implements Serializable {
         this.schoolId = schoolId;
     }
 
-    @Override
-    public String toString() {
-        return "PmsProduct{" +
-                ", id=" + id +
-                ", brandId=" + brandId +
-                ", productCategoryId=" + productCategoryId +
-                ", feightTemplateId=" + feightTemplateId +
-                ", productAttributeCategoryId=" + productAttributeCategoryId +
-                ", name=" + name +
-                ", pic=" + pic +
-                ", productSn=" + productSn +
-                ", deleteStatus=" + deleteStatus +
-                ", publishStatus=" + publishStatus +
-                ", newStatus=" + newStatus +
-                ", recommandStatus=" + recommandStatus +
-                ", verifyStatus=" + verifyStatus +
-                ", sort=" + sort +
-                ", sale=" + sale +
-                ", price=" + price +
-                ", promotionPrice=" + promotionPrice +
-                ", giftGrowth=" + giftGrowth +
-                ", giftPoint=" + giftPoint +
-                ", usePointLimit=" + usePointLimit +
-                ", subTitle=" + subTitle +
-                ", description=" + description +
-                ", originalPrice=" + originalPrice +
-                ", stock=" + stock +
-                ", lowStock=" + lowStock +
-                ", unit=" + unit +
-                ", weight=" + weight +
-                ", previewStatus=" + previewStatus +
-                ", serviceIds=" + serviceIds +
-                ", keywords=" + keywords +
-                ", note=" + note +
-                ", albumPics=" + albumPics +
-                ", detailTitle=" + detailTitle +
-                ", detailDesc=" + detailDesc +
-                ", detailHtml=" + detailHtml +
-                ", detailMobileHtml=" + detailMobileHtml +
-                ", promotionStartTime=" + promotionStartTime +
-                ", promotionEndTime=" + promotionEndTime +
-                ", promotionPerLimit=" + promotionPerLimit +
-                ", promotionType=" + promotionType +
-                ", brandName=" + brandName +
-                ", productCategoryName=" + productCategoryName +
-                ", supplyId=" + supplyId +
-                ", createTime=" + createTime +
-                ", schoolId=" + schoolId +
-                "}";
-    }
+
 }

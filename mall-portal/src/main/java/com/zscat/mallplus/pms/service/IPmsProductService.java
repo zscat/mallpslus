@@ -29,4 +29,6 @@ public interface IPmsProductService extends IService<PmsProduct> {
     List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) ;
     List<PmsProduct> getNewProductList(int pageNum, int pageSize) ;
     List<PmsProduct> getHotProductList(int pageNum, int pageSize) ;
+
+    Integer countGoodsByToday(Long id);
 }
