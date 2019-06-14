@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-19
  */
+@Data
 @TableName("pms_product_consult")
 public class PmsProductConsult extends BaseEntity implements Serializable {
 
@@ -51,12 +53,8 @@ public class PmsProductConsult extends BaseEntity implements Serializable {
      */
     @TableField("member_name")
     private String memberName;
+    private String pic;
 
-    /**
-     * 店铺编号
-     */
-    @TableField("store_id")
-    private Long storeId;
 
     /**
      * 咨询发布者邮箱

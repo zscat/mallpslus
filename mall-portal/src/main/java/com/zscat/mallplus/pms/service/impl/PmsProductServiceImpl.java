@@ -18,7 +18,7 @@ import com.zscat.mallplus.sms.service.ISmsHomeNewProductService;
 import com.zscat.mallplus.sms.service.ISmsHomeRecommendProductService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.DateUtils;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.vo.Rediskey;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -190,7 +190,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
             param.setProductLadderList(productLadderList);
             param.setSkuStockList(skuStockList);
             param.setSubjectProductRelationList(subjectProductRelationList);
-            redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtil.objectToJson(param));
+            redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtils.objectToJson(param));
         }
         return 1;
     }
@@ -210,12 +210,14 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
 
         List<PmsSkuStock> skuStockList = skuStockMapper.selectList(new QueryWrapper<PmsSkuStock>().eq("product_id", goods.getId()));
 
-        List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()));
+        List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()).eq("type",1));
 
         List<CmsSubjectProductRelation> subjectProductRelationList = subjectProductRelationMapper.selectList(new QueryWrapper<CmsSubjectProductRelation>().eq("product_id", goods.getId()));
 
         List<CmsPrefrenceAreaProductRelation> prefrenceAreaProductRelationList = prefrenceAreaProductRelationMapper.selectList(new QueryWrapper<CmsPrefrenceAreaProductRelation>().eq("product_id", goods.getId()));
 
+        List<PmsProductAttributeValue> productCanShuValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()).eq("type",2));
+        param.setProductCanShuValueList(productCanShuValueList);
         param.setMemberPriceList(memberPriceList);
         param.setPrefrenceAreaProductRelationList(prefrenceAreaProductRelationList);
         param.setProductAttributeValueList(productAttributeValueList);
@@ -223,7 +225,10 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         param.setProductLadderList(productLadderList);
         param.setSkuStockList(skuStockList);
         param.setSubjectProductRelationList(subjectProductRelationList);
-        redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtil.objectToJson(param));
+
+        List<PmsProduct> typeGoodsList = productMapper.selectList(new QueryWrapper<PmsProduct>().eq("product_attribute_category_id",goods.getProductAttributeCategoryId()));
+
+        redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtils.objectToJson(param));
 
         return param;
     }

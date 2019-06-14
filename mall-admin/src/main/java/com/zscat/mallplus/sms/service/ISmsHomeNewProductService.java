@@ -23,4 +23,6 @@ public interface ISmsHomeNewProductService extends IService<SmsHomeNewProduct> {
      * 更新推荐状态
      */
     int updateRecommendStatus(List<Long> ids, Integer recommendStatus);
+
+    int create(List<SmsHomeNewProduct> homeBrandList);
 }

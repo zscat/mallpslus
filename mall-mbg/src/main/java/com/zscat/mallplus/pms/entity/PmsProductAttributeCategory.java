@@ -28,6 +28,7 @@ public class PmsProductAttributeCategory extends BaseEntity implements Serializa
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String name;
+    private String pic;
     /**
      * 属性数量
      */

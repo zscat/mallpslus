@@ -30,7 +30,7 @@ import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.*;
@@ -168,12 +168,12 @@ public class AppletMemberController extends ApiBaseAction {
             SmsHomeAdvertise queryT = new SmsHomeAdvertise();
             String bannerJson = redisService.get(Rediskey.appletBannerKey + "2");
             if (bannerJson != null) {
-                bannerList = JsonUtil.jsonToList(bannerJson, SmsHomeAdvertise.class);
+                bannerList = JsonUtils.jsonToList(bannerJson, SmsHomeAdvertise.class);
             }
             if (bannerJson == null || bannerList.size() <= 0) {
                 queryT.setType(2);
                 bannerList = advertiseService.list(new QueryWrapper<>(queryT));
-                redisService.set(Rediskey.appletBannerKey + "2", JsonUtil.objectToJson(bannerList));
+                redisService.set(Rediskey.appletBannerKey + "2", JsonUtils.objectToJson(bannerList));
                 redisService.expire(Rediskey.appletBannerKey + "2", 24);
             }
             //获取轮播结束
@@ -202,7 +202,7 @@ public class AppletMemberController extends ApiBaseAction {
             HomeFlashPromotion tempsmsFlashList = new HomeFlashPromotion();
 //            String smsFlashPromotionProductJson = redisService.get(Rediskey.appletsmsFlashPromotionProductKey);
 //            if(smsFlashPromotionProductJson!=null){
-//                homeFlashPromotion = JsonUtil.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
+//                homeFlashPromotion = JsonUtils.jsonToList(smsFlashPromotionProductJson,SmsFlashPromotionProducts.class);
 //            }
 //            if(smsFlashPromotionProductJson==null||homeFlashPromotion.size()<=0){
             SmsFlashPromotion queryS = new SmsFlashPromotion();
@@ -243,7 +243,7 @@ public class AppletMemberController extends ApiBaseAction {
                 }
                 tempsmsFlashList.setProductList(productAttrs);
                 homeFlashPromotion = tempsmsFlashList;
-//                    redisService.set(Rediskey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(homeFlashPromotion));
+//                    redisService.set(Rediskey.appletsmsFlashPromotionProductKey,JsonUtils.objectToJson(homeFlashPromotion));
 //                    redisService.expire(Rediskey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
             }
 //            }
@@ -253,7 +253,7 @@ public class AppletMemberController extends ApiBaseAction {
             List<CateProduct> temp = new ArrayList<>();
             String cateProductJson = redisService.get(Rediskey.appletCateProductsKey);
             if (cateProductJson != null) {
-                cateProductList = JsonUtil.jsonToList(cateProductJson, CateProduct.class);
+                cateProductList = JsonUtils.jsonToList(cateProductJson, CateProduct.class);
             }
             if (cateProductJson == null || cateProductList.size() <= 0) {
                 PmsProductCategory queryP = new PmsProductCategory();
@@ -285,7 +285,7 @@ public class AppletMemberController extends ApiBaseAction {
                         temp.add(cateProduct);
                     }
                     cateProductList = temp;
-                    redisService.set(Rediskey.appletCateProductsKey, JsonUtil.objectToJson(cateProductList));
+                    redisService.set(Rediskey.appletCateProductsKey, JsonUtils.objectToJson(cateProductList));
                     redisService.expire(Rediskey.appletCateProductsKey, 24 * 60 * 60);
                 }
             }
@@ -296,12 +296,12 @@ public class AppletMemberController extends ApiBaseAction {
             List<HomeProductAttr> hot_productList = null;
             String hotProductJson = redisService.get(Rediskey.appletHotProductsKey);
             if (hotProductJson != null) {
-                hot_productList = JsonUtil.jsonToList(hotProductJson, HomeProductAttr.class);
+                hot_productList = JsonUtils.jsonToList(hotProductJson, HomeProductAttr.class);
             }
             if (hotProductJson == null || hot_productList.size() <= 0) {
                 hot_productList = smsHomeRecommendProductMapper.queryList();
                 if (hot_productList != null) {
-                    redisService.set(Rediskey.appletHotProductsKey, JsonUtil.objectToJson(hot_productList));
+                    redisService.set(Rediskey.appletHotProductsKey, JsonUtils.objectToJson(hot_productList));
                     redisService.expire(Rediskey.appletHotProductsKey, 24 * 60 * 60);
                 }
             }
@@ -311,12 +311,12 @@ public class AppletMemberController extends ApiBaseAction {
             List<HomeProductAttr> new_productList = null;
             String newProductJson = redisService.get(Rediskey.appletNewProductsKey);
             if (newProductJson != null) {
-                new_productList = JsonUtil.jsonToList(newProductJson, HomeProductAttr.class);
+                new_productList = JsonUtils.jsonToList(newProductJson, HomeProductAttr.class);
             }
             if (newProductJson == null || new_productList.size() <= 0) {
                 new_productList = smsHomeNewProductMapper.queryList();
                 if (new_productList != null) {
-                    redisService.set(Rediskey.appletNewProductsKey, JsonUtil.objectToJson(new_productList));
+                    redisService.set(Rediskey.appletNewProductsKey, JsonUtils.objectToJson(new_productList));
                     redisService.expire(Rediskey.appletNewProductsKey, 24 * 60 * 60);
                 }
             }
@@ -331,7 +331,7 @@ public class AppletMemberController extends ApiBaseAction {
             List<PmsProductAttributeCategory> productAttributeCategoryList = null;
             String catJson = redisService.get(Rediskey.appletCategoryKey);
             if (catJson != null) {
-                productAttributeCategoryList = JsonUtil.jsonToList(catJson, PmsProductAttributeCategory.class);
+                productAttributeCategoryList = JsonUtils.jsonToList(catJson, PmsProductAttributeCategory.class);
             } else {
                 productAttributeCategoryList = productAttributeCategoryService.list(new QueryWrapper<>());
                 for (PmsProductAttributeCategory gt : productAttributeCategoryList) {
@@ -341,7 +341,7 @@ public class AppletMemberController extends ApiBaseAction {
                     productQueryParam.setVerifyStatus(1);
                     gt.setGoodsList(pmsProductService.list(new QueryWrapper<>(productQueryParam)));
                 }
-                redisService.set(Rediskey.appletCategoryKey, JsonUtil.objectToJson(productAttributeCategoryList));
+                redisService.set(Rediskey.appletCategoryKey, JsonUtils.objectToJson(productAttributeCategoryList));
                 redisService.expire(Rediskey.appletCategoryKey, 24 * 60 * 60);
             }
             List<CmsSubject> subjectList = subjectService.list(new QueryWrapper<>());

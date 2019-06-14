@@ -5,8 +5,8 @@ import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.pms.entity.PmsBrand;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
-import com.zscat.mallplus.sms.entity.SmsFlashPromotion;
 import com.zscat.mallplus.sms.entity.SmsHomeAdvertise;
+import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +24,8 @@ public class HomeContentResult {
     //推荐品牌
     private List<PmsBrand> brandList;
     //当前秒杀场次
-    private SmsFlashPromotion homeFlashPromotion;
+    //当前秒杀场次
+    private HomeFlashPromotion homeFlashPromotion;
     //新品推荐
     private List<PmsProduct> newProductList;
     //人气推荐

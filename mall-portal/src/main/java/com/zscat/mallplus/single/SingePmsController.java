@@ -20,9 +20,8 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
-import com.zscat.mallplus.vo.Rediskey;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +81,10 @@ public class SingePmsController extends ApiBaseAction {
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         PmsProductParam goods = null;
         try {
-            goods = JsonUtil.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+          //  goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+            if (ValidatorUtils.empty(goods)){
+                goods = pmsProductService.getGoodsRedisById(id);
+            }
         } catch (Exception e) {
             goods = pmsProductService.getGoodsRedisById(id);
         }
@@ -220,7 +222,7 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(productAttributeCategoryList);
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐品牌")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐品牌")
     @GetMapping(value = "/recommendBrand/list")
@@ -231,7 +233,7 @@ public class SingePmsController extends ApiBaseAction {
         return new CommonResult().success(pmsProductService.getRecommendBrandList(1,1));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页新品")
     @IgnoreAuth
     @ApiOperation(value = "查询首页新品")
     @GetMapping(value = "/newProductList/list")
@@ -239,12 +241,12 @@ public class SingePmsController extends ApiBaseAction {
             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
-        return new CommonResult().success(pmsProductService.getRecommendBrandList(1,1));
+        return new CommonResult().success(pmsProductService.getHotProductList(1,1));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页热销商品")
     @IgnoreAuth
-    @ApiOperation(value = "查询首页推荐商品")
+    @ApiOperation(value = "查询首页热销商品")
     @GetMapping(value = "/hotProductList/list")
     public Object getHotProductList(
             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,

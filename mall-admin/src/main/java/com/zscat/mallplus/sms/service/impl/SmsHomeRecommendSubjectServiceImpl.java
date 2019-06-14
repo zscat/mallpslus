@@ -38,4 +38,13 @@ public class SmsHomeRecommendSubjectServiceImpl extends ServiceImpl<SmsHomeRecom
         record.setRecommendStatus(recommendStatus);
         return recommendProductMapper.update(record, new QueryWrapper<SmsHomeRecommendSubject>().in("id", ids));
     }
+    @Override
+    public int create(List<SmsHomeRecommendSubject> recommendSubjectList) {
+        for (SmsHomeRecommendSubject recommendProduct : recommendSubjectList) {
+            recommendProduct.setRecommendStatus(1);
+            recommendProduct.setSort(0);
+            recommendProductMapper.insert(recommendProduct);
+        }
+        return recommendSubjectList.size();
+    }
 }

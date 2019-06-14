@@ -27,7 +27,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Auther: shenzhuan
@@ -89,7 +88,7 @@ public class SingeCmsController extends ApiBaseAction {
         return new CommonResult().success(commentService.page(new Page<CmsSubjectComment>(pageNum, pageSize), new QueryWrapper<>(subjectComment)));
     }
 
-    @SysLog(MODULE = "pms", REMARK = "查询商品列表")
+    @SysLog(MODULE = "pms", REMARK = "查询首页推荐文章")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐文章")
     @GetMapping(value = "/recommendSubjectList/list")
@@ -99,24 +98,31 @@ public class SingeCmsController extends ApiBaseAction {
 
         return new CommonResult().success(subjectService.getRecommendSubjectList(1,1));
     }
-    @SysLog(MODULE = "cms", REMARK = "查询文章评论列表")
+    @SysLog(MODULE = "cms", REMARK = "查询专题列表")
     @IgnoreAuth
-    @ApiOperation(value = "查询文章评论列表")
+    @ApiOperation(value = "查询专题列表")
     @GetMapping(value = "/topic/list")
     public Object subjectList(CmsTopic topic,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(topicService.page(new Page<CmsTopic>(pageNum, pageSize), new QueryWrapper<>(topic)));
     }
-    @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
+    @SysLog(MODULE = "pms", REMARK = "查询专题详情信息")
     @IgnoreAuth
     @GetMapping(value = "/topic/detail")
-    @ApiOperation(value = "查询商品详情信息")
+    @ApiOperation(value = "查询专题详情信息")
     public Object topicDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         CmsTopic productResult = topicService.getById(id);
         return new CommonResult().success(productResult);
     }
-
+    @SysLog(MODULE = "pms", REMARK = "查询文章详情信息")
+    @IgnoreAuth
+    @GetMapping(value = "/subject/detail")
+    @ApiOperation(value = "查询文章详情信息")
+    public Object subjectDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        CmsTopic productResult = topicService.getById(id);
+        return new CommonResult().success(productResult);
+    }
     @SysLog(MODULE = "cms", REMARK = "创建文章")
     @ApiOperation(value = "创建文章")
     @PostMapping(value = "/createSubject")

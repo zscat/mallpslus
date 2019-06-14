@@ -11,7 +11,7 @@ import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.PhoneUtil;
 import com.zscat.mallplus.vo.Rediskey;
@@ -71,12 +71,12 @@ public class SingelHomeController {
         List<SmsHomeAdvertise> bannerList = null;
         String bannerJson = redisService.get(Rediskey.appletBannerKey + type);
         if (bannerJson != null && bannerJson != "[]") {
-            bannerList = JsonUtil.jsonToList(bannerJson, SmsHomeAdvertise.class);
+            bannerList = JsonUtils.jsonToList(bannerJson, SmsHomeAdvertise.class);
         } else {
             SmsHomeAdvertise advertise = new SmsHomeAdvertise();
             advertise.setType(type);
             bannerList = advertiseService.list(new QueryWrapper<>(advertise));
-            redisService.set(Rediskey.appletBannerKey + type, JsonUtil.objectToJson(bannerList));
+            redisService.set(Rediskey.appletBannerKey + type, JsonUtils.objectToJson(bannerList));
             redisService.expire(Rediskey.appletBannerKey + type, 24 * 60 * 60);
         }
         //  List<SmsHomeAdvertise> bannerList = advertiseService.list(null, type, null, 5, 1);

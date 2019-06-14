@@ -9,7 +9,7 @@ import com.aliyuncs.http.MethodType;
 import com.zscat.mallplus.ums.entity.Sms;
 import com.zscat.mallplus.ums.mapper.SmsDao;
 import com.zscat.mallplus.ums.service.SmsService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -90,7 +90,7 @@ public class SmsServiceImpl implements SmsService {
 	@Override
 	public void save(Sms sms, Map<String, String> params) {
 		if (!CollectionUtils.isEmpty(params)) {
-			sms.setParams(JsonUtil.objectToJson(params));
+			sms.setParams(JsonUtils.objectToJson(params));
 		}
 
 		sms.setCreateTime(new Date());

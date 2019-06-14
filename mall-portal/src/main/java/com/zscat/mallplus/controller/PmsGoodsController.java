@@ -17,7 +17,7 @@ import com.zscat.mallplus.pms.vo.PmsProductResult;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
@@ -174,10 +174,10 @@ public class PmsGoodsController {
         List<PmsProductConsult> list = null;
         String consultJson = redisService.get(Rediskey.PmsProductConsult + goodsId);
         if (consultJson != null) {
-            list = JsonUtil.jsonToList(consultJson, PmsProductConsult.class);
+            list = JsonUtils.jsonToList(consultJson, PmsProductConsult.class);
         } else {
             list = pmsProductConsultService.list(new QueryWrapper<>(productConsult));
-            redisService.set(Rediskey.PmsProductConsult + goodsId, JsonUtil.objectToJson(list));
+            redisService.set(Rediskey.PmsProductConsult + goodsId, JsonUtils.objectToJson(list));
             redisService.expire(Rediskey.PmsProductConsult + goodsId, 24 * 60 * 60);
         }
 

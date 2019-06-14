@@ -49,9 +49,20 @@ public class SmsHomeRecommendSubjectController {
         return new CommonResult().failed();
     }
 
+    @ApiOperation("添加首页推荐专题")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public Object create(@RequestBody List<SmsHomeRecommendSubject> homeBrandList) {
+        int count = ISmsHomeRecommendSubjectService.create(homeBrandList);
+        if (count > 0) {
+            return new CommonResult().success(count);
+        }
+        return new CommonResult().failed();
+    }
+
     @SysLog(MODULE = "sms", REMARK = "保存首页推荐专题表")
     @ApiOperation("保存首页推荐专题表")
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/creates")
     @PreAuthorize("hasAuthority('sms:SmsHomeRecommendSubject:create')")
     public Object saveSmsHomeRecommendSubject(@RequestBody SmsHomeRecommendSubject entity) {
         try {
@@ -83,7 +94,7 @@ public class SmsHomeRecommendSubjectController {
 
     @SysLog(MODULE = "sms", REMARK = "删除首页推荐专题表")
     @ApiOperation("删除首页推荐专题表")
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeRecommendSubject:delete')")
     public Object deleteSmsHomeRecommendSubject(@ApiParam("首页推荐专题表id") @PathVariable Long id) {
         try {
@@ -119,7 +130,7 @@ public class SmsHomeRecommendSubjectController {
     }
 
     @ApiOperation(value = "批量删除首页推荐专题表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除首页推荐专题表")
     @PreAuthorize("hasAuthority('sms:SmsHomeRecommendSubject:delete')")
@@ -132,16 +143,7 @@ public class SmsHomeRecommendSubjectController {
         }
     }
 
-    @ApiOperation("添加首页推荐专题")
-    @RequestMapping(value = "/batchCreate", method = RequestMethod.POST)
-    @ResponseBody
-    public Object create(@RequestBody List<SmsHomeRecommendSubject> homeBrandList) {
-        boolean count = ISmsHomeRecommendSubjectService.saveBatch(homeBrandList);
-        if (count) {
-            return new CommonResult().success(count);
-        }
-        return new CommonResult().failed();
-    }
+
 
     @ApiOperation("修改推荐排序")
     @RequestMapping(value = "/update/sort/{id}", method = RequestMethod.POST)

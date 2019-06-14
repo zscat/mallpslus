@@ -1,3 +1,20 @@
+ if(type===1){
+          return 'ios首页轮播';
+        }else if(type===2){
+          return 'android首页轮播';
+        }
+        else if(type===3){
+            return 'pc首页轮播';
+        }else if(type===4){
+            return 'h5首页轮播';
+        }else if(type===5){
+            return '小程序首页轮播';
+        }
+
+
+沈兄~能把数据抓出来吗？https://map.beijing.gov.cn/category?categoryId=xx
+
+
 SELECT * from pms_product where product_attribute_category_id=1 ;
 SELECT * from pms_sku_stock where product_id=26;
 SELECT * from pms_product_attribute_value  where product_id=26;

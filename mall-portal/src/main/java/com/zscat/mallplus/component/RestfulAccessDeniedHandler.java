@@ -1,7 +1,7 @@
 package com.zscat.mallplus.component;
 
 
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -24,7 +24,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JsonUtil.objectToJson(new CommonResult().forbidden(e.getMessage())));
+        response.getWriter().println(JsonUtils.objectToJson(new CommonResult().forbidden(e.getMessage())));
         response.getWriter().flush();
     }
 }

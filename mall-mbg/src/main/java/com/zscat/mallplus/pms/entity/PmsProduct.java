@@ -240,6 +240,7 @@ public class PmsProduct extends BaseEntity implements Serializable {
 
     @TableField("school_id")
     private Long schoolId;
+    private Integer hit;
 
 
     public Long getId() {

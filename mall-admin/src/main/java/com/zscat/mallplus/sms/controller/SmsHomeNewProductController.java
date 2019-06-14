@@ -49,9 +49,20 @@ public class SmsHomeNewProductController {
         return new CommonResult().failed();
     }
 
+    @ApiOperation("添加首页推荐品牌")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public Object create(@RequestBody List<SmsHomeNewProduct> homeBrandList) {
+        int count = ISmsHomeNewProductService.create(homeBrandList);
+        if (count > 0) {
+            return new CommonResult().success(count);
+        }
+        return new CommonResult().failed();
+    }
+
     @SysLog(MODULE = "sms", REMARK = "保存新鲜好物表")
     @ApiOperation("保存新鲜好物表")
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/creates")
     @PreAuthorize("hasAuthority('sms:SmsHomeNewProduct:create')")
     public Object saveSmsHomeNewProduct(@RequestBody SmsHomeNewProduct entity) {
         try {
@@ -83,7 +94,7 @@ public class SmsHomeNewProductController {
 
     @SysLog(MODULE = "sms", REMARK = "删除新鲜好物表")
     @ApiOperation("删除新鲜好物表")
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeNewProduct:delete')")
     public Object deleteSmsHomeNewProduct(@ApiParam("新鲜好物表id") @PathVariable Long id) {
         try {
@@ -119,7 +130,7 @@ public class SmsHomeNewProductController {
     }
 
     @ApiOperation(value = "批量删除新鲜好物表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除新鲜好物表")
     @PreAuthorize("hasAuthority('sms:SmsHomeNewProduct:delete')")
@@ -132,16 +143,7 @@ public class SmsHomeNewProductController {
         }
     }
 
-    @ApiOperation("添加首页推荐品牌")
-    @RequestMapping(value = "/batchCreate", method = RequestMethod.POST)
-    @ResponseBody
-    public Object create(@RequestBody List<SmsHomeNewProduct> homeBrandList) {
-        boolean count = ISmsHomeNewProductService.saveBatch(homeBrandList);
-        if (count) {
-            return new CommonResult().success(count);
-        }
-        return new CommonResult().failed();
-    }
+
 
     @ApiOperation("批量修改推荐状态")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)

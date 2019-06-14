@@ -16,15 +16,25 @@ import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.sms.entity.*;
+import com.zscat.mallplus.sms.mapper.SmsFlashPromotionSessionMapper;
 import com.zscat.mallplus.sms.mapper.SmsHomeAdvertiseMapper;
+import com.zscat.mallplus.sms.mapper.SmsHomeNewProductMapper;
+import com.zscat.mallplus.sms.mapper.SmsHomeRecommendProductMapper;
 import com.zscat.mallplus.sms.service.*;
+import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
+import com.zscat.mallplus.sms.vo.HomeProductAttr;
+import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +73,16 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     private ISmsHomeRecommendProductService homeRecommendProductService;
     @Resource
     private ISmsHomeRecommendSubjectService homeRecommendSubjectService;
-
+    @Resource
+    private SmsFlashPromotionSessionMapper smsFlashPromotionSessionMapper;
+    @Resource
+    private SmsHomeRecommendProductMapper smsHomeRecommendProductMapper;
+    @Resource
+    private SmsHomeNewProductMapper smsHomeNewProductMapper;
+    @Autowired
+    private ISmsFlashPromotionService smsFlashPromotionService;
+    @Autowired
+    private ISmsFlashPromotionProductRelationService smsFlashPromotionProductRelationService;
     @Resource
     private ICmsSubjectCategoryService subjectCategoryService;
     @Resource
@@ -80,7 +99,8 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
         result.setAdvertiseList(getHomeAdvertiseList());
         //获取推荐品牌
         result.setBrandList(this.getRecommendBrandList(0, 4));
-
+        //获取秒杀信息
+        result.setHomeFlashPromotion(getHomeFlashPromotion());
         //获取新品推荐
         result.setNewProductList(this.getNewProductList(0, 4));
         //获取人气推荐
@@ -108,11 +128,61 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
         return result;
     }
 
+    private HomeFlashPromotion getHomeFlashPromotion() {
+        HomeFlashPromotion homeFlashPromotion = null;
+        HomeFlashPromotion tempsmsFlashList = new HomeFlashPromotion();
+        SmsFlashPromotion queryS = new SmsFlashPromotion();
+        queryS.setIsIndex(1);
+        SmsFlashPromotion indexFlashPromotion = smsFlashPromotionService.getOne(new QueryWrapper<>(queryS));
+        Long flashPromotionId = 0L;
+        //数据库中有当前秒杀活动时赋值
+        if (indexFlashPromotion != null) {
+            flashPromotionId = indexFlashPromotion.getId();
+        }
+        //首页秒杀活动数据
+
+        //根据时间计算当前点档
+        Date now = new Date();
+        String formatNow = DateFormatUtils.format(now, "HH:mm:ss");
+
+        SmsFlashSessionInfo smsFlashSessionInfo = smsFlashPromotionSessionMapper.getCurrentDang(formatNow);
+        if (smsFlashSessionInfo != null && flashPromotionId != 0L) {//当前时间有秒杀档，并且有秒杀活动时，获取数据
+            Long smsFlashSessionId = smsFlashSessionInfo.getId();
+            //秒杀活动点档信息存储
+            tempsmsFlashList.setId(smsFlashSessionId);
+            tempsmsFlashList.setFlashName(smsFlashSessionInfo.getName());
+            tempsmsFlashList.setStartTime(smsFlashSessionInfo.getStartTime());
+            tempsmsFlashList.setEndTime(smsFlashSessionInfo.getEndTime());
+            SmsFlashPromotionProductRelation querySMP = new SmsFlashPromotionProductRelation();
+            querySMP.setFlashPromotionId(flashPromotionId);
+            querySMP.setFlashPromotionSessionId(smsFlashSessionId);
+            List<SmsFlashPromotionProductRelation> smsFlashPromotionProductRelationlist = smsFlashPromotionProductRelationService.list(new QueryWrapper<>(querySMP));
+            List<HomeProductAttr> productAttrs = new ArrayList<>();
+            for (SmsFlashPromotionProductRelation item : smsFlashPromotionProductRelationlist) {
+                PmsProduct tempproduct = pmsProductService.getById(item.getProductId());
+                if (tempproduct!=null){
+                    HomeProductAttr product = new HomeProductAttr();
+                    product.setProductId(tempproduct.getId());
+                    product.setProductImg(tempproduct.getPic());
+                    product.setProductName(tempproduct.getName());
+                    product.setProductPrice(tempproduct.getPromotionPrice() != null ? tempproduct.getPromotionPrice() : BigDecimal.ZERO);
+                    productAttrs.add(product);
+                }
+            }
+            tempsmsFlashList.setProductList(productAttrs);
+            homeFlashPromotion = tempsmsFlashList;
+//                    redisService.set(Rediskey.appletsmsFlashPromotionProductKey,JsonUtil.objectToJson(homeFlashPromotion));
+//                    redisService.expire(Rediskey.appletsmsFlashPromotionProductKey, 24 * 60 * 60);
+        }
+        return homeFlashPromotion;
+    }
+
+
     @Override
     public List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) {
         List<SmsHomeBrand> brands = homeBrandService.list(new QueryWrapper<>());
         List<Long> ids = brands.stream()
-                .map(SmsHomeBrand::getId)
+                .map(SmsHomeBrand::getBrandId)
                 .collect(Collectors.toList());
         return (List<PmsBrand>) brandService.listByIds(ids);
 
@@ -121,7 +191,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     public List<PmsProduct> getNewProductList(int pageNum, int pageSize) {
         List<SmsHomeNewProduct> brands = homeNewProductService.list(new QueryWrapper<>());
         List<Long> ids = brands.stream()
-                .map(SmsHomeNewProduct::getId)
+                .map(SmsHomeNewProduct::getProductId)
                 .collect(Collectors.toList());
         return (List<PmsProduct>) pmsProductService.listByIds(ids);
     }
@@ -129,7 +199,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {
         List<SmsHomeRecommendProduct> brands = homeRecommendProductService.list(new QueryWrapper<>());
         List<Long> ids = brands.stream()
-                .map(SmsHomeRecommendProduct::getId)
+                .map(SmsHomeRecommendProduct::getProductId)
                 .collect(Collectors.toList());
         return (List<PmsProduct>) pmsProductService.listByIds(ids);
     }
@@ -137,7 +207,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     public List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) {
         List<SmsHomeRecommendSubject> brands = homeRecommendSubjectService.list(new QueryWrapper<>());
         List<Long> ids = brands.stream()
-                .map(SmsHomeRecommendSubject::getId)
+                .map(SmsHomeRecommendSubject::getSubjectId)
                 .collect(Collectors.toList());
         return (List<CmsSubject>) subjectService.listByIds(ids);
     }

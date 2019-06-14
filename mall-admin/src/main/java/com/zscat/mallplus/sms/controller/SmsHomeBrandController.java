@@ -49,9 +49,21 @@ public class SmsHomeBrandController {
         return new CommonResult().failed();
     }
 
+    @SysLog(MODULE = "sms", REMARK = "添加首页推荐品牌")
+    @ApiOperation("添加首页推荐品牌")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public Object create(@RequestBody List<SmsHomeBrand> homeBrandList) {
+        int count = ISmsHomeBrandService.create(homeBrandList);
+        if (count > 0) {
+            return new CommonResult().success(count);
+        }
+        return new CommonResult().failed();
+    }
+
     @SysLog(MODULE = "sms", REMARK = "保存首页推荐品牌表")
     @ApiOperation("保存首页推荐品牌表")
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/creates")
     @PreAuthorize("hasAuthority('sms:SmsHomeBrand:create')")
     public Object saveSmsHomeBrand(@RequestBody SmsHomeBrand entity) {
         try {
@@ -83,7 +95,7 @@ public class SmsHomeBrandController {
 
     @SysLog(MODULE = "sms", REMARK = "删除首页推荐品牌表")
     @ApiOperation("删除首页推荐品牌表")
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeBrand:delete')")
     public Object deleteSmsHomeBrand(@ApiParam("首页推荐品牌表id") @PathVariable Long id) {
         try {
@@ -119,7 +131,7 @@ public class SmsHomeBrandController {
     }
 
     @ApiOperation(value = "批量删除首页推荐品牌表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除首页推荐品牌表")
     @PreAuthorize("hasAuthority('sms:SmsHomeBrand:delete')")

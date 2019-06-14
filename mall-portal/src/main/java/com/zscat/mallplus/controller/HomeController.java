@@ -18,7 +18,7 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
@@ -68,10 +68,10 @@ public class HomeController {
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(Rediskey.HomeContentResult);
         if (bannerJson != null) {
-            contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
+            contentResult = JsonUtils.jsonToPojo(bannerJson, HomeContentResult.class);
         } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(Rediskey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.set(Rediskey.HomeContentResult, JsonUtils.objectToJson(contentResult));
             redisService.expire(Rediskey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);
@@ -85,10 +85,10 @@ public class HomeController {
         HomeContentResult contentResult = null;
         String bannerJson = redisService.get(Rediskey.HomeContentResult);
         if (bannerJson != null) {
-            contentResult = JsonUtil.jsonToPojo(bannerJson, HomeContentResult.class);
+            contentResult = JsonUtils.jsonToPojo(bannerJson, HomeContentResult.class);
         } else {
             contentResult = advertiseService.singelContent();
-            redisService.set(Rediskey.HomeContentResult, JsonUtil.objectToJson(contentResult));
+            redisService.set(Rediskey.HomeContentResult, JsonUtils.objectToJson(contentResult));
             redisService.expire(Rediskey.HomeContentResult, 24 * 60 * 60);
         }
         return new CommonResult().success(contentResult);

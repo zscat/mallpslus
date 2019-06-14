@@ -3,14 +3,15 @@ package com.zscat.mallplus.controller;
 
 import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.service.IOmsCartItemService;
+import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.CartProduct;
 import com.zscat.mallplus.oms.vo.CartPromotionItem;
-import com.zscat.mallplus.pms.entity.PmsSkuStock;
 import com.zscat.mallplus.pms.service.IPmsSkuStockService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.CartParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +39,18 @@ public class OmsCartItemController {
     @Autowired
     private IPmsSkuStockService pmsSkuStockService;
 
+    @Resource
+    private IOmsOrderService orderService;
 
     @ApiOperation("添加商品到购物车")
+    @RequestMapping(value = "/addCart")
+    @ResponseBody
+    public Object addCart(CartParam cartParam) {
+        return orderService.addCart(cartParam);
+
+    }
+
+   /* @ApiOperation("添加商品到购物车")
     @RequestMapping(value = "/addCart")
     @ResponseBody
     public Object addCart(@RequestParam(value = "id", defaultValue = "0") Long id,
@@ -63,7 +75,7 @@ public class OmsCartItemController {
         }
         return new CommonResult().failed();
     }
-
+*/
     @ApiOperation("获取某个会员的购物车列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody

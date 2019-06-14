@@ -37,4 +37,13 @@ public class SmsHomeNewProductServiceImpl extends ServiceImpl<SmsHomeNewProductM
         homeNewProduct.setSort(sort);
         return homeNewProductMapper.updateById(homeNewProduct);
     }
+    @Override
+    public int create(List<SmsHomeNewProduct> homeNewProductList) {
+        for (SmsHomeNewProduct SmsHomeNewProduct : homeNewProductList) {
+            SmsHomeNewProduct.setRecommendStatus(1);
+            SmsHomeNewProduct.setSort(0);
+            homeNewProductMapper.insert(SmsHomeNewProduct);
+        }
+        return homeNewProductList.size();
+    }
 }

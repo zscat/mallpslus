@@ -23,4 +23,6 @@ public interface ISmsHomeRecommendSubjectService extends IService<SmsHomeRecomme
      * 修改推荐排序
      */
     int updateSort(Long id, Integer sort);
+
+    int create(List<SmsHomeRecommendSubject> homeBrandList);
 }

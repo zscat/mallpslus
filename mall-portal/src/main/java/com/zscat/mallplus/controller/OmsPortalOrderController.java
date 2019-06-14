@@ -15,7 +15,7 @@ import com.zscat.mallplus.single.ApiBaseAction;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.JsonUtil;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
@@ -69,14 +69,14 @@ public class OmsPortalOrderController extends ApiBaseAction {
         OmsOrder orderDetailResult = null;
         String bannerJson = redisService.get(Rediskey.PmsProductResult + id);
         if (bannerJson != null) {
-            orderDetailResult = JsonUtil.jsonToPojo(bannerJson, OmsOrderDetail.class);
+            orderDetailResult = JsonUtils.jsonToPojo(bannerJson, OmsOrderDetail.class);
         } else {
             orderDetailResult = orderService.getById(id);
             OmsOrderItem query = new OmsOrderItem();
             query.setOrderId(id);
             List<OmsOrderItem> orderItemList = orderItemService.list(new QueryWrapper<>(query));
             orderDetailResult.setOrderItemList(orderItemList);
-            redisService.set(Rediskey.PmsProductResult + id, JsonUtil.objectToJson(orderDetailResult));
+            redisService.set(Rediskey.PmsProductResult + id, JsonUtils.objectToJson(orderDetailResult));
             redisService.expire(Rediskey.PmsProductResult + id, 10 * 60);
         }
 

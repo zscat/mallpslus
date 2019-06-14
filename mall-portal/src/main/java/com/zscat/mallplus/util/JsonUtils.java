@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
@@ -342,6 +343,51 @@ public class JsonUtils {
         jsonConfig.setExcludes(new String[]{"dbName", "isDel"}); // 此处是亮点，只要将所需忽略字段加到数组中即可，在实际测试中，我发现在所返回数组中，存在大量无用属性，
 
         return jsonConfig;
+    }
+    /**
+     * 将对象转换成json字符串。
+     */
+    public static String objectToJson(Object data) {
+        try {
+            String string = objectMapper.writeValueAsString(data);
+            return string;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 将json结果集转化为对象
+     *
+     * @param jsonData json数据
+     * @param beanType 对象中的object类型
+     */
+    public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
+        try {
+            if (ValidatorUtils.notEmpty(jsonData)){
+                T t = objectMapper.readValue(jsonData, beanType);
+                return t;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 将json数据转换成pojo对象list
+     */
+    public static <T> List<T> jsonToList(String jsonData, Class<T> beanType) {
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, beanType);
+        try {
+            List<T> list = objectMapper.readValue(jsonData, javaType);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static void main(String[] args) {

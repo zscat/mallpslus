@@ -91,7 +91,7 @@ public class SmsHomeAdvertiseController {
 
     @SysLog(MODULE = "sms", REMARK = "删除首页轮播广告表")
     @ApiOperation("删除首页轮播广告表")
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('sms:SmsHomeAdvertise:delete')")
     public Object deleteSmsHomeAdvertise(@ApiParam("首页轮播广告表id") @PathVariable Long id) {
         try {
@@ -127,7 +127,7 @@ public class SmsHomeAdvertiseController {
     }
 
     @ApiOperation(value = "批量删除首页轮播广告表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除首页轮播广告表")
     @PreAuthorize("hasAuthority('sms:SmsHomeAdvertise:delete')")

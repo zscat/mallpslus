@@ -102,7 +102,7 @@ public class PmsProductAttributeController {
 
     @SysLog(MODULE = "pms", REMARK = "删除商品属性参数表")
     @ApiOperation("删除商品属性参数表")
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('pms:PmsProductAttribute:delete')")
     public Object deletePmsProductAttribute(@ApiParam("商品属性参数表id") @PathVariable Long id) {
         try {
@@ -138,7 +138,7 @@ public class PmsProductAttributeController {
     }
 
     @ApiOperation(value = "批量删除商品属性参数表")
-    @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品属性参数表")
     @PreAuthorize("hasAuthority('pms:PmsProductAttribute:delete')")
