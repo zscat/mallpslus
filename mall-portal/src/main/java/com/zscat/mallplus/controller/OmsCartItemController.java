@@ -38,29 +38,32 @@ public class OmsCartItemController {
     private IPmsSkuStockService pmsSkuStockService;
 
 
+    //针对小程序做的修改，添加到购物车的商品，要根据规格选择库存数据
     @ApiOperation("添加商品到购物车")
-    @RequestMapping(value = "/addCart")
+    @RequestMapping(value = "/addCart", method=RequestMethod.POST)
     @ResponseBody
     public Object addCart(@RequestParam(value = "id", defaultValue = "0") Long id,
-                          @RequestParam(value = "count", defaultValue = "1") Integer count) {
+                          @RequestParam(value = "count", defaultValue = "1") Integer count,
+                          @RequestParam(value = "guide") String guide) {
         UmsMember umsMember = UserUtils.getCurrentMember();
-        PmsSkuStock pmsSkuStock = pmsSkuStockService.getById(id);
+        PmsSkuStock pmsSkuStock = pmsSkuStockService.getSku(id,guide);
         if (pmsSkuStock != null && umsMember != null && umsMember.getId() != null) {
             OmsCartItem cartItem = new OmsCartItem();
             cartItem.setPrice(pmsSkuStock.getPrice());
             cartItem.setProductId(pmsSkuStock.getProductId());
             cartItem.setProductSkuCode(pmsSkuStock.getSkuCode());
             cartItem.setQuantity(count);
-            cartItem.setProductSkuId(id);
-//            cartItem.setProductAttr(pmsSkuStock.getMeno1());
+            cartItem.setProductSkuId(pmsSkuStock.getId());
+            cartItem.setProductAttr(pmsSkuStock.getMeno());
             cartItem.setProductPic(pmsSkuStock.getPic());
             cartItem.setSp1(pmsSkuStock.getSp1());
             cartItem.setSp2(pmsSkuStock.getSp2());
             cartItem.setSp3(pmsSkuStock.getSp3());
+
             OmsCartItem omsCartItem = cartItemService.addCart(cartItem);
             return new CommonResult().success(omsCartItem.getId());
-
         }
+
         return new CommonResult().failed();
     }
 
@@ -71,6 +74,13 @@ public class OmsCartItemController {
         UmsMember umsMember = UserUtils.getCurrentMember();
         if (umsMember != null && umsMember.getId() != null) {
             List<OmsCartItem> cartItemList = cartItemService.list(umsMember.getId(), null);
+            for (OmsCartItem item:cartItemList
+                 ) {
+                PmsSkuStock pmsSkuStock = pmsSkuStockService.getSkuByCode(item.getProductSkuCode());
+                item.setStock(pmsSkuStock.getStock());
+            }{
+
+            }
             return new CommonResult().success(cartItemList);
         }
         return new ArrayList<OmsCartItem>();
@@ -85,7 +95,7 @@ public class OmsCartItemController {
     }
 
     @ApiOperation("修改购物车中某个商品的数量")
-    @RequestMapping(value = "/update/quantity", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/quantity", method = RequestMethod.POST)
     @ResponseBody
     public Object updateQuantity(@RequestParam Long id,
                                  @RequestParam Integer quantity) {
@@ -118,7 +128,7 @@ public class OmsCartItemController {
     @ApiOperation("删除购物车中的某个商品")
     @RequestMapping(value = "/delete")
     @ResponseBody
-    public Object delete(String cart_id_list) {
+    public Object delete(@RequestParam String cart_id_list) {
         if (StringUtils.isEmpty(cart_id_list)){
             return new CommonResult().failed("参数为空");
         }
@@ -132,6 +142,8 @@ public class OmsCartItemController {
         }
         return new CommonResult().failed();
     }
+
+
 
     @ApiOperation("清空购物车")
     @RequestMapping(value = "/clear", method = RequestMethod.POST)

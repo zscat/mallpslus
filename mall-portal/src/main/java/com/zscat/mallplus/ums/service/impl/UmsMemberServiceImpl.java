@@ -15,6 +15,7 @@ import com.zscat.mallplus.util.CharUtil;
 import com.zscat.mallplus.util.CommonUtil;
 import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.util.JwtTokenUtil;
+import com.zscat.mallplus.util.applet.ParamsConfig;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.MemberDetails;
 import net.sf.json.JSONObject;
@@ -36,6 +37,8 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -207,14 +210,24 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     @Override
     public Object loginByWeixin(HttpServletRequest req) {
         try {
+//            com.alibaba.fastjson.JSONObject bufcode = com.alibaba.fastjson.JSONObject.parseObject(ParamsConfig.getRequestPayload(req));
+//
+//            String code = bufcode.getString("code");
+//            String encryptedData = bufcode.getString("encryptedData");
+//            String iv = bufcode.getString("iv");
+//            String signature = bufcode.getString("signature");
+//            String userInfos = bufcode.getString("userInfo");
+//            String rawData = bufcode.getString("rawData");
             String code = req.getParameter("code");
+            String encryptedData = req.getParameter("encryptedData");
+            String iv = req.getParameter("iv");
+            String signature = req.getParameter("signature");
+            String userInfos = req.getParameter("userInfo");
+            String rawData =req.getParameter("rawData");
+            System.out.println("参数code为"+code);
             if (StringUtils.isEmpty(code)) {
                 System.out.println("code is empty");
             }
-            String userInfos = req.getParameter("userInfo");
-
-            String signature = req.getParameter("signature");
-
             Map<String, Object> me = JsonUtils.readJsonToMap(userInfos);
             if (null == me) {
                 return ApiBaseAction.toResponsFail("登录失败");
@@ -231,7 +244,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 return ApiBaseAction.toResponsFail("登录失败");
             }
             //验证用户信息完整性
-            String sha1 = CommonUtil.getSha1(userInfos + sessionData.getString("session_key"));
+            String sha1 = CommonUtil.getSha1(rawData + sessionData.getString("session_key"));
             if (!signature.equals(sha1)) {
                 return ApiBaseAction.toResponsFail("登录失败");
             }

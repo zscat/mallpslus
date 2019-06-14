@@ -59,7 +59,7 @@ public class PmsProductAttributeController {
                           @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         PmsProductAttribute entity = new PmsProductAttribute();
         entity.setProductAttributeCategoryId(cid);
-
+        entity.setType(type);//商品类型查询补上类型字段。
         try {
             return new CommonResult().success(IPmsProductAttributeService.page(new Page<PmsProductAttribute>(pageNum, pageSize), new QueryWrapper<>(entity)));
         } catch (Exception e) {
@@ -102,14 +102,15 @@ public class PmsProductAttributeController {
 
     @SysLog(MODULE = "pms", REMARK = "删除商品属性参数表")
     @ApiOperation("删除商品属性参数表")
-    @DeleteMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete")
     @PreAuthorize("hasAuthority('pms:PmsProductAttribute:delete')")
-    public Object deletePmsProductAttribute(@ApiParam("商品属性参数表id") @PathVariable Long id) {
+    public Object deletePmsProductAttribute(@RequestParam("ids") List ids) {
         try {
-            if (ValidatorUtils.empty(id)) {
+            if (ValidatorUtils.empty(ids)) {
                 return new CommonResult().paramFailed("商品属性参数表id");
             }
-            if (IPmsProductAttributeService.removeById(id)) {
+
+            if (IPmsProductAttributeService.removeByIds(ids)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {

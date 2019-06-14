@@ -20,5 +20,4 @@ public interface PmsProductAttributeMapper extends BaseMapper<PmsProductAttribut
 
     List<ProductAttrInfo> getProductAttrInfo(Long productCategoryId);
 
-    List<PmsProductAttr> getProductAttrById(@Param("productId") Long productId,@Param("type") int type);
 }

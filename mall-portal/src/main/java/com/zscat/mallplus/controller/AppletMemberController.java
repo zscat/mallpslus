@@ -1,6 +1,7 @@
 package com.zscat.mallplus.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
@@ -46,6 +47,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -114,6 +117,8 @@ public class AppletMemberController extends ApiBaseAction {
         return memberService.loginByWeixin(req);
 
     }
+
+
 
     /**
      * 小程序主页

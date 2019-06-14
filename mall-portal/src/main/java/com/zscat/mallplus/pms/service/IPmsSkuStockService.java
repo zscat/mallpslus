@@ -12,5 +12,6 @@ import com.zscat.mallplus.pms.entity.PmsSkuStock;
  * @since 2019-04-19
  */
 public interface IPmsSkuStockService extends IService<PmsSkuStock> {
-
+    PmsSkuStock getSku(Long id,String guide);
+    PmsSkuStock getSkuByCode(String code);
 }
