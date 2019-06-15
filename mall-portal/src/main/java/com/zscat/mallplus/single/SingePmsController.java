@@ -20,6 +20,7 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
@@ -73,6 +74,8 @@ public class SingePmsController extends ApiBaseAction {
     private RedisService redisService;
     @Autowired
     private IPmsProductConsultService pmsProductConsultService;
+    @Autowired
+    private IPmsFavoriteService favoriteService;
 
     @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
     @IgnoreAuth
@@ -89,7 +92,19 @@ public class SingePmsController extends ApiBaseAction {
             goods = pmsProductService.getGoodsRedisById(id);
         }
         Map<String, Object> map = new HashMap<>();
-
+        UmsMember umsMember = UserUtils.getCurrentMember();
+        if (umsMember != null && umsMember.getId() != null) {
+            PmsFavorite query = new PmsFavorite();
+            query.setObjId(goods.getId());
+            query.setMemberId(umsMember.getId());
+            query.setType(1);
+            PmsFavorite findCollection = favoriteService.getOne(new QueryWrapper<>(query));
+            if(findCollection!=null){
+                map.put("favorite", true);
+            }else{
+                map.put("favorite", false);
+            }
+        }
 
         map.put("goods", goods);
         return new CommonResult().success(map);

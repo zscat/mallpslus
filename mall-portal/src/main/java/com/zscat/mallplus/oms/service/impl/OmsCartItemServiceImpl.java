@@ -16,6 +16,7 @@ import com.zscat.mallplus.pms.vo.PromotionProduct;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.UserUtils;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -126,20 +127,14 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
     public int updateQuantity(Long id, Long memberId, Integer quantity) {
         OmsCartItem cartItem = new OmsCartItem();
         cartItem.setQuantity(quantity);
-        QueryWrapper example = new QueryWrapper();
-        example.eq("deleteStatus", 0);
-        example.eq("memberId", memberId);
+        cartItem.setId(id);
 
-        return cartItemMapper.update(cartItem, example);
+        return cartItemMapper.updateById(cartItem);
     }
 
     @Override
     public int delete(Long memberId, List<Long> ids) {
-        OmsCartItem record = new OmsCartItem();
-        record.setDeleteStatus(1);
-        QueryWrapper<OmsCartItem> example = new QueryWrapper<OmsCartItem>();
-        example.in("id", ids).eq("memberId", memberId);
-        return cartItemMapper.update(record, example);
+        return cartItemMapper.deleteBatchIds(ids);
     }
 
     @Override
@@ -162,11 +157,7 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
 
     @Override
     public int clear(Long memberId) {
-        OmsCartItem record = new OmsCartItem();
-        record.setDeleteStatus(1);
-        QueryWrapper<OmsCartItem> example = new QueryWrapper<OmsCartItem>();
-        example.eq("memberId", memberId);
-        return cartItemMapper.update(record, example);
+        return cartItemMapper.delete(new QueryWrapper<OmsCartItem>().eq("member_id",memberId));
     }
 
     @Override
@@ -218,12 +209,16 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                     cartPromotionItem.setPromotionMessage("单品促销");
                     //商品原价-促销价
                     PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                    BigDecimal originalPrice = skuStock.getPrice();
-                    cartPromotionItem.setReduceAmount(originalPrice.subtract(skuStock.getPromotionPrice()));
-                    cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
-                    cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
-                    cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+                    if (skuStock!=null){
+                        BigDecimal originalPrice = skuStock.getPrice();
+                        cartPromotionItem.setReduceAmount(originalPrice.subtract(skuStock.getPromotionPrice()));
+                        cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                        cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
+                        cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+
+                    }
                     cartPromotionItemList.add(cartPromotionItem);
+
                 }
             } else if (promotionType == 3) {
                 //打折优惠
@@ -237,13 +232,17 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                         cartPromotionItem.setPromotionMessage(message);
                         //商品原价-折扣金额*商品原价
                         PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                        BigDecimal originalPrice = skuStock.getPrice();
-                        BigDecimal reduceAmount = originalPrice.subtract(ladder.getDiscount().multiply(originalPrice));
-                        cartPromotionItem.setReduceAmount(reduceAmount);
-                        cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
-                        cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
-                        cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+                        if (skuStock!=null){
+                            BigDecimal originalPrice = skuStock.getPrice();
+                            BigDecimal reduceAmount = originalPrice.subtract(ladder.getDiscount().multiply(originalPrice));
+                            cartPromotionItem.setReduceAmount(reduceAmount);
+                            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                            cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
+                            cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+
+                        }
                         cartPromotionItemList.add(cartPromotionItem);
+
                     }
                 } else {
                     handleNoReduce(cartPromotionItemList, itemList, promotionProduct);
@@ -260,10 +259,13 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                         cartPromotionItem.setPromotionMessage(message);
                         //(商品原价/总价)*满减金额
                         PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                        BigDecimal originalPrice = skuStock.getPrice();
-                        BigDecimal reduceAmount = originalPrice.divide(totalAmount, RoundingMode.HALF_EVEN).multiply(fullReduction.getReducePrice());
-                        cartPromotionItem.setReduceAmount(reduceAmount);
-                        cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                        if(skuStock!=null){
+                            BigDecimal originalPrice = skuStock.getPrice();
+                            BigDecimal reduceAmount = originalPrice.divide(totalAmount, RoundingMode.HALF_EVEN).multiply(fullReduction.getReducePrice());
+                            cartPromotionItem.setReduceAmount(reduceAmount);
+                            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                        }
+
                         cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
                         cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
                         cartPromotionItemList.add(cartPromotionItem);
@@ -333,7 +335,9 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
             cartPromotionItem.setPromotionMessage("无优惠");
             cartPromotionItem.setReduceAmount(new BigDecimal(0));
             PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+            if (ValidatorUtils.notEmpty(skuStock)){
+                cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+            }
             cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
             cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
             cartPromotionItemList.add(cartPromotionItem);

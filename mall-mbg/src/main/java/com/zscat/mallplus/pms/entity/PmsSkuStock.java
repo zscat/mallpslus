@@ -78,8 +78,9 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
     @TableField("lock_stock")
     private Integer lockStock;
 
-   /* @TableField(exist = false)
-    private String meno;*/
+    @TableField(exist = false)
+    private String meno;
+
     @TableField("product_name")
     private String productName;
 
@@ -203,22 +204,7 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
         this.sp4 = sp4;
     }
 
-   /* public String getMeno() {
-        int sstock = (this.stock - this.lockStock) > 0 ? (this.stock - this.lockStock) : 0;
-        StringBuffer sb = new StringBuffer("价格:" + this.price + "元,库存:" + sstock + ",规格:" + this.sp1);
-        if (this.sp2 != null) {
-            sb.append("," + this.sp2);
-        }
-        if (this.sp3 != null) {
-            sb.append("," + this.sp3);
-        }
-        if (this.sp4 != null) {
-            sb.append("," + this.sp4);
-        }
-        return sb.toString();
-    }
-
-    public String getMeno1() {
+    public String getMeno() {
         StringBuffer sb = new StringBuffer("规格:" + this.sp1);
         if (this.sp2 != null) {
             sb.append("," + this.sp2);
@@ -234,7 +220,7 @@ public class PmsSkuStock extends BaseEntity implements Serializable {
 
     public void setMeno(String meno) {
         this.meno = meno;
-    }*/
+    }
 
     @Override
     public String toString() {

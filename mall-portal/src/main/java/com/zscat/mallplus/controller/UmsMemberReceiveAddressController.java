@@ -4,6 +4,7 @@ package com.zscat.mallplus.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.ums.entity.UmsMemberReceiveAddress;
+import com.zscat.mallplus.ums.mapper.UmsMemberReceiveAddressMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberReceiveAddressService;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -28,16 +30,10 @@ public class UmsMemberReceiveAddressController {
     @Autowired
     private IUmsMemberReceiveAddressService memberReceiveAddressService;
 
-    @ApiOperation("添加收货地址")
-    @RequestMapping(value = "/add")
-    @ResponseBody
-    public Object add(UmsMemberReceiveAddress address) {
-        boolean count = memberReceiveAddressService.save(address);
-        if (count) {
-            return new CommonResult().success(count);
-        }
-        return new CommonResult().failed();
-    }
+    @Resource
+    private UmsMemberReceiveAddressMapper addressMapper;
+
+
 
     @ApiOperation("删除收货地址")
     @RequestMapping(value = "/delete")
@@ -55,6 +51,9 @@ public class UmsMemberReceiveAddressController {
     @ResponseBody
     public Object update(UmsMemberReceiveAddress address) {
         boolean count = false;
+        if (address.getDefaultStatus()==1){
+            addressMapper.updateStatusByMember(address.getMemberId());
+        }
         if (address != null && address.getId() != null) {
             count = memberReceiveAddressService.updateById(address);
         } else {
@@ -85,7 +84,7 @@ public class UmsMemberReceiveAddressController {
     }
 
     @IgnoreAuth
-    @ApiOperation("显示所有收货地址")
+    @ApiOperation("显示默认收货地址")
     @RequestMapping(value = "/getItemDefautl", method = RequestMethod.GET)
     @ResponseBody
     public Object getItemDefautl() {

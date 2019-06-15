@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +19,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-17
  */
+@Data
 @TableName("oms_cart_item")
 public class OmsCartItem extends BaseEntity implements Serializable {
 
@@ -126,6 +128,7 @@ public class OmsCartItem extends BaseEntity implements Serializable {
     @TableField("product_attr")
     private String productAttr;
 
+    private Integer checked;
 
     public Long getId() {
         return id;

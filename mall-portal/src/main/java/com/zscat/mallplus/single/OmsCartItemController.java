@@ -1,4 +1,4 @@
-package com.zscat.mallplus.controller;
+package com.zscat.mallplus.single;
 
 
 import com.zscat.mallplus.oms.entity.OmsCartItem;

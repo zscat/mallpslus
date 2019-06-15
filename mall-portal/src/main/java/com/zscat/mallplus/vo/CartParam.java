@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class CartParam {
     private Long cartId;
-    private Long optionId;
+    private Long skuId;
     private Long goodsId;
     private Integer total;
     private Long memberId;

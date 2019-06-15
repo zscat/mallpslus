@@ -27,7 +27,6 @@ import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,13 +114,13 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
             productQueryParam.setPublishStatus(1);
             productQueryParam.setVerifyStatus(1);
             List<PmsProduct> goodsList = pmsProductService.list(new QueryWrapper<>(productQueryParam));
-            if (goodsList != null && goodsList.size() > 0) {
+            /*if (goodsList != null && goodsList.size() > 0) {
                 PmsProduct pmsProduct = goodsList.get(0);
                 PmsProduct product = new PmsProduct();
                 BeanUtils.copyProperties(pmsProduct, product);
                 //  product.setType(1);
                 goodsList.add(product);
-            }
+            }*/
             gt.setGoodsList(goodsList);
         }
         result.setCat_list(productAttributeCategoryList);

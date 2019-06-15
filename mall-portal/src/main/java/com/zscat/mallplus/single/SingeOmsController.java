@@ -1,21 +1,27 @@
 package com.zscat.mallplus.single;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.oms.entity.OmsOrder;
+import com.zscat.mallplus.oms.entity.OmsOrderItem;
+import com.zscat.mallplus.oms.service.IOmsOrderItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
+import com.zscat.mallplus.oms.vo.ConfirmOrderResult;
 import com.zscat.mallplus.oms.vo.GroupAndOrderVo;
+import com.zscat.mallplus.oms.vo.OrderParam;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
-import com.zscat.mallplus.vo.CartParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Auther: shenzhuan
@@ -31,16 +37,22 @@ public class SingeOmsController extends ApiBaseAction {
     private ISmsGroupService groupService;
     @Resource
     private IOmsOrderService orderService;
-
+    @Resource
+    private IOmsOrderItemService orderItemService;
 
     @IgnoreAuth
     @SysLog(MODULE = "oms", REMARK = "查询订单列表")
     @ApiOperation(value = "查询订单列表")
     @GetMapping(value = "/order/list")
     public Object orderList(OmsOrder order,
-                            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                            @RequestParam(value = "pageSize", required = false, defaultValue = "100") Integer pageSize,
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-        return new CommonResult().success(orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(order)));
+        IPage<OmsOrder> page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(new OmsOrder())) ;
+        for (OmsOrder omsOrder : page.getRecords()){
+            List<OmsOrderItem> itemList = orderItemService.list(new QueryWrapper<OmsOrderItem>().eq("order_id",omsOrder.getId()));
+            omsOrder.setOrderItemList(itemList);
+        }
+        return new CommonResult().success(page);
     }
 
 
@@ -73,11 +85,32 @@ public class SingeOmsController extends ApiBaseAction {
         UmsMember member = this.getCurrentMember();
         return orderService.generateSingleOrder(orderParam, member);
     }
-    @ApiOperation("添加商品到购物车")
-    @RequestMapping(value = "/addCart")
-    @ResponseBody
-    public Object addCart(CartParam cartParam) {
-        return orderService.addCart(cartParam);
 
+    @ResponseBody
+    @GetMapping("/submitPreview")
+    public Object submitPreview(OrderParam orderParam) {
+        try {
+            ConfirmOrderResult result = orderService.submitPreview(orderParam);
+            return new CommonResult().success(result);
+        } catch (ApiMallPlusException e) {
+            return new CommonResult().failed(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    /**
+     * 提交订单
+     *
+     * @param orderParam
+     * @return
+     */
+    @ApiOperation("根据购物车信息生成订单")
+    @RequestMapping(value = "/generateOrder")
+    @ResponseBody
+    public Object generateOrder(OrderParam orderParam) {
+        return orderService.generateOrder(orderParam);
+    }
+
 }

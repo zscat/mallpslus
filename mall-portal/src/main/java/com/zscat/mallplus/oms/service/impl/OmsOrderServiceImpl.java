@@ -37,6 +37,7 @@ import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.util.applet.TemplateData;
 import com.zscat.mallplus.util.applet.WX_TemplateMsgUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import com.zscat.mallplus.vo.CartParam;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -170,6 +171,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), null);
         }
         if ("1".equals(type)) {
+
             String cartId = orderParam.getCartId();
             if (org.apache.commons.lang.StringUtils.isBlank(cartId)) {
                 throw new ApiMallPlusException("参数为空");
@@ -376,6 +378,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         order.setOrderType(0);
         //收货人信息：姓名、电话、邮编、地址
         UmsMemberReceiveAddress address = addressService.getById(orderParam.getAddressId());
+        order.setReceiverId(orderParam.getAddressId());
         order.setReceiverName(address.getName());
         order.setReceiverPhone(address.getPhoneNumber());
         order.setReceiverPostCode(address.getPostCode());
@@ -1022,19 +1025,23 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
     @Override
     public Object addCart(CartParam cartParam) {
-        UmsMember umsMember =  UserUtils.getCurrentMember();
+        if (ValidatorUtils.empty(cartParam.getTotal())) {
+            cartParam.setTotal(1);
+        }
         OmsCartItem cartItem = new OmsCartItem();
-        if ("1".equals(cartParam.getType())){
-            PmsSkuStock pmsSkuStock = skuStockMapper.selectById(cartParam.getOptionId());
+        if (ValidatorUtils.notEmpty(cartParam.getSkuId())){
+            PmsSkuStock pmsSkuStock = skuStockMapper.selectById(cartParam.getSkuId());
             cartItem.setProductId(pmsSkuStock.getProductId());
-            cartItem.setMemberId(cartItem.getMemberId());
+            cartItem.setMemberId(cartParam.getMemberId());
             cartItem.setProductSkuId(pmsSkuStock.getId());
             OmsCartItem existCartItem   = cartItemMapper.selectOne(new QueryWrapper<>(cartItem));
             if (existCartItem == null) {
+                cartItem.setChecked(1);
+                cartItem.setMemberId(cartParam.getMemberId());
                 cartItem.setPrice(pmsSkuStock.getPrice());
                 cartItem.setProductSkuCode(pmsSkuStock.getSkuCode());
                 cartItem.setQuantity(cartParam.getTotal());
-              //  cartItem.setProductAttr(pmsSkuStock.getMeno1());
+                cartItem.setProductAttr(pmsSkuStock.getMeno());
                 cartItem.setProductPic(pmsSkuStock.getPic());
                 cartItem.setSp1(pmsSkuStock.getSp1());
                 cartItem.setSp2(pmsSkuStock.getSp2());
@@ -1043,26 +1050,30 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setCreateDate(new Date());
                 cartItemMapper.insert(cartItem);
             } else {
+                cartItem.setPrice(pmsSkuStock.getPrice());
                 cartItem.setModifyDate(new Date());
-                existCartItem.setQuantity(existCartItem.getQuantity() + cartItem.getQuantity());
+                existCartItem.setQuantity(existCartItem.getQuantity() + cartParam.getTotal());
                 cartItemMapper.updateById(existCartItem);
                 return new CommonResult().success(existCartItem);
             }
         }else {
-            PmsProduct pmsProduct = productService.getById(cartItem.getProductId());
-            cartItem.setProductId(pmsProduct.getId());
-            cartItem.setMemberId(cartItem.getMemberId());
+            PmsProduct pmsProduct = productService.getById(cartParam.getGoodsId());
+            cartItem.setProductId(cartParam.getGoodsId());
+            cartItem.setMemberId(cartParam.getMemberId());
             OmsCartItem existCartItem   = cartItemMapper.selectOne(new QueryWrapper<>(cartItem));
             if (existCartItem == null) {
+                cartItem.setChecked(1);
                 cartItem.setPrice(pmsProduct.getPrice());
                 cartItem.setProductName(pmsProduct.getName());
                 cartItem.setQuantity(cartParam.getTotal());
                 cartItem.setProductPic(pmsProduct.getPic());
                 cartItem.setCreateDate(new Date());
+                cartItem.setMemberId(cartParam.getMemberId());
                 cartItemMapper.insert(cartItem);
             } else {
+                cartItem.setPrice(pmsProduct.getPrice());
                 cartItem.setModifyDate(new Date());
-                existCartItem.setQuantity(existCartItem.getQuantity() + cartItem.getQuantity());
+                existCartItem.setQuantity(existCartItem.getQuantity() + cartParam.getTotal());
                 cartItemMapper.updateById(existCartItem);
                 return new CommonResult().success(existCartItem);
             }

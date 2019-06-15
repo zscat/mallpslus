@@ -198,6 +198,9 @@ public class OmsOrder extends BaseEntity implements Serializable {
      */
     @TableField("receiver_phone")
     private String receiverPhone;
+    @TableField("receiver_id")
+    private Long receiverId;
+
 
     /**
      * 收货人邮编
