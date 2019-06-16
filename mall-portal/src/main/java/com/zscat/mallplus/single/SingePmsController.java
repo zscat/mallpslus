@@ -9,10 +9,12 @@ import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.pms.entity.*;
+import com.zscat.mallplus.pms.mapper.PmsProductCategoryMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.*;
 import com.zscat.mallplus.pms.vo.ConsultTypeCount;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
+import com.zscat.mallplus.pms.vo.ProductTypeVo;
 import com.zscat.mallplus.pms.vo.PromotionProduct;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
@@ -31,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: shenzhuan
@@ -77,6 +76,9 @@ public class SingePmsController extends ApiBaseAction {
     @Autowired
     private IPmsFavoriteService favoriteService;
 
+    @Resource
+    private  PmsProductCategoryMapper categoryMapper;
+
     @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
     @IgnoreAuth
     @GetMapping(value = "/goods/detail")
@@ -115,7 +117,7 @@ public class SingePmsController extends ApiBaseAction {
     @ApiOperation(value = "查询商品列表")
     @GetMapping(value = "/goods/list")
     public Object goodsList(PmsProduct product,
-                            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         product.setPublishStatus(1);
         product.setVerifyStatus(1);
@@ -127,7 +129,7 @@ public class SingePmsController extends ApiBaseAction {
     @ApiOperation(value = "查询商品分类列表")
     @GetMapping(value = "/productCategory/list")
     public Object productCategoryList(PmsProductCategory productCategory,
-                                      @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
+                                      @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                                       @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         return new CommonResult().success(productCategoryService.page(new Page<PmsProductCategory>(pageNum, pageSize), new QueryWrapper<>(productCategory)));
     }
@@ -169,7 +171,7 @@ public class SingePmsController extends ApiBaseAction {
     @GetMapping(value = "/brand/list")
     public Object getPmsBrandByPage(PmsBrand entity,
                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         try {
             return new CommonResult().success(IPmsBrandService.page(new Page<PmsBrand>(pageNum, pageSize), new QueryWrapper<>(entity)));
@@ -225,7 +227,7 @@ public class SingePmsController extends ApiBaseAction {
     @IgnoreAuth
     @ApiOperation(value = "查询商品分类列表")
     @GetMapping(value = "/categoryAndGoodsList/list")
-    public Object categoryAndGoodsList(PmsProductCategory productCategory) {
+    public Object categoryAndGoodsList(PmsProductAttributeCategory productCategory) {
         List<PmsProductAttributeCategory> productAttributeCategoryList = productAttributeCategoryService.list(new QueryWrapper<>());
         for (PmsProductAttributeCategory gt : productAttributeCategoryList) {
             PmsProduct productQueryParam = new PmsProduct();
@@ -278,6 +280,71 @@ public class SingePmsController extends ApiBaseAction {
         return productMapper.getPromotionProductList(ids);
     }
 
+    @SysLog(MODULE = "pms", REMARK = "查询商品类型下的商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询商品类型下的商品列表")
+    @GetMapping(value = "/typeGoodsList")
+    public Object typeGoodsList(PmsProductCategory productCategory) {
+        PmsProduct productQueryParam = new PmsProduct();
+
+        productQueryParam.setPublishStatus(1);
+        productQueryParam.setVerifyStatus(1);
+        List<PmsProduct> list = pmsProductService.list(new QueryWrapper<>(productQueryParam));
+
+        List<ProductTypeVo> relList = new ArrayList<>();
+        for (PmsProduct l : list){
+            ProductTypeVo vo = new ProductTypeVo();
+            vo.setGoodsId(l.getId());
+            vo.setId(l.getId());
+            vo.setPic(l.getPic());
+            vo.setName(l.getName());
+            vo.setPrice(l.getPrice());
+            vo.setPid(l.getProductCategoryId());
+            relList.add(vo);
+        }
+        List<PmsProductCategory> categories = categoryMapper.selectList(new QueryWrapper<>());
+        for (PmsProductCategory v : categories){
+            if (v.getParentId()==0){
+                ProductTypeVo vo = new ProductTypeVo();
+                vo.setName(v.getName());
+                vo.setId(v.getId());
+                relList.add(vo);
+            }else{
+                ProductTypeVo vo = new ProductTypeVo();
+                vo.setName(v.getName());
+                vo.setId(v.getId());
+                vo.setPid(v.getParentId());
+                relList.add(vo);
+            }
+        }
+
+        return new CommonResult().success(relList);
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询商品类型下的商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询商品类型下的商品列表")
+    @GetMapping(value = "/typeList")
+    public Object typeList(PmsProductCategory productCategory) {
+        List<ProductTypeVo> relList = new ArrayList<>();
+        List<PmsProductCategory> categories = categoryMapper.selectList(new QueryWrapper<>());
+        for (PmsProductCategory v : categories){
+            if (v.getParentId()==0){
+                ProductTypeVo vo = new ProductTypeVo();
+                vo.setName(v.getName());
+                vo.setId(v.getId());
+                relList.add(vo);
+            }else{
+                ProductTypeVo vo = new ProductTypeVo();
+                vo.setName(v.getName());
+                vo.setId(v.getId());
+                vo.setPid(v.getParentId());
+                relList.add(vo);
+            }
+        }
+
+        return new CommonResult().success(relList);
+    }
     @SysLog(MODULE = "pms", REMARK = "查询商品列表")
     @IgnoreAuth
     @ApiOperation(value = "查询首页推荐商品")

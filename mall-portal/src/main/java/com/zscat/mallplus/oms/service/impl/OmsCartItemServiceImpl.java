@@ -207,16 +207,26 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                     CartPromotionItem cartPromotionItem = new CartPromotionItem();
                     BeanUtils.copyProperties(item, cartPromotionItem);
                     cartPromotionItem.setPromotionMessage("单品促销");
-                    //商品原价-促销价
-                    PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                    if (skuStock!=null){
-                        BigDecimal originalPrice = skuStock.getPrice();
-                        cartPromotionItem.setReduceAmount(originalPrice.subtract(skuStock.getPromotionPrice()));
-                        cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                    if (ValidatorUtils.notEmpty(item.getProductSkuId())){
+                        PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
+                        if (skuStock!=null){
+                            BigDecimal originalPrice = skuStock.getPrice();
+                            cartPromotionItem.setReduceAmount(originalPrice.subtract(skuStock.getPromotionPrice()));
+                            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                            cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
+                            cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+
+                        }
+                    }else{
+                        PmsProduct pmsProduct = pmsProductMapper.selectById(item.getProductId());
+                        cartPromotionItem.setRealStock(pmsProduct.getStock());
+                        BigDecimal originalPrice = pmsProduct.getPrice();
+                        cartPromotionItem.setReduceAmount(originalPrice.subtract(pmsProduct.getPromotionPrice()));
                         cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
                         cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
-
                     }
+                    //商品原价-促销价
+
                     cartPromotionItemList.add(cartPromotionItem);
 
                 }
@@ -231,15 +241,23 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                         String message = getLadderPromotionMessage(ladder);
                         cartPromotionItem.setPromotionMessage(message);
                         //商品原价-折扣金额*商品原价
-                        PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                        if (skuStock!=null){
-                            BigDecimal originalPrice = skuStock.getPrice();
-                            BigDecimal reduceAmount = originalPrice.subtract(ladder.getDiscount().multiply(originalPrice));
-                            cartPromotionItem.setReduceAmount(reduceAmount);
-                            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                        if (ValidatorUtils.notEmpty(item.getProductSkuId())){
+                            PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
+                            if (skuStock!=null){
+                                BigDecimal originalPrice = skuStock.getPrice();
+                                cartPromotionItem.setReduceAmount(originalPrice.subtract(skuStock.getPromotionPrice()));
+                                cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                                cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
+                                cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
+
+                            }
+                        }else{
+                            PmsProduct pmsProduct = pmsProductMapper.selectById(item.getProductId());
+                            cartPromotionItem.setRealStock(pmsProduct.getStock());
+                            BigDecimal originalPrice = pmsProduct.getPrice();
+                            cartPromotionItem.setReduceAmount(originalPrice.subtract(pmsProduct.getPromotionPrice()));
                             cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
                             cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());
-
                         }
                         cartPromotionItemList.add(cartPromotionItem);
 
@@ -258,12 +276,21 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
                         String message = getFullReductionPromotionMessage(fullReduction);
                         cartPromotionItem.setPromotionMessage(message);
                         //(商品原价/总价)*满减金额
-                        PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
-                        if(skuStock!=null){
-                            BigDecimal originalPrice = skuStock.getPrice();
+
+                        if (ValidatorUtils.notEmpty(item.getProductSkuId())){
+                            PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
+                            if(skuStock!=null){
+                                BigDecimal originalPrice = skuStock.getPrice();
+                                BigDecimal reduceAmount = originalPrice.divide(totalAmount, RoundingMode.HALF_EVEN).multiply(fullReduction.getReducePrice());
+                                cartPromotionItem.setReduceAmount(reduceAmount);
+                                cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+                            }
+                        }else{
+                            PmsProduct pmsProduct = pmsProductMapper.selectById(item.getProductId());
+                            cartPromotionItem.setRealStock(pmsProduct.getStock());
+                            BigDecimal originalPrice = pmsProduct.getPrice();
                             BigDecimal reduceAmount = originalPrice.divide(totalAmount, RoundingMode.HALF_EVEN).multiply(fullReduction.getReducePrice());
                             cartPromotionItem.setReduceAmount(reduceAmount);
-                            cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
                         }
 
                         cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());

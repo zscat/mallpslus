@@ -1,10 +1,12 @@
 package com.zscat.mallplus.config;
 
 
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.google.common.collect.Lists;
 import com.zscat.mallplus.vo.ApiContext;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -19,6 +21,13 @@ public class MybatisPlusConfig {
 
     @Autowired
     private ApiContext apiContext;
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
 
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+
+        paginationInterceptor.setDialectType("mysql");
+        return paginationInterceptor;
+    }
 
 }

@@ -47,7 +47,14 @@ public class SingeOmsController extends ApiBaseAction {
     public Object orderList(OmsOrder order,
                             @RequestParam(value = "pageSize", required = false, defaultValue = "100") Integer pageSize,
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-        IPage<OmsOrder> page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(new OmsOrder())) ;
+
+        IPage<OmsOrder> page = null;
+        if (order.getStatus()==0){
+            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<OmsOrder>().eq("member_id",order.getMemberId())) ;
+        }else {
+            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(order)) ;
+
+        }
         for (OmsOrder omsOrder : page.getRecords()){
             List<OmsOrderItem> itemList = orderItemService.list(new QueryWrapper<OmsOrderItem>().eq("order_id",omsOrder.getId()));
             omsOrder.setOrderItemList(itemList);

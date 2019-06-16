@@ -18,7 +18,7 @@ public class OrderParam {
     //使用的积分数
     private Integer useIntegration;
     //支付方式
-    private Integer payType;
+    private Integer payType =1;
     private Integer offline;// 0 送货 1 自取
     private String content;
     private String cartId;

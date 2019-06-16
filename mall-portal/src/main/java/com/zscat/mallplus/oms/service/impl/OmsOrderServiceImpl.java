@@ -127,7 +127,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         if (tbOrder == null) {
             throw new ApiMallPlusException("订单不存在");
         }
-        tbOrder.setStatus(1);
+        tbOrder.setStatus(2);
         tbOrder.setPayType(tbThanks.getPayType());
         tbOrder.setPaymentTime(new Date());
         tbOrder.setModifyTime(new Date());
@@ -372,8 +372,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         order.setPayType(orderParam.getPayType());
         //订单来源：0->PC订单；1->app订单
         order.setSourceType(1);
-        //订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
-        order.setStatus(0);
+        //订单状态：订单状态：1->待付款；2->待发货；3->已发货；4->已完成；5->售后订单 6->已关闭；
+        order.setStatus(1);
         //订单类型：0->正常订单；1->秒杀订单
         order.setOrderType(0);
         //收货人信息：姓名、电话、邮编、地址
@@ -430,7 +430,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         //修改订单支付状态
         OmsOrder order = new OmsOrder();
         order.setId(orderId);
-        order.setStatus(1);
+        order.setStatus(2);
         order.setPaymentTime(new Date());
         orderService.updateById(order);
         //恢复所有下单商品的锁定库存，扣减真实库存
@@ -610,8 +610,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         order.setPayType(orderParam.getPayType());
         //订单来源：0->PC订单；1->app订单
         order.setSourceType(orderParam.getSourceType());
-        //订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
-        order.setStatus(0);
+        //订单状态：1->待付款；2->待发货；3->已发货；4->已完成；5->售后订单 6->已关闭；
+        order.setStatus(1);
         //订单类型：0->正常订单；1->秒杀订单
         order.setOrderType(orderParam.getOrderType());
         //收货人信息：姓名、电话、邮编、地址
@@ -652,7 +652,6 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             if (smsGroupMemberList != null && smsGroupMemberList.size() > 0) {
                 return new CommonResult().failed("你已经参加此拼团");
             }
-
             Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
             Long nowT = System.currentTimeMillis();
             if (nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
@@ -723,9 +722,16 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
      */
     private void lockStock(List<CartPromotionItem> cartPromotionItemList) {
         for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
-            PmsSkuStock skuStock = skuStockMapper.selectById(cartPromotionItem.getProductSkuId());
-            skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getQuantity());
-            skuStockMapper.updateById(skuStock);
+            if (ValidatorUtils.notEmpty(cartPromotionItem.getProductSkuId())){
+                PmsSkuStock skuStock = skuStockMapper.selectById(cartPromotionItem.getProductSkuId());
+                skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getQuantity());
+                skuStockMapper.updateById(skuStock);
+            }else{
+               /* PmsProduct skuStock = productService.getById(cartPromotionItem.getProductId());
+                skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getQuantity());
+                skuStockMapper.updateById(skuStock);*/
+            }
+
         }
     }
 

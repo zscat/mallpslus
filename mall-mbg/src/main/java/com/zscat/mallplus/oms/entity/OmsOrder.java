@@ -113,7 +113,7 @@ public class OmsOrder extends BaseEntity implements Serializable {
     private Integer sourceType;
 
     /**
-     * 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
+     * 订单状态：1->待付款；2->待发货；3->已发货；4->已完成；5->售后订单 6->已关闭；
      */
     private Integer status;
 

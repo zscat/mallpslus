@@ -73,5 +73,7 @@ public interface IUmsMemberService extends IService<UmsMember> {
     SmsCode generateCode(String phone);
 
     Map<String, Object> loginByCode(String phone, String authCode);
+
+    Object simpleReg(String phone, String password, String confimpassword);
 }
 

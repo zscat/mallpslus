@@ -211,7 +211,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
 
         UmsMember queryM = new UmsMember();
         queryM.setUsername(user.getUsername());
-        queryM.setPassword(passwordEncoder.encode(user.getPassword()));
         UmsMember umsMembers = memberMapper.selectOne(new QueryWrapper<>(queryM));
         if (umsMembers != null) {
             return new CommonResult().failed("该用户已经存在");
@@ -231,6 +230,42 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return new CommonResult().success("注册成功", null);
     }
 
+    @Override
+    public Object simpleReg(String phone, String password, String confimpassword){
+        //没有该用户进行添加操作
+        UmsMember user = new UmsMember();
+        user.setUsername(phone);
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setConfimpassword(confimpassword);
+
+
+        if (!user.getPassword().equals(user.getConfimpassword())) {
+            return new CommonResult().failed("密码不一致");
+        }
+        //查询是否已有该用户
+
+        UmsMember queryM = new UmsMember();
+        queryM.setUsername(user.getUsername());
+
+        UmsMember umsMembers = memberMapper.selectOne(new QueryWrapper<>(queryM));
+        if (umsMembers != null) {
+            return new CommonResult().failed("该用户已经存在");
+        }
+        //没有该用户进行添加操作
+
+        UmsMember umsMember = new UmsMember();
+        umsMember.setMemberLevelId(4L);
+        umsMember.setUsername(user.getUsername());
+        umsMember.setPhone(user.getPhone());
+        umsMember.setPassword(passwordEncoder.encode(user.getPassword()));
+        umsMember.setCreateTime(new Date());
+        umsMember.setStatus(1);
+
+        memberMapper.insert(umsMember);
+        umsMember.setPassword(null);
+        return new CommonResult().success("注册成功", "注册成功");
+    }
     @Override
     public CommonResult generateAuthCode(String telephone) {
         StringBuilder sb = new StringBuilder();

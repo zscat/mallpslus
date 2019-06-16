@@ -236,7 +236,25 @@ public class SingelHomeController {
 
         return memberService.register(phone, password, confimpassword, authCode);
     }
+    @IgnoreAuth
+    @ApiOperation("注册")
+    @PostMapping(value = "/simpleReg")
+    public Object simpleReg(@RequestParam String phone,
+                           @RequestParam String password,
+                           @RequestParam String confimpassword) {
+        if (phone == null || "".equals(phone)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (password == null || "".equals(password)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
+        if (confimpassword == null || "".equals(confimpassword)) {
+            return new CommonResult().validateFailed("用户名或密码错误");
+        }
 
+
+        return memberService.simpleReg(phone, password, confimpassword);
+    }
     /**
      * 发送短信验证码
      *
