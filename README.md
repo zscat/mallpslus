@@ -258,3 +258,16 @@ nginx | 1.10 | http://nginx.org/en/download.html
 [MIT](https://github.com/zscatzheng/mall/blob/master/LICENSE)
 
 Copyright (c) 2018-2019 zscatzheng
+
+|      | mall单机版                   | mallplus多租户单机版              | mallplus多租户dubbo版本           | mallplus多租户springcloud版本     | mallplus-uniapp版本               |    |    |
+| ---- | ---------------------------- | --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- | -- | -- |
+| 技术 | springboot mybatis redis vue | springboot mybatis-plus redis vue | springboot mybatis-plus redis vue | springboot mybatis-plus redis vue | springboot mybatis-plus redis vue |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+|      |                              |                                   |                                   |                                   |                                   |    |    |
+
