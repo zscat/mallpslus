@@ -241,7 +241,32 @@ public class PmsProduct extends BaseEntity implements Serializable {
     @TableField("school_id")
     private Long schoolId;
     private Integer hit;
+    @TableField(exist = false)
+    private String keyword;
 
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public Integer getHit() {
+        return hit;
+    }
+
+    public void setHit(Integer hit) {
+        this.hit = hit;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public Long getId() {
         return id;

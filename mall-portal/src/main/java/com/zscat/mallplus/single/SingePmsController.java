@@ -2,6 +2,7 @@ package com.zscat.mallplus.single;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
@@ -121,7 +122,13 @@ public class SingePmsController extends ApiBaseAction {
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         product.setPublishStatus(1);
         product.setVerifyStatus(1);
-        return new CommonResult().success(pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product)));
+        IPage<PmsProduct> list;
+        if (ValidatorUtils.notEmpty(product.getKeyword())){
+            list = pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product).like("name",product.getKeyword()));
+        }else{
+            list = pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product));
+        }
+        return new CommonResult().success(list);
     }
 
     @SysLog(MODULE = "pms", REMARK = "查询商品分类列表")
