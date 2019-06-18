@@ -3,9 +3,11 @@ package com.zscat.mallplus.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.IgnoreAuth;
+import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberReceiveAddress;
 import com.zscat.mallplus.ums.mapper.UmsMemberReceiveAddressMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberReceiveAddressService;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,8 +73,12 @@ public class UmsMemberReceiveAddressController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public Object list() {
-        List<UmsMemberReceiveAddress> addressList = memberReceiveAddressService.list(new QueryWrapper<>());
-        return new CommonResult().success(addressList);
+        UmsMember umsMember = UserUtils.getCurrentMember();
+        if (umsMember != null && umsMember.getId() != null) {
+            List<UmsMemberReceiveAddress> addressList = memberReceiveAddressService.list(new QueryWrapper<UmsMemberReceiveAddress>().eq("member_id",umsMember.getId()));
+            return new CommonResult().success(addressList);
+        }
+        return new ArrayList<UmsMemberReceiveAddress>();
     }
 
     @IgnoreAuth

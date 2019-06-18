@@ -3,10 +3,10 @@ package com.zscat.mallplus.ums.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.AppletLoginParam;
 import com.zscat.mallplus.vo.SmsCode;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public interface IUmsMemberService extends IService<UmsMember> {
 
-    Object loginByWeixin(HttpServletRequest req);
+    Object loginByWeixin(AppletLoginParam req);
 
 
     /**

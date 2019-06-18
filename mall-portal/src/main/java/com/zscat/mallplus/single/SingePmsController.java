@@ -23,7 +23,7 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.RedisService;
-import com.zscat.mallplus.util.RedisUtil;
+import com.zscat.mallplus.ums.service.impl.RedisUtil;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
@@ -50,6 +50,9 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/api/single/pms")
 public class SingePmsController extends ApiBaseAction {
 
+
+    @Resource
+    private RedisUtil redisUtil;
     @Resource
     private ISmsGroupService groupService;
     @Resource
@@ -359,7 +362,7 @@ public class SingePmsController extends ApiBaseAction {
     @SysLog(MODULE = "pms", REMARK = "添加商品浏览记录")
     @PostMapping(value = "/addView")
     public void addView(@RequestParam Long memberId,@RequestParam  Long goodsId) {
-        RedisUtil redisUtil = new RedisUtil();
+
         String key = String.format(Rediskey.GOODSHISTORY, memberId);
 
         //为了保证浏览商品的 唯一性,每次添加前,将list 中该 商品ID去掉,在加入,以保证其浏览的最新的商品在最前面
@@ -376,20 +379,21 @@ public class SingePmsController extends ApiBaseAction {
     @IgnoreAuth
     @ApiOperation(value = "查询用户浏览记录列表")
     @GetMapping(value = "/viewList")
-    public Map<String,Object> viewList(@RequestParam Long memberId,
+    public Object viewList(@RequestParam Long memberId,
                                        @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize,
                                        @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         String key = String.format(Rediskey.GOODSHISTORY, memberId);
-        RedisUtil redisUtil = new RedisUtil();
+
         //获取用户的浏览的商品的总页数;
         long pageCount = redisUtil.lLen(key);
         //根据用户的ID分頁获取该用户最近浏览的50个商品信息
-        List<String> result = redisUtil.lRange(key,(pageSize-1)*pageSize,pageSize*pageSize-1);
+        List<String> result = redisUtil.lRange(key,(pageNum-1)*pageSize,pageNum*pageSize-1);
+        List<PmsProduct> list = (List<PmsProduct>) pmsProductService.listByIds(result);
         //拼装返回
         Map<String,Object> map = new HashMap<>();
-        map.put("result",result);
+        map.put("result",list);
         map.put("pageCount",(pageCount%pageSize == 0 ? pageCount/pageSize : pageCount/pageSize+1));
-        return map;
+        return new CommonResult().success(map);
     }
 
     @SysLog(MODULE = "pms", REMARK = "查询商品列表")

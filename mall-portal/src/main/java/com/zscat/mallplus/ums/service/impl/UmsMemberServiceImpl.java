@@ -18,6 +18,7 @@ import com.zscat.mallplus.util.CommonUtil;
 import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.util.JwtTokenUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.AppletLoginParam;
 import com.zscat.mallplus.vo.MemberDetails;
 import com.zscat.mallplus.vo.SmsCode;
 import lombok.Data;
@@ -39,7 +40,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -334,15 +334,15 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public Object loginByWeixin(HttpServletRequest req) {
+    public Object loginByWeixin(AppletLoginParam req) {
         try {
-            String code = req.getParameter("code");
+            String code = req.getCode();
             if (StringUtils.isEmpty(code)) {
                 return ApiBaseAction.toResponsFail("登录失败");
             }
-            String userInfos = req.getParameter("userInfo");
+            String userInfos = req.getUserInfo();
 
-            String signature = req.getParameter("signature");
+            String signature = req.getSignature();
 
             Map<String, Object> me = JsonUtils.readJsonToMap(userInfos);
             if (null == me) {
@@ -376,7 +376,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 umsMember.setBlance(new BigDecimal(0));
                 umsMember.setIntegration(0);
                 umsMember.setMemberLevelId(4L);
-
+                umsMember.setAvatar(req.getCloudID());
                 umsMember.setCity(me.get("country").toString()+"-"+me.get("province").toString()+"-"+me.get("city").toString());
 
                 umsMember.setGender((Integer) me.get("gender"));

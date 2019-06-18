@@ -364,6 +364,9 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
             PmsSkuStock skuStock = getOriginalPrice(promotionProduct, item.getProductSkuId());
             if (ValidatorUtils.notEmpty(skuStock)){
                 cartPromotionItem.setRealStock(skuStock.getStock() - skuStock.getLockStock());
+            }else{
+                PmsProduct pmsProduct = pmsProductMapper.selectById(item.getProductId());
+                cartPromotionItem.setRealStock(pmsProduct.getStock());
             }
             cartPromotionItem.setIntegration(promotionProduct.getGiftPoint());
             cartPromotionItem.setGrowth(promotionProduct.getGiftGrowth());

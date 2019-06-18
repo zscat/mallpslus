@@ -44,7 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -108,8 +107,8 @@ public class AppletMemberController extends ApiBaseAction {
     @ApiOperation("注册")
     @SysLog(MODULE = "applet", REMARK = "小程序注册")
     @PostMapping("login_by_weixin")
-    public Object loginByWeixin(HttpServletRequest req) {
-        return memberService.loginByWeixin(req);
+    public Object loginByWeixin(@RequestBody  AppletLoginParam param) {
+        return memberService.loginByWeixin(param);
 
     }
 
