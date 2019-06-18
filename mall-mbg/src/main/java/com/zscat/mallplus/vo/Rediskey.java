@@ -35,5 +35,6 @@ public class Rediskey {
 
     public static String GOODSDETAIL = "GOODSDETAIL:%s";
 
+    public static String GOODSHISTORY = "GOODSHISTORY:%s";
 
 }
