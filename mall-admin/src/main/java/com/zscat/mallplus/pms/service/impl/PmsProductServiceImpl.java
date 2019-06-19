@@ -87,7 +87,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         //根据促销类型设置价格：、阶梯价格、满减价格
         Long productId = product.getId();
         //会员价格
-        relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), productId);
+     //   relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), productId);
         //阶梯价格
         relateAndInsertList(productLadderDao, productParam.getProductLadderList(), productId);
         //满减价格
@@ -141,8 +141,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         productMapper.updateById(product);
         redisService.remove(String.format(Rediskey.GOODSDETAIL, product.getId()));
         //会员价格
-        memberPriceMapper.delete(new QueryWrapper<>(new PmsMemberPrice()).eq("product_id", id));
-        relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), id);
+      //  memberPriceMapper.delete(new QueryWrapper<>(new PmsMemberPrice()).eq("product_id", id));
+      //  relateAndInsertList(memberPriceDao, productParam.getMemberPriceList(), id);
         //阶梯价格
 
         productLadderMapper.delete(new QueryWrapper<>(new PmsProductLadder()).eq("product_id", id));

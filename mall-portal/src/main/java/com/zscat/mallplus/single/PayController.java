@@ -1,19 +1,21 @@
-package com.zscat.mallplus.controller;
+package com.zscat.mallplus.single;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.config.WxAppletProperties;
+import com.zscat.mallplus.enums.OrderStatus;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
 import com.zscat.mallplus.oms.service.IOmsOrderItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
-import com.zscat.mallplus.single.ApiBaseAction;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.*;
 import com.zscat.mallplus.util.applet.WechatRefundApiResult;
 import com.zscat.mallplus.util.applet.WechatUtil;
+import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.vo.BalancePayParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -100,12 +102,25 @@ public class PayController extends ApiBaseAction {
     }
 
     /**
+     * 余额支付
      */
-    @ApiOperation(value = "跳转")
-    @PostMapping("index")
-    public Object index() {
-        //
-        return toResponsSuccess("");
+    @SysLog(MODULE = "pay", REMARK = "余额支付")
+    @ApiOperation(value = "余额支付")
+    @GetMapping("balancePay")
+    public Object balancePay(@RequestBody BalancePayParam payParam){
+
+        if(payParam.getPayAmount().compareTo(payParam.getBalance())>0){
+            return new CommonResult().failed("余额不足！");
+        }else {
+            OmsOrder order =orderService.getById(payParam.getOrderId());
+            UmsMember userDO = UserUtils.getCurrentMember();
+            order.setStatus(OrderStatus.TO_DELIVER.getValue());
+            order.setPayType(3);
+            orderService.updateById(order);
+            userDO.setBlance(userDO.getBlance().subtract(order.getPayAmount()));
+            umsMemberService.updateById(userDO);
+        }
+        return new CommonResult().success();
     }
 
     /**
@@ -113,7 +128,7 @@ public class PayController extends ApiBaseAction {
      */
     @SysLog(MODULE = "pay", REMARK = "获取支付的请求参数")
     @ApiOperation(value = "获取支付的请求参数")
-    @GetMapping("prepay")
+    @GetMapping("weixinAppletPay")
     public Object payPrepay(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         UmsMember user = UserUtils.getCurrentMember();
         //

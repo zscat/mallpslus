@@ -194,6 +194,9 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             }
             cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), resultList);
         }
+        if (cartPromotionItemList==null && cartPromotionItemList.size()<1){
+            throw new ApiMallPlusException("订单已提交");
+        }
         ConfirmOrderResult result = new ConfirmOrderResult();
         //获取购物车信息
 
@@ -259,7 +262,11 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             Long cartId = Long.valueOf(orderParam.getCartId());
             OmsCartItem omsCartItem = cartItemService.selectById(cartId);
             List<OmsCartItem> list = new ArrayList<>();
-            list.add(omsCartItem);
+            if (omsCartItem!=null){
+                list.add(omsCartItem);
+            }else{
+                throw new ApiMallPlusException("订单已提交");
+            }
             if (!CollectionUtils.isEmpty(list)) {
                 cartPromotionItemList = cartItemService.calcCartPromotion(list);
             }
@@ -270,6 +277,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             for (String s : ids1) {
                 resultList.add(Long.valueOf(s));
             }
+
             cartPromotionItemList = cartItemService.listPromotion(currentMember.getId(), resultList);
         }
 

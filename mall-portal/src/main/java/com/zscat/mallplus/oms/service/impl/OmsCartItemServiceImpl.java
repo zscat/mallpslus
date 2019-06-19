@@ -2,6 +2,7 @@ package com.zscat.mallplus.oms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.mapper.OmsCartItemMapper;
 import com.zscat.mallplus.oms.service.IOmsCartItemService;
@@ -190,6 +191,9 @@ public class OmsCartItemServiceImpl extends ServiceImpl<OmsCartItemMapper, OmsCa
 
     @Override
     public List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList) {
+        if (cartItemList==null && cartItemList.size()<1){
+            throw new ApiMallPlusException("订单已提交");
+        }
         //1.先根据productId对CartItem进行分组，以spu为单位进行计算优惠
         Map<Long, List<OmsCartItem>> productCartMap = groupCartItemBySpu(cartItemList);
         //2.查询所有商品的优惠相关信息

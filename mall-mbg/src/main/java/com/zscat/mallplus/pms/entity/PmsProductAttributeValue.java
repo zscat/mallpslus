@@ -38,7 +38,7 @@ public class PmsProductAttributeValue extends BaseEntity implements Serializable
     private String value;
     private String name;
     // 1 规格 2 参数
-    private int type ;
+    private Integer type ;
 
 
 }

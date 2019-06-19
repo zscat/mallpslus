@@ -45,7 +45,7 @@ public class PmsProduct extends BaseEntity implements Serializable {
     private String name;
 
     private String pic;
-
+    private Integer type;// 1出售、2义卖、3免费
     /**
      * 货号
      */

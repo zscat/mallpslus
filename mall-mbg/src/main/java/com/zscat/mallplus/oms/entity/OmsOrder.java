@@ -101,7 +101,7 @@ public class OmsOrder extends BaseEntity implements Serializable {
     private BigDecimal discountAmount;
 
     /**
-     * 支付方式：0->未支付；1->支付宝；2->微信
+     * 支付方式：0->未支付；1->支付宝；2->微信 3余额支付
      */
     @TableField("pay_type")
     private Integer payType;
