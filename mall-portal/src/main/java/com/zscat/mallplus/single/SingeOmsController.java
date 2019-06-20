@@ -15,6 +15,7 @@ import com.zscat.mallplus.oms.vo.GroupAndOrderVo;
 import com.zscat.mallplus.oms.vo.OrderParam;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
+import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +33,8 @@ import java.util.List;
 @Api(tags = "OmsController", description = "订单管理系统")
 @RequestMapping("/api/single/oms")
 public class SingeOmsController extends ApiBaseAction {
-
+    @Resource
+    private UmsMemberMapper memberMapper;
     @Resource
     private ISmsGroupService groupService;
     @Resource
@@ -71,6 +73,10 @@ public class SingeOmsController extends ApiBaseAction {
             query.setOrderId(id);
             List<OmsOrderItem> orderItemList = orderItemService.list(new QueryWrapper<>(query));
             orderDetailResult.setOrderItemList(orderItemList);
+            UmsMember member = memberMapper.selectById(orderDetailResult.getMemberId());
+            if(member!=null){
+                orderDetailResult.setBlance(member.getBlance());
+            }
         return new CommonResult().success(orderDetailResult);
     }
 

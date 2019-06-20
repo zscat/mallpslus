@@ -106,8 +106,8 @@ public class PayController extends ApiBaseAction {
      */
     @SysLog(MODULE = "pay", REMARK = "余额支付")
     @ApiOperation(value = "余额支付")
-    @GetMapping("balancePay")
-    public Object balancePay(@RequestBody BalancePayParam payParam){
+    @PostMapping("balancePay")
+    public Object balancePay(BalancePayParam payParam){
 
         if(payParam.getPayAmount().compareTo(payParam.getBalance())>0){
             return new CommonResult().failed("余额不足！");
@@ -129,16 +129,16 @@ public class PayController extends ApiBaseAction {
     @SysLog(MODULE = "pay", REMARK = "获取支付的请求参数")
     @ApiOperation(value = "获取支付的请求参数")
     @GetMapping("weixinAppletPay")
-    public Object payPrepay(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+    public Object payPrepay(@RequestParam(value = "orderId", required = false, defaultValue = "0") Long orderId) {
         UmsMember user = UserUtils.getCurrentMember();
         //
-        OmsOrder orderInfo = orderService.getById(id);
+        OmsOrder orderInfo = orderService.getById(orderId);
 
         if (null == orderInfo) {
             return toResponsObject(400, "订单已取消", "");
         }
 
-        if (orderInfo.getStatus() != 0) {
+        if (orderInfo.getStatus() != OrderStatus.INIT.getValue()) {
             return toResponsObject(400, "订单已支付，请不要重复操作", "");
         }
 
@@ -161,7 +161,7 @@ public class PayController extends ApiBaseAction {
             // 商品描述
             parame.put("body", "超市-支付");
             //订单的商品
-            List<OmsOrderItem> orderGoods = orderItemService.list(new QueryWrapper<>(new OmsOrderItem()).eq("orderId", id));
+            List<OmsOrderItem> orderGoods = orderItemService.list(new QueryWrapper<>(new OmsOrderItem()).eq("order_id", orderId));
             if (null != orderGoods) {
                 String body = "超市-";
                 for (OmsOrderItem goodsVo : orderGoods) {

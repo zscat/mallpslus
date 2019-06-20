@@ -42,6 +42,14 @@ public class SingeUmsController extends ApiBaseAction {
     @Resource
     private IUmsMemberMemberTagRelationService memberTagService;
 
+    @ApiOperation("获取会员详情")
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public Object detail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        UmsMember member = memberService.getById(id);
+        return new CommonResult().success(member);
+    }
+
     @IgnoreAuth
     @ApiOperation(value = "查询学校列表")
     @GetMapping(value = "/school/list")

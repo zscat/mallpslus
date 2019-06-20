@@ -27,7 +27,9 @@ public class OmsOrder extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableField(exist = false)
-    List<OmsOrderItem> orderItemList;
+    private BigDecimal blance;
+    @TableField(exist = false)
+    private List<OmsOrderItem> orderItemList;
     /**
      * 订单id
      */

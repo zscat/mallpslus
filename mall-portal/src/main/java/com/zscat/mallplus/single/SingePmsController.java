@@ -386,13 +386,17 @@ public class SingePmsController extends ApiBaseAction {
 
         //获取用户的浏览的商品的总页数;
         long pageCount = redisUtil.lLen(key);
-        //根据用户的ID分頁获取该用户最近浏览的50个商品信息
-        List<String> result = redisUtil.lRange(key,(pageNum-1)*pageSize,pageNum*pageSize-1);
-        List<PmsProduct> list = (List<PmsProduct>) pmsProductService.listByIds(result);
         //拼装返回
         Map<String,Object> map = new HashMap<>();
-        map.put("result",list);
-        map.put("pageCount",(pageCount%pageSize == 0 ? pageCount/pageSize : pageCount/pageSize+1));
+        //根据用户的ID分頁获取该用户最近浏览的50个商品信息
+        List<String> result = redisUtil.lRange(key,(pageNum-1)*pageSize,pageNum*pageSize-1);
+        if (result!=null && result.size()>0){
+            List<PmsProduct> list = (List<PmsProduct>) pmsProductService.listByIds(result);
+
+            map.put("result",list);
+            map.put("pageCount",(pageCount%pageSize == 0 ? pageCount/pageSize : pageCount/pageSize+1));
+        }
+
         return new CommonResult().success(map);
     }
 

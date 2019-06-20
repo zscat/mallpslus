@@ -21,7 +21,7 @@ import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.AppletLoginParam;
 import com.zscat.mallplus.vo.MemberDetails;
 import com.zscat.mallplus.vo.SmsCode;
-import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ import java.util.concurrent.CompletableFuture;
  * @author zscat
  * @since 2019-04-19
  */
-@Data
+@Slf4j
 @Service
 public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember> implements IUmsMemberService {
 
@@ -224,6 +224,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         umsMember.setPassword(passwordEncoder.encode(user.getPassword()));
         umsMember.setCreateTime(new Date());
         umsMember.setStatus(1);
+        umsMember.setBlance(new BigDecimal(10000));
 
         memberMapper.insert(umsMember);
         umsMember.setPassword(null);
@@ -338,7 +339,8 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         try {
             String code = req.getCode();
             if (StringUtils.isEmpty(code)) {
-                return ApiBaseAction.toResponsFail("登录失败");
+                log.error("code ie empty");
+                return ApiBaseAction.toResponsFail("code ie empty");
             }
             String userInfos = req.getUserInfo();
 
@@ -346,7 +348,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
 
             Map<String, Object> me = JsonUtils.readJsonToMap(userInfos);
             if (null == me) {
-                return ApiBaseAction.toResponsFail("登录失败");
+                return ApiBaseAction.toResponsFail("登录失败 userInfos is null");
             }
 
             Map<String, Object> resultObj = new HashMap<String, Object>();
@@ -357,12 +359,12 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             JSONObject sessionData = CommonUtil.httpsRequest(requestUrl, "GET", null);
 
             if (null == sessionData || StringUtils.isEmpty(sessionData.getString("openid"))) {
-                return ApiBaseAction.toResponsFail("登录失败");
+                return ApiBaseAction.toResponsFail("登录失败openid is empty");
             }
             //验证用户信息完整性
             String sha1 = CommonUtil.getSha1(userInfos + sessionData.getString("session_key"));
             if (!signature.equals(sha1)) {
-                return ApiBaseAction.toResponsFail("登录失败");
+                return ApiBaseAction.toResponsFail("登录失败,验证用户信息完整性");
             }
             UmsMember userVo = this.queryByOpenId(sessionData.getString("openid"));
             String token = null;
@@ -373,7 +375,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 umsMember.setPassword(passwordEncoder.encode("123456"));
                 umsMember.setCreateTime(new Date());
                 umsMember.setStatus(1);
-                umsMember.setBlance(new BigDecimal(0));
+                umsMember.setBlance(new BigDecimal(10000));
                 umsMember.setIntegration(0);
                 umsMember.setMemberLevelId(4L);
                 umsMember.setAvatar(req.getCloudID());
@@ -394,9 +396,11 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 memberMapper.insert(umsMember);
                 token = jwtTokenUtil.generateToken(umsMember.getUsername());
                 resultObj.put("userId", umsMember.getId());
+                resultObj.put("userInfo", umsMember);
             } else {
                 token = jwtTokenUtil.generateToken(userVo.getUsername());
                 resultObj.put("userId", userVo.getId());
+                resultObj.put("userInfo", userVo);
             }
 
 
@@ -405,7 +409,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             }
             resultObj.put("tokenHead", tokenHead);
             resultObj.put("token", token);
-            resultObj.put("userInfo", me);
+
 
             return ApiBaseAction.toResponsSuccess(resultObj);
         } catch (ApiMallPlusException e) {
