@@ -1,4 +1,4 @@
-package com.macro.mall.portal;
+package com;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.ums.entity.UmsMember;
@@ -22,7 +22,7 @@ public class MallPortalApplicationTests {
 
     @Test
     public void contextLoads() {
-       List<UmsMember> log =  sysAdminLogMapper.list(new QueryWrapper<UmsMember>().ne("id",2).last("limit 5"));
+       List<UmsMember> log =  sysAdminLogMapper.list(new QueryWrapper<UmsMember>().between("create_time","2018-03-03","2018-09-03"));
 
     }
 

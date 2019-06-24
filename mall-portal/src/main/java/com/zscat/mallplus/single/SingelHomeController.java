@@ -54,6 +54,8 @@ public class SingelHomeController {
     @SysLog(MODULE = "home", REMARK = "首页内容页信息展示")
     @RequestMapping(value = "/content", method = RequestMethod.GET)
     public Object content() {
+       // List<UmsMember> log =  memberService.list(new QueryWrapper<UmsMember>().between("create_time","2018-03-03 00:00:00","2018-09-03 23:59:59"));
+
         HomeContentResult contentResult = advertiseService.singelContent();
         return new CommonResult().success(contentResult);
     }
