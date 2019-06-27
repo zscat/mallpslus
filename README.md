@@ -31,7 +31,7 @@
 后台管理下载地址 https://github.com/shenzhuan/mallplus
 项目演示地址： [http://39.98.190.128/index.html](http://39.98.190.128/index.html)  
   
-![后台管理系统功能演示.gif](/document/resource/mall-admin.gif)
+![后台管理系统功能演示.gif](/document/resource/mallplus-admin.gif)
 
 
 
@@ -39,12 +39,12 @@
 
 ``` lua
 mall
-├── mall-mbg -- MyBatisGenerator生成的数据库操作代码
-├── mall-admin -- 后台商城管理系统接口
+├── mallplus-mbg -- MyBatisGenerator生成的数据库操作代码
+├── mallplus-admin -- 后台商城管理系统接口
 ├── mall-search -- 基于Elasticsearch的商品搜索系统
-├── mall-portal -- 前台商城系统接口
+├── mallplus-portal -- 前台商城系统接口
 └── mall-demo -- 框架搭建时的测试代码
-├── 前端项目`mall-admin-web`  地址 请加群下载  
+├── 前端项目`mallplus-admin-web`  地址 请加群下载  
 ├── h5前端项目`vue-js-master`地址 请加群下载  
 ├── pc前端项目`Mall-Vue-master`地址 请加群下载  
 ├── 小前端项目`wechatapp`地址 请加群下载
@@ -150,7 +150,7 @@ nprogress | 进度条控件 | [https://github.com/rstacruz/nprogress](https://gi
 
 #### 模块介绍
 
-##### 后台管理系统 `mall-admin`
+##### 后台管理系统 `mallplus-admin`
 
 - 商品管理：[功能结构图-商品.jpg](document/resource/mind_product.jpg)
 - 订单管理：[功能结构图-订单.jpg](document/resource/mind_order.jpg)
@@ -158,7 +158,7 @@ nprogress | 进度条控件 | [https://github.com/rstacruz/nprogress](https://gi
 - 内容管理：[功能结构图-内容.jpg](document/resource/mind_content.jpg)
 - 用户管理：[功能结构图-用户.jpg](document/resource/mind_member.jpg)
 
-##### 前台商城系统 `mall-portal`
+##### 前台商城系统 `mallplus-portal`
 
 [功能结构图-前台.jpg](document/resource/mind_portal.jpg)
 
@@ -205,11 +205,11 @@ nginx | 1.10 | http://nginx.org/en/download.html
 - 安装最新的数据库mallplus.sql，解压 前端vue mallplsu-admin-web.zip
 - 克隆源代码到本地，使用IDEA或Eclipse打开，并完成编译;
 - 在mysql中新建mall数据库，导入document/sql下的mall.sql文件；
-- 启动mall-admin项目：直接运行com.zscat.mallplus.MallAdminApplication的main方法即可，
+- 启动mallplus-admin项目：直接运行com.zscat.mallplus.MallAdminApplication的main方法即可，
   接口文档地址：http://localhost:8080/swagger-ui.html;
 - 启动mall-search项目：直接运行com.zscat.mallplus.search.MallSearchApplication的main方法即可，
   接口文档地址：http://localhost:8081/swagger-ui.html;
-- 启动mall-portal项目：直接运行com.zscat.mallplus.portal.MallPortalApplication的main方法即可，
+- 启动mallplus-portal项目：直接运行com.zscat.mallplus.portal.MallPortalApplication的main方法即可，
   接口文档地址：http://localhost:8085/swagger-ui.html;
 
 

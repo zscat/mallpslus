@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zscat.mallplus</groupId>
-    <artifactId>mall-portal</artifactId>
+    <artifactId>mallplus-portal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mall-portal</name>
+    <name>mallplus-portal</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>com.zscat.mallplus</groupId>
-            <artifactId>mall-mbg</artifactId>
+            <artifactId>mallplus-mbg</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

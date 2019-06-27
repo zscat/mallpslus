@@ -1,4 +1,4 @@
-package com.macro.mall;
+package com.zscat.mallplus;
 
 import com.zscat.mallplus.MallAdminApplication;
 import com.zscat.mallplus.sys.entity.SysAdminLog;

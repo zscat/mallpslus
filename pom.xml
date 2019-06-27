@@ -10,11 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mall-mbg</module>
+        <module>mallplus-mbg</module>
         <module>mall-encrypt</module>
-        <module>mall-admin</module>
-
-        <module>mall-portal</module>
+        <module>mallplus-admin</module>
+        <module>mall-search</module>
+        <module>mallplus-portal</module>
     </modules>
 
 </project>

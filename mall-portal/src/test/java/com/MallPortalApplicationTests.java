@@ -23,7 +23,9 @@ public class MallPortalApplicationTests {
     @Test
     public void contextLoads() {
        List<UmsMember> log =  sysAdminLogMapper.list(new QueryWrapper<UmsMember>().between("create_time","2018-03-03","2018-09-03"));
-
     }
 
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+    }
 }

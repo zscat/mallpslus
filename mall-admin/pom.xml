@@ -4,12 +4,12 @@
 
 
     <groupId>com.zscat.mallplus</groupId>
-    <artifactId>mall-admin</artifactId>
+    <artifactId>mallplus-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mall-admin</name>
-    <description>mall-admin project for mall</description>
+    <name>mallplus-admin</name>
+    <description>mallplus-admin project for mall</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -50,7 +50,7 @@
 
         <dependency>
             <groupId>com.zscat.mallplus</groupId>
-            <artifactId>mall-mbg</artifactId>
+            <artifactId>mallplus-mbg</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
