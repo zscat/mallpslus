@@ -107,7 +107,7 @@ public class SingeUmsController extends ApiBaseAction {
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
-                if (count > 5) {
+                if (count > 1) {
                     return new CommonResult().success("已超过当天最大次数");
                 }
             }
@@ -115,7 +115,7 @@ public class SingeUmsController extends ApiBaseAction {
             memberService.updateById(member);
             // 当天发送验证码次数+1
             redisService.increment(countKey, 1L);
-            redisService.expire(countKey, 1 * 3600 * 24);
+            redisService.expire(countKey, 1 * 3600 * 24*365);
             return new CommonResult().success("绑定学校成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,7 +133,7 @@ public class SingeUmsController extends ApiBaseAction {
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
-                if (count > 5) {
+                if (count > 1) {
                     return new CommonResult().success("已超过当天最大次数");
                 }
             }
@@ -146,7 +146,7 @@ public class SingeUmsController extends ApiBaseAction {
             memberService.updateById(member);
             // 当天发送验证码次数+1
             redisService.increment(countKey, 1L);
-            redisService.expire(countKey, 1 * 3600 * 24);
+            redisService.expire(countKey, 1 * 3600 * 24*365);
             return new CommonResult().success(area);
         } catch (Exception e) {
             e.printStackTrace();
