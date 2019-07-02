@@ -6,6 +6,7 @@ import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.cms.service.ISysAreaService;
 import com.zscat.mallplus.cms.service.ISysSchoolService;
+import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.sys.entity.SysArea;
 import com.zscat.mallplus.sys.entity.SysSchool;
 import com.zscat.mallplus.ums.entity.UmsMember;
@@ -71,6 +72,14 @@ public class SingeUmsController extends ApiBaseAction {
         return new CommonResult().success(list);
     }
 
+    @ApiOperation("更新会员信息")
+    @SysLog(MODULE = "pms", REMARK = "更新会员信息")
+    @PostMapping(value = "/updateMember")
+    public Object createGoods(UmsMember member) {
+        UmsMember member1 = UserUtils.getCurrentMember();
+        member.setId(member1.getId());
+        return memberService.updateById(member);
+    }
     @ApiOperation(value = "会员绑定学校")
     @PostMapping(value = "/bindSchool")
     @SysLog(MODULE = "ums", REMARK = "会员绑定学校")
@@ -87,6 +96,21 @@ public class SingeUmsController extends ApiBaseAction {
     }
 
     @ApiOperation(value = "会员绑定区域")
+    @PostMapping(value = "/bindArea")
+    @SysLog(MODULE = "ums", REMARK = "会员绑定区域")
+    public Object bindArea(@RequestParam(value = "areaId", required = true) Long areaId) {
+        try {
+            UmsMember member = UserUtils.getCurrentMember();
+            member.setAreaId(areaId);
+            memberService.updateById(member);
+            return new CommonResult().success("绑定区域成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new CommonResult().failed("绑定区域失败");
+        }
+    }
+
+    /*@ApiOperation(value = "会员绑定区域")
     @PostMapping(value = "/bindArea")
     @SysLog(MODULE = "ums", REMARK = "会员绑定区域")
     public Object bindArea(@RequestParam(value = "areaIds", required = true) String areaIds) {
@@ -111,5 +135,5 @@ public class SingeUmsController extends ApiBaseAction {
             e.printStackTrace();
             return new CommonResult().failed("绑定区域失败");
         }
-    }
+    }*/
 }

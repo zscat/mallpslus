@@ -138,6 +138,8 @@ public class SingeCmsController extends ApiBaseAction {
                 return commonResult;
             }
         }
+        subject.setSchoolId(member.getSchoolId());
+        subject.setAreaId(member.getAreaId());
         subject.setMemberId(member.getId());
         boolean count = subjectService.save(subject);
         if (count) {

@@ -156,10 +156,6 @@ public class SingePmsController extends ApiBaseAction {
         UmsMember member = this.getCurrentMember();
         if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
-            PmsProduct newSubject = new PmsProduct();
-            newSubject.setSupplyId(member.getId());
-            newSubject.setPublishStatus(1);
-            newSubject.setVerifyStatus(1);
             Integer countGoodsByToday  = pmsProductService.countGoodsByToday(member.getId());
             if (countGoodsByToday > memberLevel.getGoodscount()) {
                 commonResult = new CommonResult().failed("你今天已经有发" + countGoodsByToday + "个商品");
@@ -168,6 +164,8 @@ public class SingePmsController extends ApiBaseAction {
         }else {
             return new CommonResult().success("没有设置会员等级");
         }
+        productParam.setSchoolId(member.getSchoolId());
+        productParam.setSupplyId(member.getAreaId());
         productParam.setMemberId(member.getId());
         productParam.setCreateTime(new Date());
         boolean count = pmsProductService.save(productParam);
