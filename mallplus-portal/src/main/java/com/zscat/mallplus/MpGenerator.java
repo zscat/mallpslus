@@ -31,7 +31,7 @@ public class MpGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("/Users/shenzhuan/gen");
+        gc.setOutputDir("F:\\config\\gencode");
         gc.setFileOverride(true);
         gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
@@ -62,7 +62,7 @@ public class MpGenerator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root@123");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/mallplus?characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://39.106.212.32:3306/mallplus");
         mpg.setDataSource(dsc);
 
         // 自定义配置
@@ -132,7 +132,7 @@ public class MpGenerator {
 //                    "ums_member_member_tag_relation","ums_member_product_category_relation",
 //                    "ums_member_receive_address", "ums_member_rule_setting","ums_member_statistics_info","ums_member_tag",
 //            "ums_member_task","ums_growth_change_history","ums_integration_change_history","ums_integration_consume_setting"}); // 需要生成的表
-        strategy.setInclude(new String[]{"sys_applet_set"});
+        strategy.setInclude(new String[]{"ums_employ_info"});
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");

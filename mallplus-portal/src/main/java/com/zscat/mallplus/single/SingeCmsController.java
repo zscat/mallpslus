@@ -19,7 +19,11 @@ import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.entity.UmsMemberLevel;
+import com.zscat.mallplus.ums.entity.UmsRewardLog;
+import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
+import com.zscat.mallplus.ums.mapper.UmsRewardLogMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +31,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @Auther: shenzhuan
@@ -57,7 +63,10 @@ public class SingeCmsController extends ApiBaseAction {
     private ICmsSubjectService subjectService;
     @Resource
     private ICmsSubjectCommentService commentService;
-
+    @Resource
+    private UmsMemberMapper memberMapper;
+    @Resource
+    private UmsRewardLogMapper rewardLogMapper;
     @IgnoreAuth
     @SysLog(MODULE = "cms", REMARK = "查询文章列表")
     @ApiOperation(value = "查询文章列表")
@@ -149,6 +158,34 @@ public class SingeCmsController extends ApiBaseAction {
         }
         return commonResult;
     }
-
+    @ApiOperation(value = "打赏文章")
+    @PostMapping(value = "/reward")
+    @SysLog(MODULE = "ums", REMARK = "打赏文章")
+    public Object reward(@RequestParam(value = "articlelId", required = true) Long articlelId,
+                         @RequestParam(value = "coin", required = true) int coin) {
+        try {
+            UmsMember member = UserUtils.getCurrentMember();
+            if (member.getBlance().compareTo(new BigDecimal(coin))<0){
+                return new CommonResult().failed("余额不够");
+            }
+            member.setBlance(member.getBlance().subtract(new BigDecimal(coin)));
+            memberMapper.updateById(member);
+            CmsSubject subject = subjectService.getById(articlelId);
+            UmsMember remember = memberMapper.selectById(subject.getMemberId());
+            if (remember!=null){
+                remember.setBlance(remember.getBlance().add(new BigDecimal(coin)));
+                memberMapper.updateById(remember);
+                UmsRewardLog log = new UmsRewardLog();
+                log.setCoin(coin);log.setSendMemberId(member.getId());
+                log.setRecMemberId(remember.getId());log.setCreateTime(new Date());
+                log.setObjid(articlelId);
+                rewardLogMapper.insert(log);
+            }
+            return new CommonResult().success("打赏文章成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new CommonResult().failed("打赏文章失败");
+        }
+    }
 
 }

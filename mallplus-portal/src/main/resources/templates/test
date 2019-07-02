@@ -1,0 +1,203 @@
+
+
+
+39.106.212.32
+
+
+nohup java -jar /root/jm/mallplus-portal-0.0.1-SNAPSHOT.jar >web.log 2>&1 &
+
+nohup java -jar /root/jm/mall-admin-0.0.1-SNAPSHOT.jar &
+
+ps -ef|grep java
+
+nohup java -jar snailmall-user-service.8081 > user-service.out &
+
+
+
+sftp root@39.106.212.32
+
+
+
+sudo sh /root/jm/apache-tomcat-8.0.52/bin/startup.sh
+
+put -r /Users/shenzhuan/Documents/tools/apache-tomcat-8.0.52 /root/jm
+
+
+
+put -r /Users/shenzhuan/zhuan/mallplus/mall-admin/target/mall-admin-0.0.1-SNAPSHOT.jar  /root/jm
+
+put -r /Users/shenzhuan/zhuan/mallplus/mall-portal/target/mall-portal-0.0.1-SNAPSHOT.jar  /root/jm
+
+put -r /Users/shenzhuan/zhuan/vue/mall-admin-web/dist  /root/jm
+
+
+
+put -r /Users/shenzhuan/zhuan/mall/mall-admin/target/mall-admin-0.0.1-SNAPSHOT.jar  /root/jm
+
+put -r /Users/shenzhuan/zhuan/mall/mall-portal/target/mall-portal-0.0.1-SNAPSHOT.jar  /root/jm
+
+put -r /Users/shenzhuan/zhuan/mall/vue/mall-admin-web/dist  /root/jm
+
+put -r /Users/shenzhuan/zhuan/html/mall-front-vue/pc  /root/jm
+
+
+
+
+
+netstat -tunlp |grep 端口号，用于查看指定的端口号的进程情况，如查看8000端口的情况，netstat -tunlp |grep 8000
+
+
+
+
+
+scp /Users/shenzhuan/zhuan/mall/mall-admin/target/mall-admin-0.0.1-SNAPSHOT.jar  root@39.106.212.32:/root/jm
+
+scp /path/filename username@servername:/path
+
+
+
+
+
+      location / {
+
+  root /root/jm/dist;
+
+  index index.html;
+
+}
+
+
+
+ server {
+
+        listen       1218;
+
+        server_name  39.106.212.32;
+
+    location / {
+
+         root /root/jm/pc;
+
+        index index.html;
+
+         }
+
+
+
+        error_page   500 502 503 504  /50x.html;
+
+        location = /50x.html {
+
+            root   html;
+
+        }
+
+
+
+}
+
+
+
+rm -rf node_modules
+
+rm package-lock.json
+
+npm cache clear --force
+
+npm install
+
+
+
+
+
+#######################################################################
+
+#                                                                     #
+
+#                   北京智汇云端科技有限公司                          #
+
+#                                                                     #
+
+#  更多操作说明请参考以下网址：                                       #
+
+#  https://market.aliyun.com/products/53400005/cmjj014493.html        #
+
+#                                                                     #
+
+#######################################################################
+
+
+
+请注意： 如需外网远程访问mysql 请参考以上网址 设置mysql及阿里云安全组
+
+
+
+################################  Tomcat ###############################
+
+
+
+安装目录  /www/server/apache-tomcat-default
+
+版本：    apache-tomcat-8.5.32
+
+监听端口：8080
+
+配置文件： /www/server/apache-tomcat-default/conf/server.xml
+
+命令：     systemctl (start|stop|restart|disable) tomcat
+
+示例：    启动tomcat  systemctl start tomcat
+
+          重启tomcat  systemctl restart tomcat
+
+          禁止tomcat  systemctl disable tomcat
+
+ 禁止tomcat  systemctl stop tomcat
+
+############################### mysql ##################################
+
+
+
+安装目录  /usr/local/mysql
+
+版本：    5.7.22
+
+监听端口：3306
+
+配置文件： /etc/my.cnf
+
+数据文件： /usr/local/mysql/data
+
+默认密码： uAiqwVwjJ8-i
+
+命令：     systemctl (start|stop|restart|disable) mysql
+
+示例：    启动mysql  systemctl start mysql
+
+          重启mysql  systemctl restart mysql
+
+          禁止mysql  systemctl disable mysql
+
+
+
+################################ Nginx ##################################
+
+
+
+安装目录： /usr/local/nginx/
+
+版本：     nginx/1.14.0
+
+监听端口： 80
+
+配置文件： /etc/nginx/nginx.conf
+
+命令：     systemctl (start|stop|restart|disable) nginx
+
+示例：    启动nginx   systemctl start nginx
+
+          重启nginx   systemctl restart nginx
+
+          禁止nginx   systemctl disable nginx
+
+
