@@ -11,9 +11,9 @@
 
     <modules>
         <module>mallplus-mbg</module>
-        <module>mall-encrypt</module>
+        <module>mallplus-encrypt</module>
         <module>mallplus-admin</module>
-        <module>mall-search</module>
+        <module>mallplus-search</module>
         <module>mallplus-portal</module>
     </modules>
 
