@@ -24,7 +24,7 @@ public class PmsSkuStockServiceImpl extends ServiceImpl<PmsSkuStockMapper, PmsSk
     public PmsSkuStock getSku(Long id,String guide){
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("product_id",id);
-        queryWrapper.eq("sp1",guide);
+        queryWrapper.eq("spcount",guide);
         PmsSkuStock pmsSkuStock = pmsSkuStockMapper.selectOne(queryWrapper);
         return pmsSkuStock;
     }

@@ -15,4 +15,9 @@
         id, product_id, product_attribute_id, value
     </sql>
 
+    <select id="getProductAttrById" resultType="com.zscat.mallplus.pms.entity.PmsProductAttributeValue">
+       select pv.*,pa.`name` from pms_product_attribute_value pv
+         LEFT JOIN pms_product_attribute pa ON pv.product_attribute_id = pa.id
+         WHERE pv.product_id = #{productId} and pa.type = #{type}
+    </select>
 </mapper>

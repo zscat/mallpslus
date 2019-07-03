@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -54,6 +55,8 @@ public class PmsSkuStock implements Serializable {
     private String sp2;
 
     private String sp3;
+
+    private String spcount;
 
     /**
      * 展示图片
@@ -183,6 +186,24 @@ public class PmsSkuStock implements Serializable {
 
     public void setLockStock(Integer lockStock) {
         this.lockStock = lockStock;
+    }
+
+    public String getSpcount(){
+        StringBuffer sb = new StringBuffer();
+        if(this.sp1!=null){
+            sb.append(this.sp1);
+        }
+        if(this.sp2!=null){
+            sb.append(this.sp2);
+        }
+        if(this.sp3!=null){
+            sb.append(this.sp3);
+        }
+        return sb.toString();
+    }
+
+    public void  setSpcount(String spcount){
+        this.spcount = spcount;
     }
 
     public String getMeno() {

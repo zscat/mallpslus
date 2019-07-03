@@ -11,6 +11,7 @@ import com.zscat.mallplus.pms.entity.*;
 import com.zscat.mallplus.pms.mapper.PmsCommentMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductAttributeMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductAttributeValueMapper;
+import com.zscat.mallplus.pms.mapper.PmsSkuStockMapper;
 import com.zscat.mallplus.pms.vo.PmsProductAttr;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.pms.service.*;
@@ -49,6 +50,8 @@ public class PmsGoodsController {
     private IPmsProductService pmsProductService;
     @Autowired
     private IPmsProductAttributeService productAttributeService;
+    @Autowired
+    private IPmsSkuStockService pmsSkuStockService;
 
     @Autowired
     private IPmsProductCategoryService productCategoryService;
@@ -65,6 +68,8 @@ public class PmsGoodsController {
     private PmsProductAttributeValueMapper pmsProductAttributeValueMapper;
     @Resource
     private PmsCommentMapper pmsCommentMapper;
+    @Resource
+    private PmsSkuStockMapper pmsSkuStockMapper;
 
 
     @IgnoreAuth
@@ -208,5 +213,18 @@ public class PmsGoodsController {
         objectMap.put("list", productConsults);
         objectMap.put("count", count);
         return new CommonResult().success(objectMap);
+    }
+
+    //根据规格属性查询商品信息
+    @IgnoreAuth
+    @ApiOperation("根据规格属性查询商品信息")
+    @RequestMapping(value = "/productStock/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Object ListByStock(@RequestParam("params")String params){
+
+        List<PmsSkuStock> pmsSkuStocks = pmsSkuStockMapper.selectList(new QueryWrapper<PmsSkuStock>().like("spcount",params));
+
+
+        return new CommonResult().success(pmsSkuStocks);
     }
 }

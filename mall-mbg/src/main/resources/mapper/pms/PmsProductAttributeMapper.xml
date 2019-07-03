@@ -34,10 +34,4 @@
         WHERE
         pcar.product_category_id = #{productCategoryId}
     </select>
-
-    <select id="getProductAttrById" resultType="com.zscat.mallplus.pms.vo.PmsProductAttr">
-        select pa.* from pms_product_attribute_value pv
-         LEFT JOIN pms_product_attribute pa ON pv.product_attribute_id = pa.id
-         WHERE pv.product_id = #{productId} and pa.type = #{type}
-    </select>
 </mapper>

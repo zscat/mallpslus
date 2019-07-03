@@ -142,10 +142,13 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         productFullReductionMapper.delete(new QueryWrapper<>(new PmsProductFullReduction()).eq("product_id",id));
         relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), id);
         //修改sku库存信息
-        skuStockMapper.delete(new QueryWrapper<>(new PmsSkuStock()).eq("product_id",id));
+        QueryWrapper<PmsSkuStock> q = new QueryWrapper();
+        q.eq("product_id",id);
+        int a = skuStockMapper.delete(q);
         handleSkuStockCode(productParam.getSkuStockList(), id);
         relateAndInsertList(skuStockDao, productParam.getSkuStockList(), id);
         //修改商品参数,添加自定义商品规格
+
 
         productAttributeValueMapper.delete(new QueryWrapper<>(new PmsProductAttributeValue()).eq("product_id",id));
         relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValueList(), id);
