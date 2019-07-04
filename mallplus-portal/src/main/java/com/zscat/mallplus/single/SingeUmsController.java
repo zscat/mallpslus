@@ -107,7 +107,7 @@ public class SingeUmsController extends ApiBaseAction {
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
-                if (count > 1) {
+                if (count > 100) {
                     return new CommonResult().success("已超过当天最大次数");
                 }
             }
@@ -133,7 +133,7 @@ public class SingeUmsController extends ApiBaseAction {
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
-                if (count > 1) {
+                if (count > 100) {
                     return new CommonResult().success("已超过当天最大次数");
                 }
             }
