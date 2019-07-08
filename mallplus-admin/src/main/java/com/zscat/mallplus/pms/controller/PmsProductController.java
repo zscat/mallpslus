@@ -51,7 +51,13 @@ public class PmsProductController {
         }
         return new CommonResult().failed();
     }
-
+    @ApiOperation("根据商品名称或货号模糊查询")
+    @RequestMapping(value = "/simpleList", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getList(String keyword) {
+        List<PmsProduct> productList = IPmsProductService.list(keyword);
+        return new CommonResult().success(productList);
+    }
     @SysLog(MODULE = "pms", REMARK = "保存商品信息")
     @ApiOperation("保存商品信息")
     @PostMapping(value = "/create")

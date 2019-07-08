@@ -5,6 +5,7 @@ import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
 import com.zscat.mallplus.oms.vo.OmsOrderDeliveryParam;
 import com.zscat.mallplus.oms.vo.OmsOrderDetail;
+import com.zscat.mallplus.oms.vo.OrderStstic;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -45,4 +46,6 @@ public interface OmsOrderMapper extends BaseMapper<OmsOrder> {
      * 批量发货
      */
     int delivery(@Param("list") List<OmsOrderDeliveryParam> deliveryParamList);
+
+    List<OrderStstic> listOrderGroupByMemberId();
 }

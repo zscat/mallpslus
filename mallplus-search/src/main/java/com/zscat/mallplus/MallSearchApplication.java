@@ -1,4 +1,4 @@
-package com.zscat.mallplus.search;
+package com.zscat.mallplus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -3,6 +3,9 @@ package com.zscat.mallplus.ums.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.oms.entity.OmsOrder;
+import com.zscat.mallplus.oms.mapper.OmsOrderMapper;
+import com.zscat.mallplus.oms.vo.OrderStstic;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.utils.CommonResult;
@@ -11,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.OrderedMap;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +36,8 @@ import java.util.List;
 public class UmsMemberController {
     @Resource
     private IUmsMemberService IUmsMemberService;
-
+    @Resource
+    private OmsOrderMapper omsOrderMapper;
     @SysLog(MODULE = "ums", REMARK = "根据条件查询所有会员表列表")
     @ApiOperation("根据条件查询所有会员表列表")
     @GetMapping(value = "/list")
@@ -128,6 +133,24 @@ public class UmsMemberController {
         if (count) {
             return new CommonResult().success(count);
         } else {
+            return new CommonResult().failed();
+        }
+    }
+    @ApiOperation("更新会员的订单信息")
+    @PostMapping(value = "/updateMemberOrderInfo")
+    public Object updateMemberOrderInfo() {
+        try {
+            List<OrderStstic> orders =  omsOrderMapper.listOrderGroupByMemberId();
+            for (OrderStstic o : orders){
+                UmsMember member = new UmsMember();
+                member.setId(o.getMemberId());
+                member.setBuyMoney(o.getTotalPayAmount());
+                member.setBuyCount(o.getTotalCount());
+                IUmsMemberService.updateById(member);
+            }
+            return  new CommonResult().success();
+        } catch (Exception e) {
+            log.error("更新会员的订单信息：%s", e.getMessage(),e);
             return new CommonResult().failed();
         }
     }

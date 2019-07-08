@@ -163,4 +163,9 @@
             #{item.productSkuId}
         </foreach>
     </update>
+
+    <select id="listOrderGroupByMemberId"  resultType="com.zscat.mallplus.oms.vo.OrderStstic">
+        select count(id) totalCount ,sum(pay_amount) totalPayAmount,member_id memberId from oms_order
+        where status between  2 and 4 group by member_id
+    </select>
 </mapper>

@@ -5,8 +5,8 @@
 
 
 nohup java -jar /root/jm/mallplus-portal-0.0.1-SNAPSHOT.jar >web.log 2>&1 &
-
-nohup java -jar /root/jm/mall-admin-0.0.1-SNAPSHOT.jar &
+nohup java -jar /root/jm/mall-portal-0.0.1-SNAPSHOT.jar >web.log 2>&1 &
+nohup java -jar /root/jm/mallplus-admin-0.0.1-SNAPSHOT.jar >admin.log 2>&1 &
 
 ps -ef|grep java
 

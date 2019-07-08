@@ -32,6 +32,10 @@ public class UmsMember extends BaseEntity implements Serializable {
     private Long memberLevelId;
     @TableField("area_id")
     private Long areaId;
+    @TableField("area_name")
+    private String areaName;
+    @TableField("school_name")
+    private String schoolName;
     /**
      * 用户名
      */
@@ -129,6 +133,10 @@ public class UmsMember extends BaseEntity implements Serializable {
 
     private Long invitecode;
 
+    @TableField("buy_count")
+    private Integer buyCount;
+    @TableField("buy_money")
+    private BigDecimal buyMoney;
     /**
      * 余额
      */

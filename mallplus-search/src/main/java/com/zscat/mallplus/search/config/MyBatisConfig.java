@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * MyBatis配置类
- * Created by macro on 2019/4/8.
+ * Created by mallplus on 2019/4/8.
  */
 @Configuration
-@MapperScan({"com.macro.mall.mapper","com.macro.mall.search.dao"})
+@MapperScan({"com.zscat.mallplus.search.mapper","com.zscat.mallplus.search.dao"})
 public class MyBatisConfig {
 }

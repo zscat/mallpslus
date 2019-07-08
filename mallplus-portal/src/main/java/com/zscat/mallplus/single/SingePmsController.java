@@ -207,7 +207,7 @@ public class SingePmsController extends ApiBaseAction {
         int general = 0;
         int bad = 0;
         ConsultTypeCount count = new ConsultTypeCount();
-        for (PmsProductConsult consult : list) {
+      /*  for (PmsProductConsult consult : list) {
             if (consult.getStoreId() != null) {
                 if (consult.getStoreId() == 1) {
                     goods++;
@@ -219,7 +219,7 @@ public class SingePmsController extends ApiBaseAction {
                     bad++;
                 }
             }
-        }
+        }*/
         count.setAll(goods + general + bad);
         count.setBad(bad);
         count.setGeneral(general);

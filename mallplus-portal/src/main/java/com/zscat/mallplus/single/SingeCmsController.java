@@ -173,6 +173,8 @@ public class SingeCmsController extends ApiBaseAction {
             CmsSubject subject = subjectService.getById(articlelId);
             UmsMember remember = memberMapper.selectById(subject.getMemberId());
             if (remember!=null){
+                subject.setReward(subject.getReward()+coin);
+                subjectService.updateById(subject);
                 remember.setBlance(remember.getBlance().add(new BigDecimal(coin)));
                 memberMapper.updateById(remember);
                 UmsRewardLog log = new UmsRewardLog();

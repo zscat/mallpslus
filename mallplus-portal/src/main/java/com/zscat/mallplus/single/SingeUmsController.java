@@ -111,6 +111,11 @@ public class SingeUmsController extends ApiBaseAction {
                     return new CommonResult().success("已超过当天最大次数");
                 }
             }
+            SysSchool area = schoolService.getById(schoolId);
+            if (area==null){
+                return new CommonResult().failed("学校不存在");
+            }
+            member.setSchoolName(area.getName());
             member.setSchoolId(schoolId);
             memberService.updateById(member);
             // 当天发送验证码次数+1
@@ -143,6 +148,7 @@ public class SingeUmsController extends ApiBaseAction {
                return new CommonResult().failed("区域不存在");
            }
             member.setAreaId(areaId);
+            member.setAreaName(area.getName());
             memberService.updateById(member);
             // 当天发送验证码次数+1
             redisService.increment(countKey, 1L);

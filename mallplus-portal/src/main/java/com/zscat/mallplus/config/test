@@ -1,9 +1,9 @@
-package com.macro.mall.portal.config;
+package com.mallplus.mall.portal.config;
 
-import com.macro.mall.model.UmsMember;
-import com.macro.mall.portal.component.*;
-import com.macro.mall.portal.domain.MemberDetails;
-import com.macro.mall.portal.service.UmsMemberService;
+import com.mallplus.mall.model.UmsMember;
+import com.mallplus.mall.portal.component.*;
+import com.mallplus.mall.portal.domain.MemberDetails;
+import com.mallplus.mall.portal.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * SpringSecurity的配置
- * Created by macro on 2018/8/3.
+ * Created by mallplus on 2018/8/3.
  */
 @Configuration
 @EnableWebSecurity
