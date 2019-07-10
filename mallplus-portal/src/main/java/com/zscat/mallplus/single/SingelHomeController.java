@@ -12,6 +12,7 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtils;
+import com.zscat.mallplus.util.OssAliyunUtil;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.PhoneUtil;
 import com.zscat.mallplus.vo.Rediskey;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -278,5 +280,14 @@ public class SingelHomeController {
             e.printStackTrace();
             return new CommonResult().failed(e.getMessage());
         }
+    }
+    @Autowired
+    OssAliyunUtil aliyunOSSUtil;
+
+    @IgnoreAuth
+    @PostMapping("/upload")
+    @ApiOperation("上传文件")
+    public Object upload(@RequestParam("file") MultipartFile file) throws Exception {
+        return new CommonResult().success(aliyunOSSUtil.upload(file));
     }
 }

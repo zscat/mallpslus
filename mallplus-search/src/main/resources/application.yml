@@ -4,11 +4,21 @@ spring:
 
 server:
   port: 8081
-
-mybatis:
-  mapper-locations:
-    - classpath:dao/*.xml
-    - classpath*:com/**/mapper/*.xml
+mybatis-plus:
+    configuration:
+        cache-enabled: false
+        map-underscore-to-camel-case: true
+    global-config:
+        db-config:
+            column-underline: true
+            db-type: mysql
+            field-strategy: not_empty
+            id-type: id_worker
+            logic-delete-value: 0
+            logic-not-delete-value: 1
+        refresh: true
+    mapper-locations: classpath:dao/*.xml
+    typeAliasesPackage: com.zscat.mallplus.*.domain
 
 logging:
   level:

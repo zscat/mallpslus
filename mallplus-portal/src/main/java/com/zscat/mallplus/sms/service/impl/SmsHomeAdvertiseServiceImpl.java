@@ -1,6 +1,7 @@
 package com.zscat.mallplus.sms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.cms.entity.CmsSubject;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
@@ -188,11 +189,16 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     }
     @Override
     public List<PmsProduct> getNewProductList(int pageNum, int pageSize) {
-        List<SmsHomeNewProduct> brands = homeNewProductService.list(new QueryWrapper<>());
+        PmsProduct query = new PmsProduct();
+        query.setPublishStatus(1);
+        query.setVerifyStatus(1);
+       return  pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(query).orderByDesc("create_time")).getRecords();
+
+       /* List<SmsHomeNewProduct> brands = homeNewProductService.list(new QueryWrapper<>());
         List<Long> ids = brands.stream()
                 .map(SmsHomeNewProduct::getProductId)
                 .collect(Collectors.toList());
-        return (List<PmsProduct>) pmsProductService.listByIds(ids);
+        return (List<PmsProduct>) pmsProductService.listByIds(ids);*/
     }
     @Override
     public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {
