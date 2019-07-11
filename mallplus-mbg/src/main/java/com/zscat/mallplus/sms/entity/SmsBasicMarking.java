@@ -85,10 +85,10 @@ public class SmsBasicMarking extends BaseEntity implements Serializable {
     private String userLevel;
 
     @TableField("start_time")
-    private LocalDateTime startTime;
+    private Date startTime;
 
     @TableField("end_time")
-    private LocalDateTime endTime;
+    private Date endTime;
 
     @TableField("create_time")
     private Date createTime;
