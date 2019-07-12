@@ -149,11 +149,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
             String authToken = authHeader.substring(this.tokenHead.length());
-            Date date = jwtTokenUtil.getExpiredDateFromToken(authToken);
-            System.out.println(DateUtil.dateToStr(date,"yyyy-MM-dd HH:mm:ss"));
+         //   Date date = jwtTokenUtil.getExpiredDateFromToken(authToken);
             String username = null;
-            Claims claims = null;
-            if (date.after(new Date()) && date.getTime() - new Date().getTime() <= 1 * 60 * 1000) {
+            Claims claims = jwtTokenUtil.getClaimsFromToken(authToken);
+            /*if (date.after(new Date()) && date.getTime() - new Date().getTime() <= 1 * 60 * 1000) {
                 // token还剩1分钟过期，重新生成token
                 String newToken = jwtTokenUtil.refreshToken(authToken);
                 // 将新生成的token放入响应头
@@ -172,7 +171,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                         claims = jwtTokenUtil.getClaimsFromToken(newToken);
                     }
                 }
-            }
+            }*/
 
             username=claims.getSubject();
             LOGGER.info("checking username:{}", username);

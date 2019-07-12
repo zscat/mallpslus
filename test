@@ -1,3 +1,6 @@
+USE information_schema;
+select table_name,table_rows from tables where TABLE_SCHEMA = 'mallplus1' order by table_rows desc;
+
  if(type===1){
           return 'ios首页轮播';
         }else if(type===2){

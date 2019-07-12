@@ -356,6 +356,7 @@ public class SingePmsController extends ApiBaseAction {
 
         return new CommonResult().success(relList);
     }
+    @IgnoreAuth
     @ApiOperation("添加商品浏览记录")
     @SysLog(MODULE = "pms", REMARK = "添加商品浏览记录")
     @PostMapping(value = "/addView")
