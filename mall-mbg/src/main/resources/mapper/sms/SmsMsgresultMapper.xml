@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 通用查询映射结果 -->
+<mapper namespace="com.zscat.mallplus.sms.mapper.SmsMsgresultMapper">
+    <resultMap id="BaseResultMap" type="com.zscat.mallplus.sms.entity.SmsMsgresult">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+					                <result column="id"  property="id"/>
+								                <result column="result"  property="result"/>
+								                <result column="errmsg"  property="errmsg"/>
+								                <result column="mobile"  property="mobile"/>
+								                <result column="nationcode"  property="nationcode"/>
+								                <result column="sid"  property="sid"/>
+								                <result column="fee"  property="fee"/>
+								                <result column="localsid"  property="localsid"/>
+					    </resultMap>
+	<!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       `id`,`result`,`errmsg`,`mobile`,`nationcode`,`sid`,`fee`,`localsid`
+    </sql>
+</mapper>
