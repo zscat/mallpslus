@@ -1064,8 +1064,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setCreateDate(new Date());
                 cartItemMapper.insert(cartItem);
             } else {
-                cartItem.setPrice(pmsSkuStock.getPrice());
-                cartItem.setModifyDate(new Date());
+                existCartItem.setPrice(pmsSkuStock.getPrice());
+                existCartItem.setModifyDate(new Date());
                 existCartItem.setQuantity(existCartItem.getQuantity() + cartParam.getTotal());
                 cartItemMapper.updateById(existCartItem);
                 return new CommonResult().success(existCartItem);
@@ -1085,8 +1085,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setMemberId(cartParam.getMemberId());
                 cartItemMapper.insert(cartItem);
             } else {
-                cartItem.setPrice(pmsProduct.getPrice());
-                cartItem.setModifyDate(new Date());
+                existCartItem.setPrice(pmsProduct.getPrice());
+                existCartItem.setModifyDate(new Date());
                 existCartItem.setQuantity(existCartItem.getQuantity() + cartParam.getTotal());
                 cartItemMapper.updateById(existCartItem);
                 return new CommonResult().success(existCartItem);
