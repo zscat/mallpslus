@@ -287,6 +287,14 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         String name = "";
 
         for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
+            PmsProduct goods = productService.getById(cartPromotionItem.getProductId());
+            if (!ValidatorUtils.empty(cartPromotionItem.getProductSkuId()) && cartPromotionItem.getProductSkuId() > 0) {
+                checkGoods(goods, false, cartPromotionItem.getQuantity());
+                PmsSkuStock skuStock = skuStockMapper.selectById(cartPromotionItem.getProductSkuId());
+                checkSkuGoods(skuStock, cartPromotionItem.getQuantity());
+            } else {
+                checkGoods(goods, true, cartPromotionItem.getQuantity());
+            }
             //生成下单商品信息
             OmsOrderItem orderItem = new OmsOrderItem();
             orderItem.setProductAttr(cartPromotionItem.getProductAttr());
@@ -1043,8 +1051,11 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             cartParam.setTotal(1);
         }
         OmsCartItem cartItem = new OmsCartItem();
+        PmsProduct pmsProduct = productService.getById(cartParam.getGoodsId());
         if (ValidatorUtils.notEmpty(cartParam.getSkuId())){
             PmsSkuStock pmsSkuStock = skuStockMapper.selectById(cartParam.getSkuId());
+            checkGoods(pmsProduct, false, cartParam.getTotal());
+            checkSkuGoods(pmsSkuStock, cartParam.getTotal());
             cartItem.setProductId(pmsSkuStock.getProductId());
             cartItem.setMemberId(cartParam.getMemberId());
             cartItem.setProductSkuId(pmsSkuStock.getId());
@@ -1061,6 +1072,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setSp2(pmsSkuStock.getSp2());
                 cartItem.setSp3(pmsSkuStock.getSp3());
                 cartItem.setProductName(pmsSkuStock.getProductName());
+                cartItem.setProductCategoryId(pmsProduct.getProductCategoryId());
+                cartItem.setProductBrand(pmsProduct.getBrandName());
                 cartItem.setCreateDate(new Date());
                 cartItemMapper.insert(cartItem);
             } else {
@@ -1071,7 +1084,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 return new CommonResult().success(existCartItem);
             }
         }else {
-            PmsProduct pmsProduct = productService.getById(cartParam.getGoodsId());
+            checkGoods(pmsProduct, true, cartParam.getTotal());
             cartItem.setProductId(cartParam.getGoodsId());
             cartItem.setMemberId(cartParam.getMemberId());
             OmsCartItem existCartItem   = cartItemMapper.selectOne(new QueryWrapper<>(cartItem));
@@ -1083,6 +1096,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 cartItem.setProductPic(pmsProduct.getPic());
                 cartItem.setCreateDate(new Date());
                 cartItem.setMemberId(cartParam.getMemberId());
+                cartItem.setProductCategoryId(pmsProduct.getProductCategoryId());
+                cartItem.setProductBrand(pmsProduct.getBrandName());
                 cartItemMapper.insert(cartItem);
             } else {
                 existCartItem.setPrice(pmsProduct.getPrice());
@@ -1092,8 +1107,23 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 return new CommonResult().success(existCartItem);
             }
         }
-
-
         return new CommonResult().success(cartItem);
+    }
+    private void checkGoods(PmsProduct goods, boolean falg, int count) {
+        if (goods == null || goods.getId() == null) {
+            throw new ApiMallPlusException("商品已删除");
+        }
+        if (falg && (goods.getStock() <= 0 || goods.getStock() < count)) {
+            throw new ApiMallPlusException("库存不足!");
+        }
+    }
+
+    private void checkSkuGoods(PmsSkuStock goods, int count) {
+        if (goods == null || goods.getId() == null) {
+            throw new ApiMallPlusException("商品已删除");
+        }
+        if (goods.getStock() <= 0 || goods.getStock() < count) {
+            throw new ApiMallPlusException("库存不足!");
+        }
     }
 }

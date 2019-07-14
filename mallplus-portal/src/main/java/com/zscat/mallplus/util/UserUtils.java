@@ -20,6 +20,7 @@ public class UserUtils {
             MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
             return memberDetails.getUmsMember();
         } catch (Exception e) {
+            e.printStackTrace();
             return new UmsMember();
         }
     }
