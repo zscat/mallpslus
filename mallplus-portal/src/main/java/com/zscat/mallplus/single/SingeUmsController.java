@@ -85,10 +85,16 @@ public class SingeUmsController extends ApiBaseAction {
     @ApiOperation("更新会员信息")
     @SysLog(MODULE = "ums", REMARK = "更新会员信息")
     @PostMapping(value = "/updateMember")
-    public Object createGoods(UmsMember member) {
+    public Object updateMember(UmsMember member) {
+        if (member==null){
+            return new CommonResult().paramFailed();
+        }
         UmsMember member1 = UserUtils.getCurrentMember();
-        member.setId(member1.getId());
-        return memberService.updateById(member);
+        if(member1!=null&& member1.getId()!=null){
+            member.setId(member1.getId());
+            return new CommonResult().success(memberService.updateById(member));
+        }
+        return new CommonResult().failed();
     }
     @ApiOperation("添加招聘")
     @SysLog(MODULE = "ums", REMARK = "添加招聘")

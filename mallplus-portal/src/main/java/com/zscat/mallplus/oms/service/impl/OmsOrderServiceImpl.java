@@ -714,8 +714,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
      */
     private String generateOrderSn(OmsOrder order) {
         StringBuilder sb = new StringBuilder();
-        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        sb.append(date);
+        sb.append(System.currentTimeMillis());
         sb.append(String.format("%02d", order.getSourceType()));
         sb.append(String.format("%02d", order.getPayType()));
         sb.append(order.getMemberId());
