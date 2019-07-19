@@ -713,6 +713,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
      * 生成18位订单编号:8位日期+2位平台号码+2位支付方式+6位以上自增id
      */
     private String generateOrderSn(OmsOrder order) {
+
         StringBuilder sb = new StringBuilder();
         sb.append(System.currentTimeMillis());
         sb.append(String.format("%02d", order.getSourceType()));

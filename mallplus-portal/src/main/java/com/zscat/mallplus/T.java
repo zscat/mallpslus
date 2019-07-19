@@ -1,5 +1,6 @@
 package com.zscat.mallplus;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public class T {
     public static void main(String[] args) {
         String a="124";
         String b="453";
-        System.out.println(numJewelsInStones(a,b));
+        System.out.println(LocalDate.now().toString());
         System.out.println(numJewelsInStones1(a,b));
     }
     public static int numJewelsInStones(String J, String S) {

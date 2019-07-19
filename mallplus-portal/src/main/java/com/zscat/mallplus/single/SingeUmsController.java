@@ -109,7 +109,7 @@ public class SingeUmsController extends ApiBaseAction {
         try {
             UmsMember member = UserUtils.getCurrentMember();
 
-            String countKey = "bindSchool:count:" + LocalDate.now().toString() + ":" + member.getId();
+            String countKey = "bindSchool:count:" + ":" + member.getId();
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
@@ -140,7 +140,7 @@ public class SingeUmsController extends ApiBaseAction {
     public Object bindArea(@RequestParam(value = "areaId", required = true) Long areaId) {
         try {
             UmsMember member = UserUtils.getCurrentMember();
-            String countKey = "bindArea:count:" + LocalDate.now().toString() + ":" + member.getId();
+            String countKey = "bindArea:count:" + ":" + member.getId();
             String value = redisService.get(countKey);
             if (value != null) {
                 Integer count = Integer.valueOf(value);
