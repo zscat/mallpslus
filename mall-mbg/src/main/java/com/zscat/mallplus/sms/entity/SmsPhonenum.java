@@ -22,7 +22,7 @@ public class SmsPhonenum implements Serializable {
 
 @ApiModelProperty(value = "")
 @TableId(value = "id", type = IdType.AUTO)
-	private Integer id;
+	private Long id;
 
 @ApiModelProperty(value = "手机号码")
 @TableField("phoneNum")
@@ -30,6 +30,6 @@ public class SmsPhonenum implements Serializable {
 
 @ApiModelProperty(value = "所属用户")
 @TableField("userId")
-	private Integer userid;
+	private Long userid;
 
 }

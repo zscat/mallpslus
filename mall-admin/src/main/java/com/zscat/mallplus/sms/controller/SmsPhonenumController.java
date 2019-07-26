@@ -1,19 +1,28 @@
 package com.zscat.mallplus.sms.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.zscat.mallplus.sms.entity.SmsPhonenum;
 import com.zscat.mallplus.sms.service.ISmsPhonenumService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.sms.vo.PhoneNumVo;
+import com.zscat.mallplus.sys.controller.BaseController;
+import com.zscat.mallplus.util.JsonUtil;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +37,7 @@ import java.util.List;
 @RestController
 @Api(tags = "SmsPhonenumController", description = "管理")
 @RequestMapping("/sms/phonenum")
-public class SmsPhonenumController {
+public class SmsPhonenumController extends BaseController {
     @Resource
     private ISmsPhonenumService ISmsPhonenumService;
 
@@ -55,6 +64,42 @@ public class SmsPhonenumController {
     public Object savePhonenum(@RequestBody SmsPhonenum entity) {
         try {
             if (ISmsPhonenumService.save(entity)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            log.error("保存sms_phonenum表：%s", e.getMessage(), e);
+            return new CommonResult().failed();
+        }
+        return new CommonResult().failed();
+    }
+
+    @SysLog(MODULE = "sms", REMARK = "保存sms_phonenum表")
+    @ApiOperation("保存sms_phonenum表")
+    @RequestMapping(value = "/createList", method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('sms:SmsPhonenum:create')")
+    public Object savePhonenumList(@RequestParam(value = "tableData")String tableData) {
+        try {
+//          String tableHeader = request.getParameter("tableHeader");
+            List<PhoneNumVo> vos= JsonUtil.jsonToList(tableData,PhoneNumVo.class);
+            List<SmsPhonenum> list = new ArrayList<SmsPhonenum>();
+            for (int i = 0 ; i < vos.size();i++){
+
+                SmsPhonenum smsPhonenum = new SmsPhonenum();
+                smsPhonenum.setPhonenum(vos.get(i).getPhoneNum());
+                smsPhonenum.setUserid(getCurrentUser().getId());
+                //判断是否有值，如果有，则不添加
+                QueryWrapper<SmsPhonenum> q = new QueryWrapper<SmsPhonenum>();
+
+               if(!(ISmsPhonenumService.list(new QueryWrapper<>(smsPhonenum)).size() > 0)){
+                   list.add(smsPhonenum);
+               }
+
+            }
+            if(list.size()==0){
+                return new CommonResult().successNull();
+            }
+            if (ISmsPhonenumService.saveOrUpdateBatch(list)) {
                 return new CommonResult().success();
             }
         } catch (Exception e) {

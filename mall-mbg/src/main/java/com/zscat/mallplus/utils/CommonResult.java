@@ -42,6 +42,16 @@ public class CommonResult {
         this.data =  "操作成功";
         return this;
     }
+
+    /**
+     * 为空返回
+     */
+    public CommonResult successNull() {
+        this.code = 202;
+        this.msg = "无新数据";
+        this.data =  "无新数据";
+        return this;
+    }
     /**
      * 普通成功返回
      */
