@@ -298,18 +298,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return new CommonResult().success("密码修改成功", null);
     }
 
-    @Override
-    public UmsMember getCurrentMember() {
-        try {
-            SecurityContext ctx = SecurityContextHolder.getContext();
-            Authentication auth = ctx.getAuthentication();
-            MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
-            return memberDetails.getUmsMember();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new UmsMember();
-        }
-    }
+
 
     @Override
     public void updateIntegration(Long id, Integer integration) {

@@ -16,6 +16,7 @@ import com.zscat.mallplus.oms.vo.OrderParam;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -90,7 +91,7 @@ public class SingeOmsController extends ApiBaseAction {
     @SysLog(MODULE = "order", REMARK = "商品详情预览订单")
     @GetMapping(value = "/preOrder")
     public Object preOrder(GroupAndOrderVo orderParam) {
-        UmsMember member = this.getCurrentMember();
+        UmsMember member = UserUtils.getCurrentMember();
         orderParam.setMemberId(member.getId());
         orderParam.setName(member.getNickname());
         return orderService.preSingelOrder(orderParam);
@@ -106,7 +107,7 @@ public class SingeOmsController extends ApiBaseAction {
     @SysLog(MODULE = "order", REMARK = "商品详情生成订单")
     @PostMapping(value = "/bookOrder")
     public Object bookOrder(GroupAndOrderVo orderParam) {
-        UmsMember member = this.getCurrentMember();
+        UmsMember member = UserUtils.getCurrentMember();
         return orderService.generateSingleOrder(orderParam, member);
     }
 

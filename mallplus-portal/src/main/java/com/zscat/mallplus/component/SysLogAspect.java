@@ -7,6 +7,7 @@ import com.zscat.mallplus.sys.mapper.SysWebLogMapper;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.IpAddressUtil;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.ValidatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -134,7 +135,7 @@ public class SysLogAspect {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             sysLog.setIp(IpAddressUtil.getIpAddr(request));
             //用户名
-            UmsMember sysUserEntity = adminService.getCurrentMember();
+            UmsMember sysUserEntity = UserUtils.getCurrentMember();
             if (null != sysUserEntity) {
                 sysLog.setUserId(sysUserEntity.getId());
                 sysLog.setUserName(sysUserEntity.getUsername());

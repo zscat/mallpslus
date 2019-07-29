@@ -16,6 +16,7 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.JsonUtils;
+import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
@@ -51,7 +52,7 @@ public class OmsPortalOrderController extends ApiBaseAction {
     public Object list(OmsOrder queryParam,
                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        queryParam.setMemberId(umsMemberService.getCurrentMember().getId());
+        queryParam.setMemberId(UserUtils.getCurrentMember().getId());
         List<OmsOrder> orderList = orderService.list(new QueryWrapper<>(queryParam));
         for (OmsOrder order : orderList) {
             OmsOrderItem query = new OmsOrderItem();
@@ -143,7 +144,7 @@ public class OmsPortalOrderController extends ApiBaseAction {
     @RequestMapping("/getWayBillInfo")
     public Object getWayBillInfo(@RequestParam(value = "orderId", required = false, defaultValue = "0") Long orderId) throws Exception {
         try {
-            UmsMember member = this.getCurrentMember();
+            UmsMember member = UserUtils.getCurrentMember();
             OmsOrder order = orderService.getById(orderId);
             if (order == null) {
                 return null;

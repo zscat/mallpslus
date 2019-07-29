@@ -126,16 +126,7 @@ public class ApiBaseAction {
         return xff;
     }
 
-    public UmsMember getCurrentMember() {
-        try {
-            SecurityContext ctx = SecurityContextHolder.getContext();
-            Authentication auth = ctx.getAuthentication();
-            MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
-            return memberDetails.getUmsMember();
-        } catch (Exception e) {
-            return new UmsMember();
-        }
-    }
+
 
     /**
      * 获取请求的用户Id

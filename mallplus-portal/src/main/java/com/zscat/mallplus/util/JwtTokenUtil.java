@@ -1,8 +1,8 @@
 package com.zscat.mallplus.util;
 
-import com.zscat.mallplus.exception.ApiMallPlusException;
-import com.zscat.mallplus.utils.ValidatorUtils;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,23 +48,14 @@ public class JwtTokenUtil {
     /**
      * 从token中获取JWT中的负载
      */
-    public Claims getClaimsFromToken(String token) {
+    private Claims getClaimsFromToken(String token) {
         Claims claims = null;
         try {
             claims = Jwts.parser()
                     .setSigningKey(secret)
-
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (ExpiredJwtException ex) {
-            throw new ApiMallPlusException("User token expired!",1001);
-        } catch (SignatureException ex) {
-            throw new ApiMallPlusException("User token signature error!",1002);
-        } catch (IllegalArgumentException ex) {
-            throw new ApiMallPlusException("User token is null or empty!",1003);
-        }catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error("JWT格式验证失败:{}", e.getMessage());
+        } catch (Exception e) {
             LOGGER.error("JWT格式验证失败:{}", token);
         }
         return claims;
@@ -81,22 +72,12 @@ public class JwtTokenUtil {
      * 从token中获取登录用户名
      */
     public String getUserNameFromToken(String token) {
-        String username = null;
-        Claims claims = null;
+        String username;
         try {
-             claims = getClaimsFromToken(token);
-             if (ValidatorUtils.notEmpty(claims)){
-                 username = claims.getSubject();
-             }
-
-        } catch (ExpiredJwtException ex) {
-            throw new ApiMallPlusException("User token expired!");
-        } catch (SignatureException ex) {
-            throw new ApiMallPlusException("User token signature error!");
-        } catch (IllegalArgumentException ex) {
-            throw new ApiMallPlusException("User token is null or empty!");
-        }catch (Exception ex) {
-
+            Claims claims = getClaimsFromToken(token);
+            username = claims.getSubject();
+        } catch (Exception e) {
+            username = null;
         }
         return username;
     }
@@ -115,7 +96,7 @@ public class JwtTokenUtil {
     /**
      * 判断token是否已经失效
      */
-    public boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         Date expiredDate = getExpiredDateFromToken(token);
         return expiredDate.before(new Date());
     }
@@ -123,12 +104,9 @@ public class JwtTokenUtil {
     /**
      * 从token中获取过期时间
      */
-    public Date getExpiredDateFromToken(String token) {
+    private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
-        if (ValidatorUtils.notEmpty(claims)) {
-            return claims.getExpiration();
-        }
-        return null;
+        return claims.getExpiration();
     }
 
     /**
@@ -161,8 +139,6 @@ public class JwtTokenUtil {
     public String refreshToken(String token) {
         Claims claims = getClaimsFromToken(token);
         claims.put(CLAIM_KEY_CREATED, new Date());
-        claims.put("exp", generateExpirationDate());
-
         return generateToken(claims);
     }
 }

@@ -55,6 +55,12 @@ public class CmsSubjectController {
     @PreAuthorize("hasAuthority('cms:CmsSubject:create')")
     public Object saveCmsSubject(@RequestBody CmsSubject entity) {
         try {
+
+           /* entity.setSchoolName(member.getSchoolName());
+            entity.setSchoolId(member.getSchoolId());
+            entity.setAreaName(member.getAreaName());
+            entity.setAreaId(member.getAreaId());*/
+
             if (ICmsSubjectService.saves(entity)) {
                 return new CommonResult().success();
             }

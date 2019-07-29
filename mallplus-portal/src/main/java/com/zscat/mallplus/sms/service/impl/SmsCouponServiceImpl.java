@@ -139,7 +139,7 @@ public class SmsCouponServiceImpl extends ServiceImpl<SmsCouponMapper, SmsCoupon
 
     @Override
     public List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type) {
-        UmsMember currentMember = memberService.getCurrentMember();
+        UmsMember currentMember = UserUtils.getCurrentMember();
         Date now = new Date();
         //获取该用户所有优惠券
         List<SmsCouponHistoryDetail> allList = couponHistoryMapper.getDetailList(currentMember.getId());

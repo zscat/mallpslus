@@ -15,10 +15,8 @@ package com.zscat.mallplus.interceptor;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.common.CommonConstant;
 import com.zscat.mallplus.exception.ApiMallPlusException;
-import com.zscat.mallplus.util.DateUtil;
 import com.zscat.mallplus.util.IpAddressUtil;
 import com.zscat.mallplus.util.JwtTokenUtil;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -139,7 +137,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             authHeader = request.getParameter(LOGIN_TOKEN_KEY);
         }
-        //前置条件：token为空情况处理
+//前置条件：token为空情况处理
         if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             log.info(formMapKey(null, "token is null url=" + fullUrl, requestType,
                     IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), "null")
@@ -149,38 +147,13 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
             String authToken = authHeader.substring(this.tokenHead.length());
-         //   Date date = jwtTokenUtil.getExpiredDateFromToken(authToken);
-            String username = null;
-            Claims claims = jwtTokenUtil.getClaimsFromToken(authToken);
-            /*if (date.after(new Date()) && date.getTime() - new Date().getTime() <= 1 * 60 * 1000) {
-                // token还剩1分钟过期，重新生成token
-                String newToken = jwtTokenUtil.refreshToken(authToken);
-                // 将新生成的token放入响应头
-                response.setHeader("Authorization", "Bearer " + newToken);
-                claims = jwtTokenUtil.getClaimsFromToken(newToken);
-
-            }else{
-                try {
-                    claims = jwtTokenUtil.getClaimsFromToken(authToken);
-                } catch (ApiMallPlusException e) {
-                    if (e.getErrno() == 1001) {
-                        // token还剩1分钟过期，重新生成token
-                        String newToken = jwtTokenUtil.refreshToken(authToken);
-                        // 将新生成的token放入响应头
-                        response.setHeader("Authorization", "Bearer " + newToken);
-                        claims = jwtTokenUtil.getClaimsFromToken(newToken);
-                    }
-                }
-            }*/
-
-            username=claims.getSubject();
+            String username = jwtTokenUtil.getUserNameFromToken(authToken);
             LOGGER.info("checking username:{}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 log.info(formMapKey(username, fullUrl, requestType,
                         IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
                         + ",\"cost\":\"" + 0 + "ms\"");
-
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -188,11 +161,9 @@ public class TokenInterceptor implements HandlerInterceptor {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             } else {
-                if (org.apache.commons.lang3.StringUtils.isNotEmpty(authToken)) {
-                    log.info(formMapKey("wu", fullUrl, requestType,
-                            IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
-                            + ",\"cost\":\"" + 0 + "ms\"");
-                }
+                log.info(formMapKey("wu", fullUrl, requestType,
+                        IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
+                        + ",\"cost\":\"" + 0 + "ms\"");
             }
         } else {
             throw new ApiMallPlusException("请先登录", 401);

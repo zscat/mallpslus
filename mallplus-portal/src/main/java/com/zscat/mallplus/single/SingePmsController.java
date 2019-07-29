@@ -153,10 +153,13 @@ public class SingePmsController extends ApiBaseAction {
     @PostMapping(value = "/createGoods")
     public Object createGoods(PmsProduct productParam) {
         CommonResult commonResult;
-        UmsMember member = this.getCurrentMember();
+        UmsMember member = UserUtils.getCurrentMember();
         if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
             Integer countGoodsByToday  = pmsProductService.countGoodsByToday(member.getId());
+            if (ValidatorUtils.empty(countGoodsByToday)){
+                countGoodsByToday=0;
+            }
             if (countGoodsByToday > memberLevel.getGoodscount()) {
                 commonResult = new CommonResult().failed("你今天已经有发" + countGoodsByToday + "个商品");
                 return commonResult;
@@ -164,8 +167,13 @@ public class SingePmsController extends ApiBaseAction {
         }else {
             return new CommonResult().success("没有设置会员等级");
         }
-        productParam.setSchoolId(member.getSchoolId());
-        productParam.setSupplyId(member.getAreaId());
+        if (productParam.getQsType()==1){
+            productParam.setSchoolName(member.getSchoolName());
+            productParam.setSchoolId(member.getSchoolId());
+        }else {
+            productParam.setAreaName(member.getAreaName());
+            productParam.setAreaId(member.getAreaId());
+        }
         productParam.setMemberId(member.getId());
         productParam.setCreateTime(new Date());
         boolean count = pmsProductService.save(productParam);

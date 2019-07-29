@@ -25,6 +25,7 @@ import com.zscat.mallplus.ums.mapper.UmsRewardLogMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
@@ -137,18 +138,27 @@ public class SingeCmsController extends ApiBaseAction {
     @PostMapping(value = "/createSubject")
     public Object createSubject(CmsSubject subject, BindingResult result) {
         CommonResult commonResult;
-        UmsMember member = this.getCurrentMember();
+        UmsMember member = UserUtils.getCurrentMember();
         if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
 
             int subjectCounts = subjectService.countByToday(member.getId());
+            if (ValidatorUtils.empty(subjectCounts)){
+                subjectCounts=0;
+            }
             if (subjectCounts > memberLevel.getArticlecount()) {
                 commonResult = new CommonResult().failed("你今天已经有发" + memberLevel.getArticlecount() + "篇文章");
                 return commonResult;
             }
         }
-        subject.setSchoolId(member.getSchoolId());
-        subject.setAreaId(member.getAreaId());
+        if (subject.getQsType()==1){
+            subject.setSchoolName(member.getSchoolName());
+            subject.setSchoolId(member.getSchoolId());
+        }else {
+            subject.setAreaName(member.getAreaName());
+            subject.setAreaId(member.getAreaId());
+        }
+
         subject.setMemberId(member.getId());
         boolean count = subjectService.save(subject);
         if (count) {

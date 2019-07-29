@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-17
  */
+@Data
 @TableName("cms_subject")
 public class CmsSubject extends BaseEntity implements Serializable {
 
@@ -120,195 +122,19 @@ public class CmsSubject extends BaseEntity implements Serializable {
     @TableField("member_id")
     private Long memberId;
 
+    @TableField("area_name")
+    private String areaName;
+    @TableField("school_name")
+    private String schoolName;
     /**
      * 打赏
      */
     private Integer reward;
 
+    /**
+     * 1 學校 2 區域
+     */
+    @TableField(exist = false)
+    private int qsType;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
-
-    public Integer getProductCount() {
-        return productCount;
-    }
-
-    public void setProductCount(Integer productCount) {
-        this.productCount = productCount;
-    }
-
-    public Integer getRecommendStatus() {
-        return recommendStatus;
-    }
-
-    public void setRecommendStatus(Integer recommendStatus) {
-        this.recommendStatus = recommendStatus;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getCollectCount() {
-        return collectCount;
-    }
-
-    public void setCollectCount(Integer collectCount) {
-        this.collectCount = collectCount;
-    }
-
-    public Integer getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(Integer readCount) {
-        this.readCount = readCount;
-    }
-
-    public Integer getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Integer commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    public String getAlbumPics() {
-        return albumPics;
-    }
-
-    public void setAlbumPics(String albumPics) {
-        this.albumPics = albumPics;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getShowStatus() {
-        return showStatus;
-    }
-
-    public void setShowStatus(Integer showStatus) {
-        this.showStatus = showStatus;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getForwardCount() {
-        return forwardCount;
-    }
-
-    public void setForwardCount(Integer forwardCount) {
-        this.forwardCount = forwardCount;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Long getAreaId() {
-        return areaId;
-    }
-
-    public void setAreaId(Long areaId) {
-        this.areaId = areaId;
-    }
-
-    public Long getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public Integer getReward() {
-        return reward;
-    }
-
-    public void setReward(Integer reward) {
-        this.reward = reward;
-    }
-
-    @Override
-    public String toString() {
-        return "CmsSubject{" +
-                ", id=" + id +
-                ", categoryId=" + categoryId +
-                ", title=" + title +
-                ", pic=" + pic +
-                ", productCount=" + productCount +
-                ", recommendStatus=" + recommendStatus +
-                ", createTime=" + createTime +
-                ", collectCount=" + collectCount +
-                ", readCount=" + readCount +
-                ", commentCount=" + commentCount +
-                ", albumPics=" + albumPics +
-                ", description=" + description +
-                ", showStatus=" + showStatus +
-                ", content=" + content +
-                ", forwardCount=" + forwardCount +
-                ", categoryName=" + categoryName +
-                ", areaId=" + areaId +
-                ", schoolId=" + schoolId +
-                ", memberId=" + memberId +
-                ", reward=" + reward +
-                "}";
-    }
 }

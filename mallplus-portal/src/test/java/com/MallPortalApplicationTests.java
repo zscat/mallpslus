@@ -28,8 +28,8 @@ public class MallPortalApplicationTests {
     }
 
     public static void main(String[] args) {
-       Integer a=100,b=20,c=200,d=200;
-        System.out.println(a==b);
-        System.out.println(c==d);
+        String a= "102087102114";
+        String b="101829";
+        System.out.println( a.replaceAll("[^" + b + "]", "").length());
     }
 }
