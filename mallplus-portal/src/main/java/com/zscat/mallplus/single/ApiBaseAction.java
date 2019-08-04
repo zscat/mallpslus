@@ -80,7 +80,7 @@ public class ApiBaseAction {
     }
 
     public static Map<String, Object> toResponsFail(String msg) {
-        return toResponsObject(1, msg, null);
+        return toResponsObject(1, msg, msg);
     }
 
     /**

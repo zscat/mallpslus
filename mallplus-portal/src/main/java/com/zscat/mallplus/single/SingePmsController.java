@@ -10,6 +10,7 @@ import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
 import com.zscat.mallplus.pms.entity.*;
+import com.zscat.mallplus.pms.mapper.PmsGiftsMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductCategoryMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.*;
@@ -17,6 +18,11 @@ import com.zscat.mallplus.pms.vo.ConsultTypeCount;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.ProductTypeVo;
 import com.zscat.mallplus.pms.vo.PromotionProduct;
+import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.sms.entity.SmsGroupMember;
+import com.zscat.mallplus.sms.entity.SmsHomeBrand;
+import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
+import com.zscat.mallplus.sms.mapper.SmsGroupMemberMapper;
 import com.zscat.mallplus.sms.service.ISmsGroupService;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.entity.UmsMember;
@@ -36,8 +42,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: shenzhuan
@@ -55,6 +63,8 @@ public class SingePmsController extends ApiBaseAction {
     private RedisUtil redisUtil;
     @Resource
     private ISmsGroupService groupService;
+    @Resource
+    private SmsGroupMapper groupMapper;
     @Resource
     private IUmsMemberLevelService memberLevelService;
     @Resource
@@ -82,10 +92,14 @@ public class SingePmsController extends ApiBaseAction {
     private IPmsProductConsultService pmsProductConsultService;
     @Autowired
     private IPmsFavoriteService favoriteService;
-
+    @Resource
+    private SmsGroupMemberMapper groupMemberMapper;
     @Resource
     private  PmsProductCategoryMapper categoryMapper;
-
+    @Resource
+    private IPmsGiftsService giftsService;
+    @Resource
+    private IPmsGiftsCategoryService giftsCategoryService;
     @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
     @IgnoreAuth
     @GetMapping(value = "/goods/detail")
@@ -128,6 +142,7 @@ public class SingePmsController extends ApiBaseAction {
                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         product.setPublishStatus(1);
         product.setVerifyStatus(1);
+        product.setMemberId(null);
         IPage<PmsProduct> list;
         if (ValidatorUtils.notEmpty(product.getKeyword())){
             list = pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product).like("name",product.getKeyword()));
@@ -215,24 +230,28 @@ public class SingePmsController extends ApiBaseAction {
         int general = 0;
         int bad = 0;
         ConsultTypeCount count = new ConsultTypeCount();
-      /*  for (PmsProductConsult consult : list) {
-            if (consult.getStoreId() != null) {
-                if (consult.getStoreId() == 1) {
-                    goods++;
-                }
-                if (consult.getStoreId() == 2) {
-                    general++;
-                }
-                if (consult.getStoreId() == 3) {
+        for (PmsProductConsult consult : list) {
+            if (consult.getStars() != null) {
+                if (consult.getStars()==1){
                     bad++;
                 }
+                if (consult.getStars()==2){
+                    general++;
+                }
+                if (consult.getStars()==3){
+                    goods++;
+                }
             }
-        }*/
+        }
         count.setAll(goods + general + bad);
         count.setBad(bad);
         count.setGeneral(general);
         count.setGoods(goods);
-
+        if (count.getAll()>0){
+            count.setPersent(new BigDecimal(goods).divide(new BigDecimal(count.getAll())).multiply(new BigDecimal(100)));
+        }else {
+            count.setPersent(new BigDecimal(200));
+        }
         Map<String, Object> objectMap = new HashMap<>();
         objectMap.put("list", list);
         objectMap.put("count", count);
@@ -240,7 +259,110 @@ public class SingePmsController extends ApiBaseAction {
     }
 
 
+    @SysLog(MODULE = "pms", REMARK = "查询团购商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询团购商品列表")
+    @GetMapping(value = "/groupGoods/list")
+    public Object groupGoodsList(PmsProduct product,
+                            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+       List<SmsGroup> groupList =  groupService.list(new QueryWrapper<>());
+       if (groupList!=null && groupList.size()>0){
+           List<Long> ids = groupList.stream()
+                   .map(SmsGroup::getGoodsId)
+                   .collect(Collectors.toList());
+           product.setPublishStatus(1);
+           product.setVerifyStatus(1);
+           product.setMemberId(null);
+           IPage<PmsProduct> list  = pmsProductService.page(new Page<PmsProduct>(pageNum, pageSize), new QueryWrapper<>(product).in("id",ids));
+           return new CommonResult().success(list);
+       }
+        return null;
+    }
 
+    @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
+    @IgnoreAuth
+    @GetMapping(value = "/goodsGroup/detail")
+    @ApiOperation(value = "查询商品详情信息")
+    public Object groupGoodsDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        PmsProductParam goods = null;
+        try {
+            //  goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+            if (ValidatorUtils.empty(goods)){
+                goods = pmsProductService.getGoodsRedisById(id);
+            }
+        } catch (Exception e) {
+            goods = pmsProductService.getGoodsRedisById(id);
+        }
+        SmsGroup group = groupMapper.getByGoodsId(id);
+        Map<String, Object> map = new HashMap<>();
+        UmsMember umsMember = UserUtils.getCurrentMember();
+        if (umsMember != null && umsMember.getId() != null) {
+            PmsFavorite query = new PmsFavorite();
+            query.setObjId(goods.getId());
+            query.setMemberId(umsMember.getId());
+            query.setType(1);
+            PmsFavorite findCollection = favoriteService.getOne(new QueryWrapper<>(query));
+            if(findCollection!=null){
+                map.put("favorite", true);
+            }else{
+                map.put("favorite", false);
+            }
+        }
+        if (group!=null){
+            map.put("memberGroupList",groupMemberMapper.selectList(new QueryWrapper<SmsGroupMember>().eq("group_id",group.getId())));
+            map.put("group", group);
+        }
+
+        map.put("goods", goods);
+        return new CommonResult().success(map);
+    }
+
+
+    @SysLog(MODULE = "pms", REMARK = "查询团购商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询礼物商品列表")
+    @GetMapping(value = "/gift/list")
+    public Object giftList(PmsGifts product,
+                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+
+            IPage<PmsGifts> list  = giftsService.page(new Page<PmsGifts>(pageNum, pageSize), new QueryWrapper<>(product));
+            return new CommonResult().success(list);
+
+    }
+
+    @SysLog(MODULE = "pms", REMARK = "查询商品详情信息")
+    @IgnoreAuth
+    @GetMapping(value = "/gift/detail")
+    @ApiOperation(value = "查询礼物商品详情信息")
+    public Object giftDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        PmsGifts  goods = giftsService.getById(id);
+        Map<String, Object> map = new HashMap<>();
+        UmsMember umsMember = UserUtils.getCurrentMember();
+        if (umsMember != null && umsMember.getId() != null) {
+            PmsFavorite query = new PmsFavorite();
+            query.setObjId(goods.getId());
+            query.setMemberId(umsMember.getId());
+            query.setType(4);
+            PmsFavorite findCollection = favoriteService.getOne(new QueryWrapper<>(query));
+            if(findCollection!=null){
+                map.put("favorite", true);
+            }else{
+                map.put("favorite", false);
+            }
+        }
+        map.put("goods", goods);
+        return new CommonResult().success(map);
+    }
+    @SysLog(MODULE = "pms", REMARK = "查询商品类型下的商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询积分商品类型")
+    @GetMapping(value = "/typeGiftList")
+    public Object typeGiftList(PmsGiftsCategory productCategory) {
+        List<PmsGiftsCategory> categories = giftsCategoryService.list(new QueryWrapper<>(productCategory));
+        return new CommonResult().success(categories);
+    }
 
     @SysLog(MODULE = "pms", REMARK = "查询商品分类列表")
     @IgnoreAuth

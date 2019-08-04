@@ -301,6 +301,7 @@ public class OmsOrder extends BaseEntity implements Serializable {
 
     @TableField("school_id")
     private Long schoolId;
-
+    @TableField("group_id")
+    private Long groupId;
 
 }

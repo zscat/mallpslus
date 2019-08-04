@@ -9,12 +9,16 @@ import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
 import com.zscat.mallplus.oms.service.IOmsOrderItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
+import com.zscat.mallplus.oms.vo.OrderParam;
+import com.zscat.mallplus.sms.entity.SmsGroup;
+import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.*;
 import com.zscat.mallplus.util.applet.WechatRefundApiResult;
 import com.zscat.mallplus.util.applet.WechatUtil;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import com.zscat.mallplus.vo.BalancePayParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +59,8 @@ public class PayController extends ApiBaseAction {
 
     @Autowired
     private IOmsOrderItemService orderItemService;
+    @Autowired
+    private SmsGroupMapper groupMapper;
 
     /**
      * 订单退款请求
@@ -117,6 +123,12 @@ public class PayController extends ApiBaseAction {
             order.setStatus(OrderStatus.TO_DELIVER.getValue());
             order.setPayType(3);
             orderService.updateById(order);
+            if (ValidatorUtils.notEmpty(order.getGroupId())){
+                SmsGroup group = new SmsGroup();
+                group.setId(order.getGroupId());
+                group.setPeoples(group.getPeoples()-1);
+                groupMapper.updateById(group);
+            }
             userDO.setBlance(userDO.getBlance().subtract(order.getPayAmount()));
             umsMemberService.updateById(userDO);
         }
@@ -124,11 +136,21 @@ public class PayController extends ApiBaseAction {
     }
 
     /**
+     * 余额支付
+     */
+    @SysLog(MODULE = "pay", REMARK = "积分兑换")
+    @ApiOperation(value = "积分兑换")
+    @PostMapping("jifenPay")
+    public Object jifenPay(OrderParam payParam){
+        return orderService.jifenPay(payParam);
+    }
+
+    /**
      * 获取支付的请求参数
      */
     @SysLog(MODULE = "pay", REMARK = "获取支付的请求参数")
     @ApiOperation(value = "获取支付的请求参数")
-    @GetMapping("weixinAppletPay")
+    @PostMapping("weixinAppletPay")
     public Object payPrepay(@RequestParam(value = "orderId", required = false, defaultValue = "0") Long orderId) {
         UmsMember user = UserUtils.getCurrentMember();
         //

@@ -1,6 +1,7 @@
 package com.zscat.mallplus.oms.vo;
 
 
+import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.sms.vo.SmsCouponHistoryDetail;
 import com.zscat.mallplus.ums.entity.UmsIntegrationConsumeSetting;
@@ -19,7 +20,7 @@ public class ConfirmOrderResult {
 
     private UmsMemberReceiveAddress address;
     //包含优惠信息的购物车信息
-    private List<CartPromotionItem> cartPromotionItemList;
+    private List<OmsCartItem> cartPromotionItemList;
     //用户收货地址列表
     private List<UmsMemberReceiveAddress> memberReceiveAddressList;
     //用户可用优惠券列表

@@ -130,7 +130,7 @@ public class SingeCmsController extends ApiBaseAction {
     @GetMapping(value = "/subject/detail")
     @ApiOperation(value = "查询文章详情信息")
     public Object subjectDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        CmsTopic productResult = topicService.getById(id);
+        CmsSubject productResult = subjectService.getById(id);
         return new CommonResult().success(productResult);
     }
     @SysLog(MODULE = "cms", REMARK = "创建文章")

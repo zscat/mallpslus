@@ -4,12 +4,18 @@ package com.zscat.mallplus.component;
 import com.zscat.mallplus.sys.entity.SysWebLog;
 import com.zscat.mallplus.sys.mapper.SysWebLogMapper;
 import com.zscat.mallplus.util.IpAddressUtil;
+
 import com.zscat.mallplus.util.JwtTokenUtil;
+
+import com.zscat.mallplus.utils.ValidatorUtils;
+import com.zscat.mallplus.vo.ApiContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +47,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-
+    @Autowired
+    private ApiContext apiContext;
     @Resource
     public SysWebLogMapper fopSystemOperationLogService;
 
@@ -53,6 +62,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         long startTime, endTime;
+        String storeId = request.getParameter("storeId");
+        if (ValidatorUtils.notEmpty(storeId)) {
+            apiContext.setCurrentProviderId(Long.valueOf(storeId));
+        } else {
+            storeId = request.getHeader("storeId");
+            if (ValidatorUtils.notEmpty(storeId)) {
+                apiContext.setCurrentProviderId(Long.valueOf(storeId));
+            }
+        }
         String requestType = ((HttpServletRequest) request).getMethod();
         SysWebLog sysLog = new SysWebLog();
         StringBuffer sbParams = new StringBuffer();
@@ -79,6 +97,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String username = null;
         String authHeader = request.getHeader(this.tokenHeader);
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
+
             String authToken = authHeader.substring(this.tokenHead.length());
             username = jwtTokenUtil.getUserNameFromToken(authToken);
             LOGGER.info("checking username:{}", username);
@@ -102,7 +121,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 + ",\"cost\":\"" + (endTime - startTime) + "ms\"");
         int startIntercept = fullUrl.replace("//", "a").indexOf("/") + 1;
 
-        String interfaceName = fullUrl.substring(startIntercept,fullUrl.length()>25?25:fullUrl.length());
+        String interfaceName = fullUrl.substring(startIntercept, fullUrl.length() > 25 ? 25 : fullUrl.length());
         sysLog.setCreateTime(new Date());
         sysLog.setIp(IpAddressUtil.getIpAddr(request));
         sysLog.setMethod(interfaceName);

@@ -2,6 +2,7 @@ package com.zscat.mallplus.sms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.entity.SmsCouponHistory;
@@ -138,7 +139,7 @@ public class SmsCouponServiceImpl extends ServiceImpl<SmsCouponMapper, SmsCoupon
     }
 
     @Override
-    public List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type) {
+    public List<SmsCouponHistoryDetail> listCart(List<OmsCartItem> cartItemList, Integer type) {
         UmsMember currentMember = UserUtils.getCurrentMember();
         Date now = new Date();
         //获取该用户所有优惠券
@@ -195,32 +196,32 @@ public class SmsCouponServiceImpl extends ServiceImpl<SmsCouponMapper, SmsCoupon
         }
     }
 
-    private BigDecimal calcTotalAmount(List<CartPromotionItem> cartItemList) {
+    private BigDecimal calcTotalAmount(List<OmsCartItem> cartItemList) {
         BigDecimal total = new BigDecimal("0");
-        for (CartPromotionItem item : cartItemList) {
-            BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
-            total = total.add(realPrice.multiply(new BigDecimal(item.getQuantity())));
+        for (OmsCartItem item : cartItemList) {
+          //  BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
+            total = total.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
         }
         return total;
     }
 
-    private BigDecimal calcTotalAmountByproductCategoryId(List<CartPromotionItem> cartItemList, List<Long> productCategoryIds) {
+    private BigDecimal calcTotalAmountByproductCategoryId(List<OmsCartItem> cartItemList, List<Long> productCategoryIds) {
         BigDecimal total = new BigDecimal("0");
-        for (CartPromotionItem item : cartItemList) {
+        for (OmsCartItem item : cartItemList) {
             if (productCategoryIds.contains(item.getProductCategoryId())) {
-                BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
-                total = total.add(realPrice.multiply(new BigDecimal(item.getQuantity())));
+             //   BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
+                total = total.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
             }
         }
         return total;
     }
 
-    private BigDecimal calcTotalAmountByProductId(List<CartPromotionItem> cartItemList, List<Long> productIds) {
+    private BigDecimal calcTotalAmountByProductId(List<OmsCartItem> cartItemList, List<Long> productIds) {
         BigDecimal total = new BigDecimal("0");
-        for (CartPromotionItem item : cartItemList) {
+        for (OmsCartItem item : cartItemList) {
             if (productIds.contains(item.getProductId())) {
-                BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
-                total = total.add(realPrice.multiply(new BigDecimal(item.getQuantity())));
+              //  BigDecimal realPrice = item.getPrice().subtract(item.getReduceAmount());
+                total = total.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
             }
         }
         return total;

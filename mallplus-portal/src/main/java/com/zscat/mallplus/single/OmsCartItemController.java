@@ -1,6 +1,7 @@
 package com.zscat.mallplus.single;
 
 
+import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.service.IOmsCartItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
@@ -46,36 +47,18 @@ public class OmsCartItemController {
     @RequestMapping(value = "/addCart")
     @ResponseBody
     public Object addCart(CartParam cartParam) {
-        return orderService.addCart(cartParam);
-
-    }
-
-   /* @ApiOperation("添加商品到购物车")
-    @RequestMapping(value = "/addCart")
-    @ResponseBody
-    public Object addCart(@RequestParam(value = "id", defaultValue = "0") Long id,
-                          @RequestParam(value = "count", defaultValue = "1") Integer count) {
-        UmsMember umsMember = UserUtils.getCurrentMember();
-        PmsSkuStock pmsSkuStock = pmsSkuStockService.getById(id);
-        if (pmsSkuStock != null && umsMember != null && umsMember.getId() != null) {
-            OmsCartItem cartItem = new OmsCartItem();
-            cartItem.setPrice(pmsSkuStock.getPrice());
-            cartItem.setProductId(pmsSkuStock.getProductId());
-            cartItem.setProductSkuCode(pmsSkuStock.getSkuCode());
-            cartItem.setQuantity(count);
-            cartItem.setProductSkuId(id);
-//            cartItem.setProductAttr(pmsSkuStock.getMeno1());
-            cartItem.setProductPic(pmsSkuStock.getPic());
-            cartItem.setSp1(pmsSkuStock.getSp1());
-            cartItem.setSp2(pmsSkuStock.getSp2());
-            cartItem.setSp3(pmsSkuStock.getSp3());
-            OmsCartItem omsCartItem = cartItemService.addCart(cartItem);
-            return new CommonResult().success(omsCartItem.getId());
-
+        try {
+            return orderService.addCart(cartParam);
+        } catch (ApiMallPlusException e) {
+            return new CommonResult().failed(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new CommonResult().failed();
+        return null;
+
+
     }
-*/
+
     @ApiOperation("获取某个会员的购物车列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -88,13 +71,7 @@ public class OmsCartItemController {
         return new ArrayList<OmsCartItem>();
     }
 
-    @ApiOperation("获取某个会员的购物车列表,包括促销信息")
-    @RequestMapping(value = "/list/promotion", method = RequestMethod.GET)
-    @ResponseBody
-    public Object listPromotion() {
-        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(UserUtils.getCurrentMember().getId(), null);
-        return new CommonResult().success(cartPromotionItemList);
-    }
+
 
     @ApiOperation("修改购物车中某个商品的数量")
     @RequestMapping(value = "/update/quantity", method = RequestMethod.GET)

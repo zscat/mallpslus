@@ -4,6 +4,7 @@ import com.zscat.mallplus.utils.BaseEntity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @Auther: shenzhuan
@@ -17,5 +18,7 @@ public class ConsultTypeCount extends BaseEntity implements Serializable {
     private int general;
     private int bad;
     private int other;
+
+    private BigDecimal persent;
 
 }

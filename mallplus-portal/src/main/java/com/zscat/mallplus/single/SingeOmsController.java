@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.enums.OrderStatus;
 import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
@@ -18,8 +19,10 @@ import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -53,9 +56,9 @@ public class SingeOmsController extends ApiBaseAction {
 
         IPage<OmsOrder> page = null;
         if (order.getStatus()==0){
-            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<OmsOrder>().eq("member_id",order.getMemberId())) ;
+            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<OmsOrder>().eq("member_id",order.getMemberId()).orderByDesc("create_time")) ;
         }else {
-            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(order)) ;
+            page = orderService.page(new Page<OmsOrder>(pageNum, pageSize), new QueryWrapper<>(order).orderByDesc("create_time")) ;
 
         }
         for (OmsOrder omsOrder : page.getRecords()){
@@ -81,35 +84,27 @@ public class SingeOmsController extends ApiBaseAction {
         return new CommonResult().success(orderDetailResult);
     }
 
-    /**
-     * 提交订单
-     *
-     * @param orderParam
-     * @return
-     */
-    @ApiOperation("商品详情预览订单")
-    @SysLog(MODULE = "order", REMARK = "商品详情预览订单")
-    @GetMapping(value = "/preOrder")
-    public Object preOrder(GroupAndOrderVo orderParam) {
-        UmsMember member = UserUtils.getCurrentMember();
-        orderParam.setMemberId(member.getId());
-        orderParam.setName(member.getNickname());
-        return orderService.preSingelOrder(orderParam);
+    @SysLog(MODULE = "小程序订单管理", REMARK = "取消订单")
+    @ApiOperation("关闭订单")
+    @RequestMapping(value = "/closeOrder", method = RequestMethod.POST)
+    public Object closeOrder(@ApiParam("订单id") @RequestParam Long orderId) {
+        try {
+            if (ValidatorUtils.empty(orderId)) {
+                return new CommonResult().paramFailed("订单id is empty");
+            }
+            OmsOrder newE = orderService.getById(orderId);
+            if (newE.getStatus() != OrderStatus.INIT.getValue()) {
+                return new CommonResult().paramFailed("订单已支付，不能关闭");
+            }
+            if (orderService.closeOrder(newE)) {
+                return new CommonResult().success();
+            }
+        } catch (Exception e) {
+            return new CommonResult().failed(e.getMessage());
+        }
+        return new CommonResult().failed();
     }
 
-    /**
-     * 提交订单
-     *
-     * @param orderParam
-     * @return
-     */
-    @ApiOperation("商品详情生成订单")
-    @SysLog(MODULE = "order", REMARK = "商品详情生成订单")
-    @PostMapping(value = "/bookOrder")
-    public Object bookOrder(GroupAndOrderVo orderParam) {
-        UmsMember member = UserUtils.getCurrentMember();
-        return orderService.generateSingleOrder(orderParam, member);
-    }
 
     @ResponseBody
     @GetMapping("/submitPreview")
@@ -135,7 +130,43 @@ public class SingeOmsController extends ApiBaseAction {
     @RequestMapping(value = "/generateOrder")
     @ResponseBody
     public Object generateOrder(OrderParam orderParam) {
-        return orderService.generateOrder(orderParam);
+        try {
+            return orderService.generateOrder(orderParam);
+        } catch (ApiMallPlusException e) {
+            return new CommonResult().failed(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+    @ApiOperation("发起拼团")
+    @RequestMapping(value = "/addGroup")
+    @ResponseBody
+    public Object addGroup(OrderParam orderParam) {
+        try {
+            return orderService.addGroup(orderParam);
+        } catch (ApiMallPlusException e) {
+            return new CommonResult().failed(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @ApiOperation("参与拼团")
+    @RequestMapping(value = "/acceptGroup")
+    @ResponseBody
+    public Object acceptGroup(OrderParam orderParam) {
+        try {
+            return orderService.acceptGroup(orderParam);
+        } catch (ApiMallPlusException e) {
+            return new CommonResult().failed(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

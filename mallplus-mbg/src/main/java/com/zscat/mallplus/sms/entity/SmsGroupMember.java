@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import com.zscat.mallplus.utils.ValidatorUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -33,7 +36,8 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
 
     @TableField("create_time")
     private Date createTime;
-
+    @TableField("exipre_time")
+    private Long exipreTime;
     @TableField("main_id")
     private Long mainId;
 
@@ -48,8 +52,9 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
     private Integer status;
 
     @TableField("order_id")
-    private Long orderId;
-
+    private String orderId;
+    @TableField(exist = false)
+    private List pics;
 
     public Long getId() {
         return id;
@@ -65,6 +70,14 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getExipreTime() {
+        return exipreTime;
+    }
+
+    public void setExipreTime(Long exipreTime) {
+        this.exipreTime = exipreTime;
     }
 
     public Long getMemberId() {
@@ -115,26 +128,24 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public Long getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Long orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    @Override
-    public String toString() {
-        return "SmsGroupMember{" +
-                ", id=" + id +
-                ", groupId=" + groupId +
-                ", memberId=" + memberId +
-                ", createTime=" + createTime +
-                ", mainId=" + mainId +
-                ", name=" + name +
-                ", goodsId=" + goodsId +
-                ", status=" + status +
-                ", orderId=" + orderId +
-                "}";
+    public List getPics() {
+        if (ValidatorUtils.notEmpty(name)){
+            this.pics = Arrays.asList(name.split(","));
+        }
+        return pics;
+    }
+
+    public void setPics(List pics) {
+        if (ValidatorUtils.notEmpty(name)){
+            this.pics = Arrays.asList(name.split(","));
+        }
     }
 }

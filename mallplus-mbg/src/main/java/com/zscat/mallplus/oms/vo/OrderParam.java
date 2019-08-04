@@ -10,11 +10,13 @@ import lombok.Data;
 public class OrderParam {
     String page;
     String formId;
+    private Integer total;
     String platform = "2";
     //收货地址id
     private Long addressId;
     //优惠券id
     private Long couponId;
+    private Long memberId;
     //使用的积分数
     private Integer useIntegration;
     //支付方式
@@ -24,6 +26,12 @@ public class OrderParam {
     private String cartId;
     private String cartIds;
     private String type; // 1 商品详情 2 勾选购物车 3全部购物车的商品
+
+    private Long skuId;
+    private Long goodsId;
+    private Long groupId;
+    // 1 发起拼团 2 参与拼团
+    private Integer groupType;
 
 
 }

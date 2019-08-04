@@ -34,7 +34,7 @@ public interface IOmsCartItemService extends IService<OmsCartItem> {
     /**
      * 获取包含促销活动信息的购物车列表
      */
-    List<CartPromotionItem> listPromotion(Long memberId, List<Long> ids);
+    List<OmsCartItem> listPromotion(Long memberId, List<Long> ids);
 
     /**
      * 修改某个购物车商品的数量
@@ -62,7 +62,7 @@ public interface IOmsCartItemService extends IService<OmsCartItem> {
      */
     int clear(Long memberId);
 
-    List<CartPromotionItem> calcCartPromotion(List<OmsCartItem> cartItemList);
+    List<OmsCartItem> calcCartPromotion(List<OmsCartItem> cartItemList);
 
     OmsCartItem addCart(OmsCartItem cartItem);
 }

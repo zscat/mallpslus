@@ -100,25 +100,7 @@ public class TokenInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        long startTime, endTime;
-        Map<String, String[]> params = new HashMap<String, String[]>(request.getParameterMap());
-
-        StringBuffer sbParams = new StringBuffer();
-        sbParams.append("?");
-
-        for (String key : params.keySet()) {
-            if (null == key || null == params.get(key) || null == params.get(key)[0]) {
-                continue;
-            }
-            sbParams.append(key).append("=").append(params.get(key)[0]).append("&");
-        }
-
-        if (sbParams.length() > 1) {
-            sbParams = sbParams.delete(sbParams.length() - 1, sbParams.length());
-        }
-
         String fullUrl = ((HttpServletRequest) request).getRequestURL().toString();
-        String token = getToken((HttpServletRequest) request);
         String requestType = ((HttpServletRequest) request).getMethod();
 
         String uri = request.getRequestURI();
@@ -137,10 +119,10 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             authHeader = request.getParameter(LOGIN_TOKEN_KEY);
         }
-//前置条件：token为空情况处理
+        //前置条件：token为空情况处理
         if (StringUtils.isBlank(authHeader) || "undefined".equals(authHeader.toLowerCase())) {
             log.info(formMapKey(null, "token is null url=" + fullUrl, requestType,
-                    IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), "null")
+                    IpAddressUtil.getIpAddr((HttpServletRequest) request), null, "null")
                     + ",\"cost\":\"" + 0 + "ms\"");
             throw new ApiMallPlusException("请先登录", 401);
         }
@@ -151,19 +133,12 @@ public class TokenInterceptor implements HandlerInterceptor {
             LOGGER.info("checking username:{}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                log.info(formMapKey(username, fullUrl, requestType,
-                        IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
-                        + ",\"cost\":\"" + 0 + "ms\"");
                 if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     LOGGER.info("authenticated user:{}", username);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            } else {
-                log.info(formMapKey("wu", fullUrl, requestType,
-                        IpAddressUtil.getIpAddr((HttpServletRequest) request), sbParams.toString(), token)
-                        + ",\"cost\":\"" + 0 + "ms\"");
             }
         } else {
             throw new ApiMallPlusException("请先登录", 401);

@@ -88,15 +88,5 @@ public class UmsMemberCouponController {
     }
 
 
-    @ApiOperation("获取登录会员购物车的相关优惠券")
-    @ApiImplicitParam(name = "type", value = "使用可用:0->不可用；1->可用",
-            defaultValue = "1", allowableValues = "0,1", paramType = "query", dataType = "integer")
-    @RequestMapping(value = "/list/cart/{type}", method = RequestMethod.GET)
-    @ResponseBody
-    public Object listCart(@PathVariable Integer type) {
-        List<CartPromotionItem> cartPromotionItemList = cartItemService.listPromotion(UserUtils.getCurrentMember().getId(), null);
-        List<SmsCouponHistoryDetail> couponHistoryList = couponService.listCart(cartPromotionItemList, type);
-        return new CommonResult().success(couponHistoryList);
-    }
 
 }

@@ -65,4 +65,13 @@ public interface IOmsOrderService extends IService<OmsOrder> {
     int payOrder(TbThanks tbThanks);
 
     Object addCart(CartParam cartParam);
+
+    Object addGroup(OrderParam orderParam);
+
+    Object acceptGroup(OrderParam orderParam);
+
+    Object jifenPay(OrderParam payParam);
+
+    boolean closeOrder(OmsOrder newE);
+    void releaseStock(OmsOrder newE);
 }

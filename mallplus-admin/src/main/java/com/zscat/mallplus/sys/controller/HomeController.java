@@ -2,6 +2,8 @@ package com.zscat.mallplus.sys.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.zscat.mallplus.ExportGoods;
+import com.zscat.mallplus.ExportUser;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.bo.HomeOrderData;
 import com.zscat.mallplus.oms.entity.OmsOrder;
@@ -11,20 +13,19 @@ import com.zscat.mallplus.pms.service.IPmsProductService;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.DateUtils;
+import com.zscat.mallplus.util.EasyPoiUtils;
 import com.zscat.mallplus.utils.CommonResult;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import com.zscat.mallplus.vo.OrderStatusCount;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Auther: shenzhuan
@@ -197,4 +198,77 @@ public class HomeController extends BaseController {
         map.put("allCount", memberList.size());
         return new CommonResult().success(map);
     }
+
+
+    /**
+     * 导出：http://localhost:8080/home/export/users
+     导入：http://localhost:8080/demo/import/users (用postman或者curl测试吧)
+     http://localhost:8080/home/import/goods
+     * @param response
+     */
+    @RequestMapping(value = "/export/users", method = RequestMethod.GET)
+    public void exportUsers(HttpServletResponse response) {
+        List<ExportUser> userList = getUserList();
+        EasyPoiUtils.exportExcel(getUserList(), "用户列表", "用户报表", ExportUser.class, "用户明细报表.xls", response);
+    }
+    @RequestMapping("/import/users")
+    @ResponseBody
+    public List<ExportUser> importUsers(@RequestParam MultipartFile file) {
+        List<ExportUser> d = EasyPoiUtils.importExcel(file, ExportUser.class);
+        return EasyPoiUtils.importExcel(file, ExportUser.class);
+    }
+    @RequestMapping("/import/goods")
+    @ResponseBody
+    public void importgoods(@RequestParam MultipartFile file) {
+        List<ExportGoods> list = EasyPoiUtils.importExcel(file, ExportGoods.class);
+        for (ExportGoods gg : list){
+            createG(gg);
+        }
+    }
+    void createG(ExportGoods gg){
+        PmsProduct g = new PmsProduct();
+        g.setName(gg.getUsername());
+        g.setSubTitle(gg.getUsername());
+        g.setDescription(gg.getDetail1());
+        g.setDetailHtml(gg.getDetail());
+        g.setDetailMobileHtml(gg.getDetail());
+        g.setDetailTitle(gg.getUsername());
+        g.setDetailDesc(gg.getUsername());
+
+        g.setPic(gg.getImg());
+        g.setAlbumPics(gg.getImg());
+        if (ValidatorUtils.notEmpty(gg.getPrice())){
+            g.setPrice(new BigDecimal(gg.getPrice().substring(1)));
+        }
+        if (ValidatorUtils.notEmpty(gg.getOriginprice())){
+            g.setOriginalPrice(new BigDecimal(gg.getOriginprice().substring(1)));
+        }
+
+        g.setSale(0);
+        g.setStock(0);
+        g.setLowStock(0);
+        g.setGiftPoint(0);
+        g.setGiftGrowth(0);
+        g.setPromotionType(0);
+        g.setVerifyStatus(1);
+        g.setProductSn("X"+System.currentTimeMillis());
+        g.setQsType(1);
+        g.setNewStatus(1);
+        g.setCreateTime(new Date());
+
+        g.setBrandId(64L);
+        g.setBrandName("红蜻蜓");
+        g.setProductCategoryId(61L);
+        g.setProductCategoryName("品牌男鞋");
+        g.setProductAttributeCategoryId(11L);
+        productService.save(g);
+    }
+    private List<ExportUser> getUserList() {
+        List<ExportUser> userList = new ArrayList<>();
+        userList.add(new ExportUser("tom", new Date()));
+        userList.add(new ExportUser("jack", new Date()));
+        userList.add(new ExportUser("123", new Date()));
+        return userList;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.zscat.mallplus.sms.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zscat.mallplus.oms.entity.OmsCartItem;
 import com.zscat.mallplus.oms.vo.CartPromotionItem;
 import com.zscat.mallplus.sms.entity.SmsCoupon;
 import com.zscat.mallplus.sms.entity.SmsCouponHistory;
@@ -36,7 +37,7 @@ public interface ISmsCouponService extends IService<SmsCoupon> {
     /**
      * 根据购物车信息获取可用优惠券
      */
-    List<SmsCouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type);
+    List<SmsCouponHistoryDetail> listCart(List<OmsCartItem> cartItemList, Integer type);
 
 
     List<SmsCoupon> selectNotRecive(Long memberId);

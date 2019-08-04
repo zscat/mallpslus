@@ -30,7 +30,7 @@ public class PmsFavorite extends BaseEntity implements Serializable {
     private Date addTime;
 
     /**
-     * 1 商品 2 文章 3 店铺
+     * 1 商品 2 文章 3 店铺 4 及赠品
      */
     private Integer type;
 

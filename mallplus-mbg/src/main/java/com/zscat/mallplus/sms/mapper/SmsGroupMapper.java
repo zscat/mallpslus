@@ -12,5 +12,5 @@ import com.zscat.mallplus.sms.entity.SmsGroup;
  * @since 2019-04-19
  */
 public interface SmsGroupMapper extends BaseMapper<SmsGroup> {
-
+    SmsGroup getByGoodsId(Long goodsId);
 }
