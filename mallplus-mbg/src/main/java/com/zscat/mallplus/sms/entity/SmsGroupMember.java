@@ -32,7 +32,7 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
     private Long groupId;
 
     @TableField("member_id")
-    private Long memberId;
+    private String memberId;
 
     @TableField("create_time")
     private Date createTime;
@@ -80,11 +80,11 @@ public class SmsGroupMember extends BaseEntity implements Serializable {
         this.exipreTime = exipreTime;
     }
 
-    public Long getMemberId() {
+    public String getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Long memberId) {
+    public void setMemberId(String memberId) {
         this.memberId = memberId;
     }
 

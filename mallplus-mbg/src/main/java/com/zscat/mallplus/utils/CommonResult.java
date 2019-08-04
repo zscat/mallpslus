@@ -66,6 +66,7 @@ public class CommonResult {
     public CommonResult failed(String msg) {
         this.code = FAILED;
         this.msg = msg;
+        this.data = msg;
         return this;
     }
 

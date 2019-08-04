@@ -66,7 +66,7 @@ public interface IOmsOrderService extends IService<OmsOrder> {
 
     Object addCart(CartParam cartParam);
 
-    Object addGroup(OrderParam orderParam);
+    ConfirmOrderResult addGroup(OrderParam orderParam);
 
     Object acceptGroup(OrderParam orderParam);
 

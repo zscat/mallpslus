@@ -32,6 +32,7 @@ public class OrderParam {
     private Long groupId;
     // 1 发起拼团 2 参与拼团
     private Integer groupType;
+    private Long mgId =0l;
 
 
 }

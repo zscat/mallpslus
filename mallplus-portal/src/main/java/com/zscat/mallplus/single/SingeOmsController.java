@@ -145,7 +145,7 @@ public class SingeOmsController extends ApiBaseAction {
     @ResponseBody
     public Object addGroup(OrderParam orderParam) {
         try {
-            return orderService.addGroup(orderParam);
+            return new CommonResult().success(orderService.addGroup(orderParam));
         } catch (ApiMallPlusException e) {
             return new CommonResult().failed(e.getMessage());
         } catch (Exception e) {
@@ -154,7 +154,7 @@ public class SingeOmsController extends ApiBaseAction {
         return null;
     }
 
-    @ApiOperation("参与拼团")
+    @ApiOperation("提交拼团")
     @RequestMapping(value = "/acceptGroup")
     @ResponseBody
     public Object acceptGroup(OrderParam orderParam) {
