@@ -528,7 +528,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         //0->未确认；1->已确认
         order.setConfirmStatus(0);
         order.setDeleteStatus(0);
-        order.setMemberId(currentMember.getId());
+        order.setMemberId(orderParam.getMemberId());
         //生成订单号
         order.setOrderSn(generateOrderSn(order));
         return order;
