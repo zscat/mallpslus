@@ -75,6 +75,7 @@ public class SysUser extends BaseEntity implements Serializable {
     @TableField("supply_id")
     private Long supplyId;
 
+
     //角色
     @TableField(exist = false)
     private String roleIds;

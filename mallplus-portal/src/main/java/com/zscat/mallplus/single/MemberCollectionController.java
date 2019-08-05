@@ -27,7 +27,7 @@ public class MemberCollectionController {
     @Autowired
     private IPmsFavoriteService memberCollectionService;
 
-    @ApiOperation("添加商品收藏")
+    @ApiOperation("添加收藏 type 1 商品 2 文章")
     @ResponseBody
     @RequestMapping("favoriteSave")
     public Object favoriteSave(PmsFavorite productCollection) {

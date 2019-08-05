@@ -128,6 +128,21 @@ public class SingePmsController extends ApiBaseAction {
                 map.put("favorite", false);
             }
         }
+        //记录浏览量到redis,然后定时更新到数据库
+        String key=Rediskey.GOODS_VIEWCOUNT_CODE+id;
+        //找到redis中该篇文章的点赞数，如果不存在则向redis中添加一条
+        Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.GOODS_VIEWCOUNT_KEY);
+        Integer viewCount=0;
+        if(!viewCountItem.isEmpty()){
+            if(viewCountItem.containsKey(key)){
+                viewCount=(Integer)viewCountItem.get(key);
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,viewCount+1);
+            }else {
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1);
+            }
+        }else{
+            redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1);
+        }
 
         map.put("goods", goods);
         return new CommonResult().success(map);

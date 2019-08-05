@@ -2,14 +2,19 @@ package com.zscat.mallplus.config;
 
 
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
+import com.baomidou.mybatisplus.core.parser.ISqlParserFilter;
+
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.google.common.collect.Lists;
+import com.zscat.mallplus.utils.PluginUtils;
 import com.zscat.mallplus.vo.ApiContext;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +29,7 @@ import java.util.List;
 @Configuration
 @MapperScan("com.zscat.mallplus.*.mapper*")
 public class MybatisPlusConfig {
-    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("sys_admin_log", "sys_web_log", "sys_permission_category", "columns", "tables", "information_schema.columns", "information_schema.tables", "sys_user", "sys_store", "sys_permission");
+    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("sys_admin_log", "sys_web_log", "sys_permission_category", "columns", "tables", "information_schema.columns", "information_schema.tables",  "sys_store", "sys_permission");
     @Autowired
     private ApiContext apiContext;
 
@@ -52,6 +57,7 @@ public class MybatisPlusConfig {
                 if (null == currentProviderId) {
                     currentProviderId = 5L;
                     System.out.println("#1129 getCurrentProviderId error.");
+                    throw new RuntimeException("#1129 getCurrentProviderId error.");
                 }
                 return new LongValue(currentProviderId);
             }
@@ -70,17 +76,17 @@ public class MybatisPlusConfig {
 
         sqlParserList.add(tenantSqlParser);
         paginationInterceptor.setSqlParserList(sqlParserList);
-//        paginationInterceptor.setSqlParserFilter(new ISqlParserFilter() {
-//            @Override
-//            public boolean doFilter(MetaObject metaObject) {
-//                MappedStatement ms = PluginUtils.getMappedStatement(metaObject);
-//                // 过滤自定义查询此时无租户信息约束【 麻花藤 】出现
-//                if ("com.baomidou.springboot.mapper.UserMapper.selectListBySQL".equals(ms.getId())) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        paginationInterceptor.setSqlParserFilter(new ISqlParserFilter() {
+            @Override
+           public boolean doFilter(MetaObject metaObject) {
+               MappedStatement ms = PluginUtils.getMappedStatement(metaObject);
+                // 过滤自定义查询此时无租户信息约束【 麻花藤 】出现
+                if ("com.zscat.mallplus.sys.mapper.SysUserMapper.selectByUserName".equals(ms.getId())) {
+                    return true;
+               }
+                return false;
+            }
+        });
         return paginationInterceptor;
     }
 

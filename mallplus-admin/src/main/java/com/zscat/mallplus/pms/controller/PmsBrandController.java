@@ -36,7 +36,6 @@ public class PmsBrandController {
     @SysLog(MODULE = "pms", REMARK = "根据条件查询所有品牌表列表")
     @ApiOperation("根据条件查询所有品牌表列表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('pms:PmsBrand:read')")
     public Object getPmsBrandByPage(PmsBrand entity,
                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                     @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize

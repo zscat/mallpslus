@@ -7,6 +7,12 @@ package com.zscat.mallplus.vo;
  */
 public class Rediskey {
 
+    public static final String ARTICLE_VIEWCOUNT_CODE = "ARTICLE_VIEWCOUNT_CODE";
+    public static final String ARTICLE_VIEWCOUNT_KEY = "ARTICLE_VIEWCOUNT_KEY";
+
+    public static final String GOODS_VIEWCOUNT_CODE = "GOODS_VIEWCOUNT_CODE";
+    public static final String GOODS_VIEWCOUNT_KEY = "GOODS_VIEWCOUNT_KEY";
+
     public static String appletBannerKey = "appletBannerKey";
     public static String appletCategoryKey = "appletCategoryKey";
     public static String appletNavIconKey = "appletNavIconKey";
@@ -36,5 +42,29 @@ public class Rediskey {
     public static String GOODSDETAIL = "GOODSDETAIL:%s";
 
     public static String GOODSHISTORY = "GOODSHISTORY:%s";
+
+    private static String SPLIT = ":";
+    private static String BIZ_LIKE = "LIKE";
+    private static String BIZ_DISLIKE = "DISLIKE";
+
+    /**
+     * 产生key:如在newsId为2上的咨询点赞后会产生key: LIKE:ENTITY_NEWS:2
+     * @param entityId
+     * @param entityType
+     * @return
+     */
+    public static String getLikeKey(int entityId, int entityType){
+        return BIZ_LIKE + SPLIT + String.valueOf(entityType) + SPLIT + String.valueOf(entityId);
+    }
+    /**
+     * 取消赞:如在newsId为2上的资讯取消点赞后会产生key: DISLIKE:ENTITY_NEWS:2
+     * @param entityId
+     * @param entityType
+     * @return
+     */
+    public static String getDisLikeKey(int entityId, int entityType){
+        return BIZ_DISLIKE + SPLIT + String.valueOf(entityType) + SPLIT + String.valueOf(entityId);
+    }
+
 
 }

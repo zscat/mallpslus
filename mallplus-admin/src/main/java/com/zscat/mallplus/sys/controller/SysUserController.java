@@ -114,6 +114,10 @@ public class SysUserController extends ApiController {
             if (ValidatorUtils.empty(id)) {
                 return new CommonResult().paramFailed("用户id");
             }
+            SysUser user= sysUserService.getById(id);
+            if (user.getSupplyId()!=null && user.getSupplyId()==1){
+                return new CommonResult().paramFailed("管理员账号不能删除");
+            }
             if (sysUserService.removeById(id)) {
                 return new CommonResult().success();
             }
@@ -133,6 +137,7 @@ public class SysUserController extends ApiController {
                 return new CommonResult().paramFailed("用户id");
             }
             SysUser coupon = sysUserService.getById(id);
+            coupon.setPassword(null);
             return new CommonResult().success(coupon);
         } catch (Exception e) {
             log.error("查询用户明细：%s", e.getMessage(), e);

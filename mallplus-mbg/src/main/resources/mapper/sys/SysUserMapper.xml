@@ -22,4 +22,8 @@
         id, username, password, icon, email, nick_name, note, create_time, login_time, status, supply_id
     </sql>
 
+    <select id="selectByUserName" resultType="com.zscat.mallplus.sys.entity.SysUserVo">
+        select * from sys_user
+        where username = #{username}
+    </select>
 </mapper>

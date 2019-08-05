@@ -23,9 +23,11 @@ import com.zscat.mallplus.ums.entity.UmsRewardLog;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.mapper.UmsRewardLogMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
+import com.zscat.mallplus.ums.service.impl.RedisUtil;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
+import com.zscat.mallplus.vo.Rediskey;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @Auther: shenzhuan
@@ -68,6 +71,8 @@ public class SingeCmsController extends ApiBaseAction {
     private UmsMemberMapper memberMapper;
     @Resource
     private UmsRewardLogMapper rewardLogMapper;
+    @Resource
+    private RedisUtil redisUtil;
     @IgnoreAuth
     @SysLog(MODULE = "cms", REMARK = "查询文章列表")
     @ApiOperation(value = "查询文章列表")
@@ -131,6 +136,22 @@ public class SingeCmsController extends ApiBaseAction {
     @ApiOperation(value = "查询文章详情信息")
     public Object subjectDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         CmsSubject productResult = subjectService.getById(id);
+
+        //记录浏览量到redis,然后定时更新到数据库
+        String key= Rediskey.ARTICLE_VIEWCOUNT_CODE+id;
+        //找到redis中该篇文章的点赞数，如果不存在则向redis中添加一条
+        Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.ARTICLE_VIEWCOUNT_KEY);
+        Integer viewCount=0;
+        if(!viewCountItem.isEmpty()){
+            if(viewCountItem.containsKey(key)){
+                viewCount=(Integer)viewCountItem.get(key);
+                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,viewCount+1);
+            }else {
+                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1);
+            }
+        }else{
+            redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1);
+        }
         return new CommonResult().success(productResult);
     }
     @SysLog(MODULE = "cms", REMARK = "创建文章")
@@ -168,6 +189,25 @@ public class SingeCmsController extends ApiBaseAction {
         }
         return commonResult;
     }
+
+    @SysLog(MODULE = "cms", REMARK = "创建文章")
+    @ApiOperation(value = "添加评论")
+    @PostMapping(value = "/addSubjectCom")
+    public Object addSubjectCom(CmsSubjectComment subject, BindingResult result) {
+        CommonResult commonResult;
+        UmsMember member = UserUtils.getCurrentMember();
+        subject.setCreateTime(new Date());
+        subject.setMemberIcon(member.getIcon());
+        subject.setMemberNickName(member.getNickname());
+        boolean count = commentService.save(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
     @ApiOperation(value = "打赏文章")
     @PostMapping(value = "/reward")
     @SysLog(MODULE = "ums", REMARK = "打赏文章")
