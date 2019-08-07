@@ -60,7 +60,7 @@ public class OrderTimeOutCancelTask {
                     String[]  kv=articleKey.split("_");
                     Long articleId=Long.parseLong(kv[1]);
                     Integer viewCount=Integer.parseInt(viewCountItem.get(articleKey).toString());
-                    CmsSubject subject = new CmsSubject();
+                    CmsSubject subject = subjectService.getById(articleId);
                     subject.setId(articleId);
                     subject.setReadCount(subject.getReadCount()+viewCount);
                     logger.info("SyncNodesAndShips"+articleId+","+viewCount);
@@ -78,7 +78,7 @@ public class OrderTimeOutCancelTask {
     /**
      * 商品浏览量
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")//每1分钟
+    @Scheduled(cron = "0 0/10 * * * ? ")//每1分钟
     public void SyncGoodsView() {
         logger.info("开始保存点赞数 、浏览数SyncGoodsView");
         try {
@@ -92,7 +92,7 @@ public class OrderTimeOutCancelTask {
                     String[]  kv=articleKey.split("_");
                     Long articleId=Long.parseLong(kv[1]);
                     Integer viewCount=Integer.parseInt(viewCountItem.get(articleKey).toString());
-                    PmsProduct subject = new PmsProduct();
+                    PmsProduct subject = productMapper.selectById(articleId);
                     subject.setId(articleId);
                     subject.setHit(subject.getHit()+viewCount);
                     logger.info("SyncGoodsView"+articleId+","+viewCount);

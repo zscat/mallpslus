@@ -121,7 +121,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 + ",\"cost\":\"" + (endTime - startTime) + "ms\"");
         int startIntercept = fullUrl.replace("//", "a").indexOf("/") + 1;
 
-        String interfaceName = fullUrl.substring(startIntercept, fullUrl.length() > 25 ? 25 : fullUrl.length());
+        String interfaceName = fullUrl.substring(startIntercept, fullUrl.length());
         sysLog.setCreateTime(new Date());
         sysLog.setIp(IpAddressUtil.getIpAddr(request));
         sysLog.setMethod(interfaceName);
@@ -132,7 +132,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         sysLog.setTimeMin((endTime - startTime));
         if (!"OPTIONS".equals(requestType) && !interfaceName.contains("webjars")
                 && !interfaceName.contains("api-docs")) {
-            fopSystemOperationLogService.insert(sysLog);
+        //    fopSystemOperationLogService.insert(sysLog);
         }
     }
 
