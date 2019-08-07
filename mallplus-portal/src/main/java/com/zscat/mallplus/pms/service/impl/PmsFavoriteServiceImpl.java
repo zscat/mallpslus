@@ -48,14 +48,14 @@ public class PmsFavoriteServiceImpl extends ServiceImpl<PmsFavoriteMapper, PmsFa
             productCollection.setAddTime(new Date());
             productCollectionRepository.insert(productCollection);
             if (productCollection.getType()==1){
-                PmsProduct subject = new PmsProduct();
+                PmsProduct subject = productMapper.selectById(productCollection.getObjId());
                 subject.setId(productCollection.getObjId());
                 subject.setGiftGrowth(subject.getGiftGrowth()+1);
                 //更新到数据库
                 productMapper.updateById(subject);
             }
             if (productCollection.getType()==2){
-                CmsSubject subject = new CmsSubject();
+                CmsSubject subject = subjectService.getById(productCollection.getObjId());
                 subject.setId(productCollection.getObjId());
                 subject.setForwardCount(subject.getForwardCount()+1);
                 //更新到数据库
@@ -65,14 +65,14 @@ public class PmsFavoriteServiceImpl extends ServiceImpl<PmsFavoriteMapper, PmsFa
             count = 1;
         }else {
             if (productCollection.getType()==1){
-                PmsProduct subject = new PmsProduct();
+                PmsProduct subject = productMapper.selectById(productCollection.getObjId());
                 subject.setId(productCollection.getObjId());
                 subject.setGiftGrowth(subject.getGiftGrowth()-1);
                 //更新到数据库
                 productMapper.updateById(subject);
             }
             if (productCollection.getType()==2){
-                CmsSubject subject = new CmsSubject();
+                CmsSubject subject = subjectService.getById(productCollection.getObjId());
                 subject.setId(productCollection.getObjId());
                 subject.setForwardCount(subject.getForwardCount()-1);
                 //更新到数据库
