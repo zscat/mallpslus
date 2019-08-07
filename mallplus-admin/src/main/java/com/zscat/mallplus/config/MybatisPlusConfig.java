@@ -4,6 +4,7 @@ package com.zscat.mallplus.config;
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
 import com.baomidou.mybatisplus.core.parser.ISqlParserFilter;
 
+import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
@@ -79,7 +80,7 @@ public class MybatisPlusConfig {
         paginationInterceptor.setSqlParserFilter(new ISqlParserFilter() {
             @Override
            public boolean doFilter(MetaObject metaObject) {
-               MappedStatement ms = PluginUtils.getMappedStatement(metaObject);
+               MappedStatement ms = SqlParserHelper.getMappedStatement(metaObject);
                 // 过滤自定义查询此时无租户信息约束【 麻花藤 】出现
                 if ("com.zscat.mallplus.sys.mapper.SysUserMapper.selectByUserName".equals(ms.getId())) {
                     return true;

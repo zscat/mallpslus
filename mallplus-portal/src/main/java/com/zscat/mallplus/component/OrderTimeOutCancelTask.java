@@ -48,7 +48,7 @@ public class OrderTimeOutCancelTask {
      */
     @Scheduled(cron = "0 0/10 * * * ? ")//每1分钟
     public void SyncNodesAndShips() {
-        logger.info("开始保存点赞数 、浏览数");
+        logger.info("开始保存点赞数 、浏览数SyncNodesAndShips");
         try {
             //先获取这段时间的浏览数
             Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.ARTICLE_VIEWCOUNT_KEY);
@@ -59,10 +59,11 @@ public class OrderTimeOutCancelTask {
                     String articleKey=item.toString();//viewcount_1
                     String[]  kv=articleKey.split("_");
                     Long articleId=Long.parseLong(kv[1]);
-                    Integer viewCount=(Integer) viewCountItem.get(articleKey);
+                    Integer viewCount=Integer.parseInt(viewCountItem.get(articleKey).toString());
                     CmsSubject subject = new CmsSubject();
                     subject.setId(articleId);
-                    subject.setReadCount(viewCount);
+                    subject.setReadCount(subject.getReadCount()+viewCount);
+                    logger.info("SyncNodesAndShips"+articleId+","+viewCount);
                     //更新到数据库
                     subjectService.updateById(subject);
                 }
@@ -75,25 +76,26 @@ public class OrderTimeOutCancelTask {
     }
 
     /**
-     * 文章浏览量
+     * 商品浏览量
      */
-    @Scheduled(cron = "0 0/10 * * * ? ")//每1分钟
+    @Scheduled(cron = "0 0/1 * * * ? ")//每1分钟
     public void SyncGoodsView() {
-        logger.info("开始保存点赞数 、浏览数");
+        logger.info("开始保存点赞数 、浏览数SyncGoodsView");
         try {
             //先获取这段时间的浏览数
-            Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.GOODS_VIEWCOUNT_CODE);
+            Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.GOODS_VIEWCOUNT_KEY);
             //然后删除redis里这段时间的浏览数
-            redisUtil.delete(Rediskey.ARTICLE_VIEWCOUNT_KEY);
+            redisUtil.delete(Rediskey.GOODS_VIEWCOUNT_KEY);
             if(!viewCountItem.isEmpty()){
                 for(Object item :viewCountItem.keySet()){
                     String articleKey=item.toString();//viewcount_1
                     String[]  kv=articleKey.split("_");
                     Long articleId=Long.parseLong(kv[1]);
-                    Integer viewCount=(Integer) viewCountItem.get(articleKey);
+                    Integer viewCount=Integer.parseInt(viewCountItem.get(articleKey).toString());
                     PmsProduct subject = new PmsProduct();
                     subject.setId(articleId);
-                    subject.setHit(viewCount);
+                    subject.setHit(subject.getHit()+viewCount);
+                    logger.info("SyncGoodsView"+articleId+","+viewCount);
                     //更新到数据库
                     productMapper.updateById(subject);
                 }

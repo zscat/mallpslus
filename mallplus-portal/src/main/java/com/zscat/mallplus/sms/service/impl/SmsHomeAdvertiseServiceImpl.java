@@ -1,9 +1,11 @@
 package com.zscat.mallplus.sms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zscat.mallplus.cms.entity.CmsSubject;
+import com.zscat.mallplus.cms.entity.CmsSubjectComment;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
@@ -16,11 +18,9 @@ import com.zscat.mallplus.pms.service.IPmsBrandService;
 import com.zscat.mallplus.pms.service.IPmsProductAttributeCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductCategoryService;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.pms.vo.SamplePmsProduct;
 import com.zscat.mallplus.sms.entity.*;
-import com.zscat.mallplus.sms.mapper.SmsFlashPromotionSessionMapper;
-import com.zscat.mallplus.sms.mapper.SmsHomeAdvertiseMapper;
-import com.zscat.mallplus.sms.mapper.SmsHomeNewProductMapper;
-import com.zscat.mallplus.sms.mapper.SmsHomeRecommendProductMapper;
+import com.zscat.mallplus.sms.mapper.*;
 import com.zscat.mallplus.sms.service.*;
 import com.zscat.mallplus.sms.vo.HomeFlashPromotion;
 import com.zscat.mallplus.sms.vo.HomeProductAttr;
@@ -28,6 +28,7 @@ import com.zscat.mallplus.sms.vo.SmsFlashSessionInfo;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,7 +92,8 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     private ICmsSubjectCommentService commentService;
     @Resource
     private IPmsBrandService brandService;
-
+    @Resource
+    private SmsGroupMemberMapper groupMemberMapper;
     @Override
     public HomeContentResult singelContent() {
         HomeContentResult result = new HomeContentResult();
@@ -102,11 +104,17 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
         //获取秒杀信息
         result.setHomeFlashPromotion(getHomeFlashPromotion());
         //获取新品推荐
-        result.setNewProductList(this.getNewProductList(0, 4));
+        result.setNewProductList(sampleGoodsList(this.getNewProductList(0, 4)));
         //获取人气推荐
-        result.setHotProductList(this.getHotProductList(0, 4));
+        result.setHotProductList(sampleGoodsList(this.getHotProductList(0, 4)));
         //获取推荐专题
         result.setSubjectList(this.getRecommendSubjectList(0, 4));
+        List<PmsProductAttributeCategory> productAttributeCategoryList = getPmsProductAttributeCategories();
+        result.setCat_list(productAttributeCategoryList);
+        return result;
+    }
+    @Override
+    public List<PmsProductAttributeCategory> getPmsProductAttributeCategories() {
         List<PmsProductAttributeCategory> productAttributeCategoryList = productAttributeCategoryService.list(new QueryWrapper<>());
 
         for (PmsProductAttributeCategory gt : productAttributeCategoryList) {
@@ -114,18 +122,16 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
             productQueryParam.setProductAttributeCategoryId(gt.getId());
             productQueryParam.setPublishStatus(1);
             productQueryParam.setVerifyStatus(1);
-            List<PmsProduct> goodsList = pmsProductService.list(new QueryWrapper<>(productQueryParam));
-            /*if (goodsList != null && goodsList.size() > 0) {
-                PmsProduct pmsProduct = goodsList.get(0);
-                PmsProduct product = new PmsProduct();
-                BeanUtils.copyProperties(pmsProduct, product);
-                //  product.setType(1);
-                goodsList.add(product);
-            }*/
-            gt.setGoodsList(goodsList);
+            IPage<PmsProduct> goodsList = pmsProductService.page(new Page<PmsProduct>(0, 8),new QueryWrapper<>(productQueryParam));
+
+            if (goodsList!=null&& goodsList.getRecords()!=null && goodsList.getRecords().size()>0){
+                gt.setGoodsList(sampleGoodsList(goodsList.getRecords()));
+            }else{
+                gt.setGoodsList(new ArrayList<>());
+            }
+
         }
-        result.setCat_list(productAttributeCategoryList);
-        return result;
+        return productAttributeCategoryList;
     }
 
     private HomeFlashPromotion getHomeFlashPromotion() {
@@ -199,6 +205,15 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
                 .map(SmsHomeNewProduct::getProductId)
                 .collect(Collectors.toList());
         return (List<PmsProduct>) pmsProductService.listByIds(ids);*/
+    }
+    public List<SamplePmsProduct> sampleGoodsList(List<PmsProduct> list){
+        List<SamplePmsProduct> products= new ArrayList<>();
+        for (PmsProduct product:list){
+            SamplePmsProduct en =new SamplePmsProduct();
+            BeanUtils.copyProperties(product,en);
+            products.add(en);
+        }
+        return products;
     }
     @Override
     public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {

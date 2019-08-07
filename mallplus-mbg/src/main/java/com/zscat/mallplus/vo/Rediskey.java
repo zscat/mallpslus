@@ -7,10 +7,13 @@ package com.zscat.mallplus.vo;
  */
 public class Rediskey {
 
-    public static final String ARTICLE_VIEWCOUNT_CODE = "ARTICLE_VIEWCOUNT_CODE";
+    public static final String ARTICLE_VIEWCOUNT_CODE = "ARTICLEVIEWCOUNTCODE_";
     public static final String ARTICLE_VIEWCOUNT_KEY = "ARTICLE_VIEWCOUNT_KEY";
 
-    public static final String GOODS_VIEWCOUNT_CODE = "GOODS_VIEWCOUNT_CODE";
+    public static final String STORE_VIEWCOUNT_CODE = "STOREVIEWCOUNTCODE_";
+    public static final String STORE_VIEWCOUNT_KEY = "STORE_VIEWCOUNT_KEY";
+
+    public static final String GOODS_VIEWCOUNT_CODE = "GOODSVIEWCOUNTCODE_";
     public static final String GOODS_VIEWCOUNT_KEY = "GOODS_VIEWCOUNT_KEY";
 
     public static String appletBannerKey = "appletBannerKey";

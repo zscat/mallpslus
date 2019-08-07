@@ -1,11 +1,15 @@
 package com.zscat.mallplus.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.pms.vo.SamplePmsProduct;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -15,6 +19,7 @@ import java.io.Serializable;
  * @author zscat
  * @since 2019-04-14
  */
+@Data
 @TableName("sys_school")
 public class SysSchool extends BaseEntity implements Serializable {
 
@@ -58,6 +63,7 @@ public class SysSchool extends BaseEntity implements Serializable {
      */
     private String address;
 
+    private String pic;
     /**
      * 1热门
      */
@@ -74,108 +80,9 @@ public class SysSchool extends BaseEntity implements Serializable {
     private Integer is985;
 
 
-    public Long getId() {
-        return id;
-    }
+    @TableField(exist = false)
+    private List<SamplePmsProduct> goodsList;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getHot() {
-        return hot;
-    }
-
-    public void setHot(Integer hot) {
-        this.hot = hot;
-    }
-
-    public Integer getIs211() {
-        return is211;
-    }
-
-    public void setIs211(Integer is211) {
-        this.is211 = is211;
-    }
-
-    public Integer getIs985() {
-        return is985;
-    }
-
-    public void setIs985(Integer is985) {
-        this.is985 = is985;
-    }
-
-    @Override
-    public String toString() {
-        return "SysSchool{" +
-                ", id=" + id +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", name=" + name +
-                ", province=" + province +
-                ", city=" + city +
-                ", region=" + region +
-                ", address=" + address +
-                ", hot=" + hot +
-                ", is211=" + is211 +
-                ", is985=" + is985 +
-                "}";
-    }
+    @TableField(exist = false)
+    private Integer  goodsCount;
 }

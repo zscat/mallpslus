@@ -14,10 +14,7 @@ import com.zscat.mallplus.pms.mapper.PmsGiftsMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductCategoryMapper;
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
 import com.zscat.mallplus.pms.service.*;
-import com.zscat.mallplus.pms.vo.ConsultTypeCount;
-import com.zscat.mallplus.pms.vo.PmsProductParam;
-import com.zscat.mallplus.pms.vo.ProductTypeVo;
-import com.zscat.mallplus.pms.vo.PromotionProduct;
+import com.zscat.mallplus.pms.vo.*;
 import com.zscat.mallplus.sms.entity.SmsGroup;
 import com.zscat.mallplus.sms.entity.SmsGroupMember;
 import com.zscat.mallplus.sms.entity.SmsHomeBrand;
@@ -30,6 +27,9 @@ import com.zscat.mallplus.ums.entity.UmsMemberLevel;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.ums.service.impl.RedisUtil;
+import com.zscat.mallplus.util.DateUtils;
+import com.zscat.mallplus.util.GoodsUtils;
+import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
@@ -105,20 +105,23 @@ public class SingePmsController extends ApiBaseAction {
     @GetMapping(value = "/goods/detail")
     @ApiOperation(value = "查询商品详情信息")
     public Object queryProductDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        PmsProductParam goods = null;
+        GoodsDetailResult goods = null;
         try {
-          //  goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+            goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id+"")), GoodsDetailResult.class);
             if (ValidatorUtils.empty(goods)){
+                log.info("redis缓存失效："+id);
                 goods = pmsProductService.getGoodsRedisById(id);
             }
         } catch (Exception e) {
+            log.info("redis缓存失效："+id);
             goods = pmsProductService.getGoodsRedisById(id);
         }
         Map<String, Object> map = new HashMap<>();
         UmsMember umsMember = UserUtils.getCurrentMember();
         if (umsMember != null && umsMember.getId() != null) {
+            PmsProduct p = goods.getGoods();
             PmsFavorite query = new PmsFavorite();
-            query.setObjId(goods.getId());
+            query.setObjId(p.getId());
             query.setMemberId(umsMember.getId());
             query.setType(1);
             PmsFavorite findCollection = favoriteService.getOne(new QueryWrapper<>(query));
@@ -135,13 +138,13 @@ public class SingePmsController extends ApiBaseAction {
         Integer viewCount=0;
         if(!viewCountItem.isEmpty()){
             if(viewCountItem.containsKey(key)){
-                viewCount=(Integer)viewCountItem.get(key);
-                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,viewCount+1);
+                viewCount=Integer.parseInt(viewCountItem.get(key).toString())+1;
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,viewCount+"");
             }else {
-                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1);
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1+"");
             }
         }else{
-            redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1);
+            redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1+"");
         }
 
         map.put("goods", goods);
@@ -272,7 +275,25 @@ public class SingePmsController extends ApiBaseAction {
         objectMap.put("count", count);
         return new CommonResult().success(objectMap);
     }
-
+    @SysLog(MODULE = "pms", REMARK = "查询团购商品列表")
+    @IgnoreAuth
+    @ApiOperation(value = "查询团购商品列表")
+    @GetMapping(value = "/groupHotGoods/list")
+    public Object groupHotGoods(PmsProduct product,
+                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+        List<SmsGroup> groupList =  groupService.list(new QueryWrapper<>());
+        List<SmsGroup> result = new ArrayList<>();
+        for (SmsGroup group :groupList){
+            Long nowT = System.currentTimeMillis();
+            Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
+            if (nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
+                group.setGoods(GoodsUtils.sampleGoods(pmsProductService.getById(group.getGoodsId())));
+                result.add(group);
+            }
+        }
+        return new CommonResult().success(result);
+    }
 
     @SysLog(MODULE = "pms", REMARK = "查询团购商品列表")
     @IgnoreAuth
@@ -300,21 +321,43 @@ public class SingePmsController extends ApiBaseAction {
     @GetMapping(value = "/goodsGroup/detail")
     @ApiOperation(value = "查询商品详情信息")
     public Object groupGoodsDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
-        PmsProductParam goods = null;
+        //记录浏览量到redis,然后定时更新到数据库
+        String key=Rediskey.GOODS_VIEWCOUNT_CODE+id;
+        //找到redis中该篇文章的点赞数，如果不存在则向redis中添加一条
+        Map<Object,Object> viewCountItem=redisUtil.hGetAll(Rediskey.GOODS_VIEWCOUNT_KEY);
+        Integer viewCount=0;
+        if(!viewCountItem.isEmpty()){
+            if(viewCountItem.containsKey(key)){
+                viewCount=Integer.parseInt(viewCountItem.get(key).toString())+1;
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,viewCount+"");
+            }else {
+                viewCount=1;
+                redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1+"");
+            }
+        }else{
+            viewCount=1;
+            redisUtil.hPut(Rediskey.GOODS_VIEWCOUNT_KEY,key,1+"");
+        }
+        GoodsDetailResult goods = null;
         try {
-            //  goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id)), PmsProductParam.class);
+              goods = JsonUtils.jsonToPojo(redisService.get(String.format(Rediskey.GOODSDETAIL, id+"")), GoodsDetailResult.class);
             if (ValidatorUtils.empty(goods)){
+                log.info("redis缓存失效："+id);
                 goods = pmsProductService.getGoodsRedisById(id);
             }
         } catch (Exception e) {
+            log.info("redis缓存失效："+id);
             goods = pmsProductService.getGoodsRedisById(id);
+            e.printStackTrace();
         }
         SmsGroup group = groupMapper.getByGoodsId(id);
         Map<String, Object> map = new HashMap<>();
         UmsMember umsMember = UserUtils.getCurrentMember();
         if (umsMember != null && umsMember.getId() != null) {
+            PmsProduct p = goods.getGoods();
+            p.setHit(viewCount);
             PmsFavorite query = new PmsFavorite();
-            query.setObjId(goods.getId());
+            query.setObjId(p.getId());
             query.setMemberId(umsMember.getId());
             query.setType(1);
             PmsFavorite findCollection = favoriteService.getOne(new QueryWrapper<>(query));
@@ -328,6 +371,7 @@ public class SingePmsController extends ApiBaseAction {
             map.put("memberGroupList",groupMemberMapper.selectList(new QueryWrapper<SmsGroupMember>().eq("group_id",group.getId())));
             map.put("group", group);
         }
+
 
         map.put("goods", goods);
         return new CommonResult().success(map);
@@ -390,7 +434,7 @@ public class SingePmsController extends ApiBaseAction {
             productQueryParam.setProductAttributeCategoryId(gt.getId());
             productQueryParam.setPublishStatus(1);
             productQueryParam.setVerifyStatus(1);
-            gt.setGoodsList(pmsProductService.list(new QueryWrapper<>(productQueryParam)));
+            gt.setGoodsList(GoodsUtils.sampleGoodsList(pmsProductService.list(new QueryWrapper<>(productQueryParam))));
         }
         return new CommonResult().success(productAttributeCategoryList);
     }

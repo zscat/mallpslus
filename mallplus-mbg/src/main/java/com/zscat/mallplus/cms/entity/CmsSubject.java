@@ -102,7 +102,7 @@ public class CmsSubject extends BaseEntity implements Serializable {
     private String content;
 
     /**
-     * 转发数
+     * 点赞
      */
     @TableField("forward_count")
     private Integer forwardCount;

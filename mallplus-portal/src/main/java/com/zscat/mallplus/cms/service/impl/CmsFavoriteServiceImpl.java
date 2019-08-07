@@ -1,16 +1,17 @@
-package com.zscat.mallplus.pms.service.impl;
+package com.zscat.mallplus.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zscat.mallplus.cms.entity.CmsFavorite;
 import com.zscat.mallplus.cms.entity.CmsSubject;
+import com.zscat.mallplus.cms.mapper.CmsFavoriteMapper;
+import com.zscat.mallplus.cms.service.ICmsFavoriteService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
-import com.zscat.mallplus.pms.entity.PmsFavorite;
+
 import com.zscat.mallplus.pms.entity.PmsProduct;
-import com.zscat.mallplus.pms.mapper.PmsFavoriteMapper;
+
 import com.zscat.mallplus.pms.mapper.PmsProductMapper;
-import com.zscat.mallplus.pms.service.IPmsFavoriteService;
-import com.zscat.mallplus.sys.entity.SysStore;
-import com.zscat.mallplus.sys.mapper.SysStoreMapper;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,55 +27,52 @@ import java.util.List;
  * @since 2019-06-15
  */
 @Service
-public class PmsFavoriteServiceImpl extends ServiceImpl<PmsFavoriteMapper, PmsFavorite> implements IPmsFavoriteService {
+public class CmsFavoriteServiceImpl extends ServiceImpl<CmsFavoriteMapper, CmsFavorite> implements ICmsFavoriteService {
 
     @Resource
-    private PmsFavoriteMapper productCollectionRepository;
+    private CmsFavoriteMapper productCollectionRepository;
     @Resource
     private PmsProductMapper productMapper;
     @Resource
     private ICmsSubjectService subjectService;
-    @Resource
-    private SysStoreMapper storeMapper;
     @Override
-    public int addProduct(PmsFavorite productCollection) {
+    public int addProduct(CmsFavorite productCollection) {
         int count = 0;
-        PmsFavorite query = new PmsFavorite();
+        CmsFavorite query = new CmsFavorite();
         query.setObjId(productCollection.getObjId());
         query.setMemberId(productCollection.getMemberId());
         query.setType(productCollection.getType());
-        PmsFavorite findCollection = productCollectionRepository.selectOne(new QueryWrapper<>(query));
+        CmsFavorite findCollection = productCollectionRepository.selectOne(new QueryWrapper<>(query));
         if (findCollection == null) {
             productCollection.setAddTime(new Date());
             productCollectionRepository.insert(productCollection);
             if (productCollection.getType()==1){
                 PmsProduct subject = new PmsProduct();
                 subject.setId(productCollection.getObjId());
-                subject.setGiftGrowth(subject.getGiftGrowth()+1);
+                subject.setGiftPoint(subject.getGiftPoint()+1);
                 //更新到数据库
                 productMapper.updateById(subject);
             }
             if (productCollection.getType()==2){
                 CmsSubject subject = new CmsSubject();
                 subject.setId(productCollection.getObjId());
-                subject.setForwardCount(subject.getForwardCount()+1);
+                subject.setCollectCount(subject.getCollectCount()+1);
                 //更新到数据库
                 subjectService.updateById(subject);
             }
-
             count = 1;
         }else {
             if (productCollection.getType()==1){
                 PmsProduct subject = new PmsProduct();
                 subject.setId(productCollection.getObjId());
-                subject.setGiftGrowth(subject.getGiftGrowth()-1);
+                subject.setGiftPoint(subject.getGiftPoint()-1);
                 //更新到数据库
                 productMapper.updateById(subject);
             }
             if (productCollection.getType()==2){
                 CmsSubject subject = new CmsSubject();
                 subject.setId(productCollection.getObjId());
-                subject.setForwardCount(subject.getForwardCount()-1);
+                subject.setCollectCount(subject.getCollectCount()-1);
                 //更新到数据库
                 subjectService.updateById(subject);
             }
@@ -86,11 +84,11 @@ public class PmsFavoriteServiceImpl extends ServiceImpl<PmsFavoriteMapper, PmsFa
 
 
     @Override
-    public List<PmsFavorite> listProduct(Long memberId, int type) {
-        return productCollectionRepository.selectList(new QueryWrapper<PmsFavorite>().eq("member_id",memberId).eq("type",type));
+    public List<CmsFavorite> listProduct(Long memberId, int type) {
+        return productCollectionRepository.selectList(new QueryWrapper<CmsFavorite>().eq("member_id",memberId).eq("type",type));
     }
     @Override
-    public List<PmsFavorite> listCollect(Long memberId) {
-        return productCollectionRepository.selectList(new QueryWrapper<PmsFavorite>().eq("member_id",memberId));
+    public List<CmsFavorite> listCollect(Long memberId) {
+        return productCollectionRepository.selectList(new QueryWrapper<CmsFavorite>().eq("member_id",memberId));
     }
 }

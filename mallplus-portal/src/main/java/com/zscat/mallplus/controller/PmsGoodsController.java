@@ -17,6 +17,7 @@ import com.zscat.mallplus.pms.vo.PmsProductResult;
 import com.zscat.mallplus.sms.service.ISmsHomeAdvertiseService;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.ums.service.RedisService;
+import com.zscat.mallplus.util.GoodsUtils;
 import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.vo.Rediskey;
@@ -99,7 +100,7 @@ public class PmsGoodsController {
 
             productQueryParam.setPublishStatus(1);
             productQueryParam.setVerifyStatus(1);
-            gt.setGoodsList(pmsProductService.list(new QueryWrapper<>(productQueryParam)));
+            gt.setGoodsList(GoodsUtils.sampleGoodsList(pmsProductService.list(new QueryWrapper<>(productQueryParam))));
         }
         return new CommonResult().success(productAttributeCategoryList);
     }

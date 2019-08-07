@@ -1,4 +1,4 @@
-package com.zscat.mallplus.pms.entity;
+package com.zscat.mallplus.cms.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -19,8 +19,8 @@ import java.util.Date;
  * @since 2019-06-15
  */
 @Data
-@TableName("pms_favorite")
-public class PmsFavorite extends BaseEntity implements Serializable {
+@TableName("cms_favorite")
+public class CmsFavorite extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class PmsFavorite extends BaseEntity implements Serializable {
     private Date addTime;
 
     /**
-     * 1 商品 2 文章 3 店铺 4 及赠品  7 学校
+     * 1 商品 2 文章 3 店铺 4 及赠品
      */
     private Integer type;
 

@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.pms.entity.PmsProductAttributeCategory;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -30,10 +33,10 @@ public class SysStore implements Serializable {
     private Integer registerType;
 
     @TableField("expire_time")
-    private LocalDateTime expireTime;
+    private Date expireTime;
 
     @TableField("try_time")
-    private LocalDateTime tryTime;
+    private Date tryTime;
 
     @TableField("contact_mobile")
     private String contactMobile;
@@ -45,7 +48,7 @@ public class SysStore implements Serializable {
     private Long buyPlanTimes;
 
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @TableField("is_checked")
     private Integer isChecked;
@@ -63,7 +66,7 @@ public class SysStore implements Serializable {
     private String contactName;
 
     @TableField("delete_time")
-    private LocalDateTime deleteTime;
+    private Date deleteTime;
 
     @TableField("diy_profile")
     private String diyProfile;
@@ -103,7 +106,7 @@ public class SysStore implements Serializable {
     private String addressLng;
 
     @TableField("last_login_time")
-    private LocalDateTime lastLoginTime;
+    private Date lastLoginTime;
 
     @TableField("support_phone")
     private String supportPhone;
@@ -123,8 +126,13 @@ public class SysStore implements Serializable {
 
     @TableField("address_city")
     private Long addressCity;
+    @TableField(exist = false)
+    private List<PmsProductAttributeCategory> list ;
 
+    private Integer hit;
 
-
+    private Integer collect;
+    @TableField(exist = false)
+    private Integer  goodsCount;
 
 }

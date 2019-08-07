@@ -390,7 +390,7 @@ public class RedisUtil {
 		return redisTemplate.opsForHash().multiGet(key, fields);
 	}
 
-	public void hPut(String key, String hashKey, Object  value) {
+	public void hPut(String key, String hashKey, String  value) {
 		redisTemplate.opsForHash().put(key, hashKey, value);
 	}
 

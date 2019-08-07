@@ -7,6 +7,7 @@ import com.zscat.mallplus.cms.service.ICmsSubjectProductRelationService;
 import com.zscat.mallplus.pms.entity.*;
 import com.zscat.mallplus.pms.mapper.*;
 import com.zscat.mallplus.pms.service.*;
+import com.zscat.mallplus.pms.vo.GoodsDetailResult;
 import com.zscat.mallplus.pms.vo.PmsProductAndGroup;
 import com.zscat.mallplus.pms.vo.PmsProductParam;
 import com.zscat.mallplus.pms.vo.PmsProductResult;
@@ -18,6 +19,7 @@ import com.zscat.mallplus.sms.service.ISmsHomeNewProductService;
 import com.zscat.mallplus.sms.service.ISmsHomeRecommendProductService;
 import com.zscat.mallplus.ums.service.RedisService;
 import com.zscat.mallplus.util.DateUtils;
+import com.zscat.mallplus.util.GoodsUtils;
 import com.zscat.mallplus.util.JsonUtils;
 import com.zscat.mallplus.vo.Rediskey;
 import org.springframework.beans.BeanUtils;
@@ -158,8 +160,8 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     }
 
     @Override
-    public PmsProductResult getUpdateInfo(Long id) {
-        return (PmsProductResult) productMapper.selectById(id);
+    public PmsProduct getUpdateInfo(Long id) {
+        return  productMapper.selectById(id);
     }
 
     @Override
@@ -167,7 +169,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         List<PmsProduct> list = productMapper.selectList(new QueryWrapper<>());
         for (PmsProduct goods : list) {
             PmsProductParam param = new PmsProductParam();
-            BeanUtils.copyProperties(goods, param);
+            param.setGoods(goods);
 
             List<PmsProductLadder> productLadderList = productLadderMapper.selectList(new QueryWrapper<PmsProductLadder>().eq("product_id", goods.getId()));
 
@@ -196,18 +198,21 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
     }
 
     @Override
-    public PmsProductParam getGoodsRedisById(Long id) {
+    public GoodsDetailResult getGoodsRedisById(Long id) {
         PmsProduct goods = productMapper.selectById(id);
 
-        PmsProductParam param = new PmsProductParam();
-        BeanUtils.copyProperties(goods, param);
+        GoodsDetailResult param = new GoodsDetailResult();
+        param.setGoods(goods);
 
-        List<PmsProductLadder> productLadderList = productLadderMapper.selectList(new QueryWrapper<PmsProductLadder>().eq("product_id", goods.getId()));
+      /*  List<PmsProductLadder> productLadderList = productLadderMapper.selectList(new QueryWrapper<PmsProductLadder>().eq("product_id", goods.getId()));
 
         List<PmsProductFullReduction> productFullReductionList = productFullReductionMapper.selectList(new QueryWrapper<PmsProductFullReduction>().eq("product_id", goods.getId()));
 
         List<PmsMemberPrice> memberPriceList = memberPriceMapper.selectList(new QueryWrapper<PmsMemberPrice>().eq("product_id", goods.getId()));
-
+  param.setMemberPriceList(memberPriceList);
+        param.setProductFullReductionList(productFullReductionList);
+        param.setProductLadderList(productLadderList);
+*/
         List<PmsSkuStock> skuStockList = skuStockMapper.selectList(new QueryWrapper<PmsSkuStock>().eq("product_id", goods.getId()));
 
         List<PmsProductAttributeValue> productAttributeValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()).eq("type",1));
@@ -218,16 +223,15 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
 
         List<PmsProductAttributeValue> productCanShuValueList = productAttributeValueMapper.selectList(new QueryWrapper<PmsProductAttributeValue>().eq("product_id", goods.getId()).eq("type",2));
         param.setProductCanShuValueList(productCanShuValueList);
-        param.setMemberPriceList(memberPriceList);
+
         param.setPrefrenceAreaProductRelationList(prefrenceAreaProductRelationList);
         param.setProductAttributeValueList(productAttributeValueList);
-        param.setProductFullReductionList(productFullReductionList);
-        param.setProductLadderList(productLadderList);
+
         param.setSkuStockList(skuStockList);
         param.setSubjectProductRelationList(subjectProductRelationList);
 
         List<PmsProduct> typeGoodsList = productMapper.selectList(new QueryWrapper<PmsProduct>().eq("product_attribute_category_id",goods.getProductAttributeCategoryId()));
-        param.setTypeGoodsList(typeGoodsList);
+        param.setTypeGoodsList(GoodsUtils.sampleGoodsList(typeGoodsList));
         redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtils.objectToJson(param));
 
         return param;

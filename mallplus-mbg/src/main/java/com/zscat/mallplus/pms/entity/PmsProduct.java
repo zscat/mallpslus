@@ -101,13 +101,13 @@ public class PmsProduct extends BaseEntity implements Serializable {
     private BigDecimal promotionPrice;
 
     /**
-     * 赠送的成长值
+     * 收藏
      */
     @TableField("gift_growth")
     private Integer giftGrowth;
 
     /**
-     * 赠送的积分
+     * 点赞
      */
     @TableField("gift_point")
     private Integer giftPoint;

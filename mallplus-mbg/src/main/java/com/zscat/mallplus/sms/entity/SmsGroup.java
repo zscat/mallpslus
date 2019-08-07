@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.zscat.mallplus.pms.entity.PmsProduct;
+import com.zscat.mallplus.pms.vo.SamplePmsProduct;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +21,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-19
  */
+@Data
 @TableName("sms_group")
 public class SmsGroup extends BaseEntity implements Serializable {
 
@@ -92,127 +96,7 @@ public class SmsGroup extends BaseEntity implements Serializable {
     @TableField("limit_goods")
     private Integer limitGoods;
 
+    @TableField(exist = false)
+    private SamplePmsProduct goods;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public BigDecimal getOriginPrice() {
-        return originPrice;
-    }
-
-    public void setOriginPrice(BigDecimal originPrice) {
-        this.originPrice = originPrice;
-    }
-
-    public BigDecimal getGroupPrice() {
-        return groupPrice;
-    }
-
-    public void setGroupPrice(BigDecimal groupPrice) {
-        this.groupPrice = groupPrice;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getHours() {
-        return hours;
-    }
-
-    public void setHours(Integer hours) {
-        this.hours = hours;
-    }
-
-    public Integer getPeoples() {
-        return peoples;
-    }
-
-    public void setPeoples(Integer peoples) {
-        this.peoples = peoples;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getMaxPeople() {
-        return maxPeople;
-    }
-
-    public void setMaxPeople(Integer maxPeople) {
-        this.maxPeople = maxPeople;
-    }
-
-    public Integer getLimitGoods() {
-        return limitGoods;
-    }
-
-    public void setLimitGoods(Integer limitGoods) {
-        this.limitGoods = limitGoods;
-    }
-
-    @Override
-    public String toString() {
-        return "SmsGroup{" +
-                ", id=" + id +
-                ", goodsId=" + goodsId +
-                ", goodsName=" + goodsName +
-                ", originPrice=" + originPrice +
-                ", groupPrice=" + groupPrice +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", hours=" + hours +
-                ", peoples=" + peoples +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", maxPeople=" + maxPeople +
-                ", limitGoods=" + limitGoods +
-                "}";
-    }
 }

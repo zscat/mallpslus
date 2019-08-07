@@ -144,14 +144,17 @@ public class SingeCmsController extends ApiBaseAction {
         Integer viewCount=0;
         if(!viewCountItem.isEmpty()){
             if(viewCountItem.containsKey(key)){
-                viewCount=(Integer)viewCountItem.get(key);
-                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,viewCount+1);
+                viewCount=Integer.parseInt(viewCountItem.get(key).toString())+1;
+                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,viewCount+"");
             }else {
-                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1);
+                viewCount=1;
+                redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1+"");
             }
         }else{
-            redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1);
+            viewCount=1;
+            redisUtil.hPut(Rediskey.ARTICLE_VIEWCOUNT_KEY,key,1+"");
         }
+        productResult.setReadCount(viewCount);
         return new CommonResult().success(productResult);
     }
     @SysLog(MODULE = "cms", REMARK = "创建文章")
@@ -181,6 +184,9 @@ public class SingeCmsController extends ApiBaseAction {
         }
 
         subject.setMemberId(member.getId());
+        subject.setReadCount(0);
+        subject.setForwardCount(0);
+        subject.setCollectCount(0);
         boolean count = subjectService.save(subject);
         if (count) {
             commonResult = new CommonResult().success(count);

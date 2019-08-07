@@ -398,12 +398,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
             SmsGroupMember groupMember = new SmsGroupMember();
 
             if(orderParam.getGroupType()==1){
+                groupMember.setMainId(orderParam.getMemberId());
                 groupMember.setGoodsId(orderParam.getGoodsId());
                 SmsGroupMember    exist = groupMemberMapper.selectOne(new QueryWrapper<>(groupMember));
                 if (exist!=null){
                     return new CommonResult().failed("你已经参加过此活动");
                 }
-                groupMember.setName(currentMember.getAvatar());
+                groupMember.setName(currentMember.getIcon());
                 groupMember.setStatus(2);
                 groupMember.setOrderId(order.getId()+"");
                 groupMember.setMainId(orderParam.getMemberId());

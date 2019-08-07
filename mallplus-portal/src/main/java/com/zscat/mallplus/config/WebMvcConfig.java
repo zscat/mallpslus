@@ -12,7 +12,7 @@
 package com.zscat.mallplus.config;
 
 
-import com.zscat.mallplus.interceptor.TokenInterceptor;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -31,23 +31,7 @@ import javax.annotation.Resource;
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Resource
-    private TokenInterceptor vueViewInterceptor;
 
-
-    /**
-     * Add interceptors.
-     *
-     * @param registry the registry
-     */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        super.addInterceptors(registry);
-        registry.addInterceptor(vueViewInterceptor)
-                .addPathPatterns("/**")
-                .excludePathPatterns("/swagger-resources/**", "*.js", "/**/*.js", "*.css", "/**/*.css", "*.html", "/v2/*", "/**/*.html");
-
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
