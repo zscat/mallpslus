@@ -423,7 +423,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                   }
               }
 
-                groupMember.setName(groupMember.getName()+","+currentMember.getAvatar());
+                groupMember.setName(groupMember.getName()+","+currentMember.getIcon());
                 groupMember.setOrderId(groupMember.getOrderId()+","+order.getId());
                 groupMember.setMemberId(groupMember.getMemberId()+","+order.getMemberId());
                 groupMemberMapper.updateById(groupMember);
