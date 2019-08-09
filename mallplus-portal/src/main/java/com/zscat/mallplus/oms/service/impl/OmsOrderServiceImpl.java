@@ -687,27 +687,29 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
 
     @Override
     public CommonResult cancelTimeOutOrder() {
-        OmsOrderSetting orderSetting = orderSettingMapper.selectById(1L);
-        //查询超时、未支付的订单及订单详情
-        List<OmsOrderDetail> timeOutOrders = orderMapper.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
-        if (CollectionUtils.isEmpty(timeOutOrders)) {
-            return new CommonResult().failed("暂无超时订单");
-        }
-        //修改订单状态为交易取消
-        List<Long> ids = new ArrayList<>();
-        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
-            ids.add(timeOutOrder.getId());
-        }
-        orderMapper.updateOrderStatus(ids, 4);
-        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
-            //解除订单商品库存锁定
-            orderMapper.releaseSkuStockLock(timeOutOrder.getOrderItemList());
-            //修改优惠券使用状态
-            updateCouponStatus(timeOutOrder.getCouponId(), timeOutOrder.getMemberId(), 0);
-            //返还使用积分
-            if (timeOutOrder.getUseIntegration() != null) {
-                UmsMember member = memberService.getById(timeOutOrder.getMemberId());
-                memberService.updateIntegration(timeOutOrder.getMemberId(), member.getIntegration() + timeOutOrder.getUseIntegration());
+        OmsOrderSetting orderSetting = orderSettingMapper.selectOne(new QueryWrapper<>());
+        if (orderSetting!=null){
+            //查询超时、未支付的订单及订单详情
+            List<OmsOrderDetail> timeOutOrders = orderMapper.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
+            if (CollectionUtils.isEmpty(timeOutOrders)) {
+                return new CommonResult().failed("暂无超时订单");
+            }
+            //修改订单状态为交易取消
+            List<Long> ids = new ArrayList<>();
+            for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+                ids.add(timeOutOrder.getId());
+            }
+            orderMapper.updateOrderStatus(ids, 4);
+            for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+                //解除订单商品库存锁定
+                orderMapper.releaseSkuStockLock(timeOutOrder.getOrderItemList());
+                //修改优惠券使用状态
+                updateCouponStatus(timeOutOrder.getCouponId(), timeOutOrder.getMemberId(), 0);
+                //返还使用积分
+                if (timeOutOrder.getUseIntegration() != null) {
+                    UmsMember member = memberService.getById(timeOutOrder.getMemberId());
+                    memberService.updateIntegration(timeOutOrder.getMemberId(), member.getIntegration() + timeOutOrder.getUseIntegration());
+                }
             }
         }
         return new CommonResult().success(null);

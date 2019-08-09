@@ -231,7 +231,7 @@ public class PmsProductServiceImpl extends ServiceImpl<PmsProductMapper, PmsProd
         param.setSubjectProductRelationList(subjectProductRelationList);
 
         List<PmsProduct> typeGoodsList = productMapper.selectList(new QueryWrapper<PmsProduct>().eq("product_attribute_category_id",goods.getProductAttributeCategoryId()));
-        param.setTypeGoodsList(GoodsUtils.sampleGoodsList(typeGoodsList));
+        param.setTypeGoodsList(GoodsUtils.sampleGoodsList(typeGoodsList.subList(0,typeGoodsList.size()>8?8:typeGoodsList.size())));
         redisService.set(String.format(Rediskey.GOODSDETAIL, goods.getId()), JsonUtils.objectToJson(param));
 
         return param;
