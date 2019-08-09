@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantSqlParser;
 import com.google.common.collect.Lists;
+import com.zscat.mallplus.enums.ConstansValue;
 import com.zscat.mallplus.utils.PluginUtils;
 import com.zscat.mallplus.vo.ApiContext;
 import net.sf.jsqlparser.expression.Expression;
@@ -30,7 +31,7 @@ import java.util.List;
 @Configuration
 @MapperScan("com.zscat.mallplus.*.mapper*")
 public class MybatisPlusConfig {
-    private static final List<String> IGNORE_TENANT_TABLES = Lists.newArrayList("sys_admin_log", "sys_web_log", "sys_permission_category", "columns", "tables", "information_schema.columns", "information_schema.tables",  "sys_store", "sys_permission");
+    private static final List<String> IGNORE_TENANT_TABLES = ConstansValue.IGNORE_TENANT_TABLES;
     @Autowired
     private ApiContext apiContext;
 

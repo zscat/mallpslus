@@ -38,7 +38,6 @@ public class SmsFlashPromotionSessionController {
     @SysLog(MODULE = "sms", REMARK = "根据条件查询所有限时购场次表列表")
     @ApiOperation("根据条件查询所有限时购场次表列表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionSession:read')")
     public Object getSmsFlashPromotionSessionByPage(SmsFlashPromotionSession entity,
                                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                     @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
@@ -55,7 +54,6 @@ public class SmsFlashPromotionSessionController {
     @SysLog(MODULE = "sms", REMARK = "保存限时购场次表")
     @ApiOperation("保存限时购场次表")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionSession:create')")
     public Object saveSmsFlashPromotionSession(@RequestBody SmsFlashPromotionSession entity) {
         try {
             entity.setCreateTime(new Date());
@@ -72,7 +70,6 @@ public class SmsFlashPromotionSessionController {
     @SysLog(MODULE = "sms", REMARK = "更新限时购场次表")
     @ApiOperation("更新限时购场次表")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionSession:update')")
     public Object updateSmsFlashPromotionSession(@RequestBody SmsFlashPromotionSession entity) {
         try {
             if (ISmsFlashPromotionSessionService.updateById(entity)) {
@@ -88,7 +85,6 @@ public class SmsFlashPromotionSessionController {
     @SysLog(MODULE = "sms", REMARK = "删除限时购场次表")
     @ApiOperation("删除限时购场次表")
     @GetMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionSession:delete')")
     public Object deleteSmsFlashPromotionSession(@ApiParam("限时购场次表id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {

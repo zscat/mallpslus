@@ -45,7 +45,6 @@ public class SmsFlashPromotionProductRelationController {
     @SysLog(MODULE = "sms", REMARK = "根据条件查询所有商品限时购与商品关系表列表")
     @ApiOperation("根据条件查询所有商品限时购与商品关系表列表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:read')")
     public Object getSmsFlashPromotionProductRelationByPage(SmsFlashPromotionProductRelation entity,
                                                             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
@@ -97,7 +96,6 @@ public class SmsFlashPromotionProductRelationController {
     @SysLog(MODULE = "sms", REMARK = "保存商品限时购与商品关系表")
     @ApiOperation("保存商品限时购与商品关系表")
     @PostMapping(value = "/create")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:create')")
     public Object saveSmsFlashPromotionProductRelation(@RequestBody SmsFlashPromotionProductRelation entity) {
         try {
             if (ISmsFlashPromotionProductRelationService.save(entity)) {
@@ -113,7 +111,6 @@ public class SmsFlashPromotionProductRelationController {
     @SysLog(MODULE = "sms", REMARK = "更新商品限时购与商品关系表")
     @ApiOperation("更新商品限时购与商品关系表")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:update')")
     public Object updateSmsFlashPromotionProductRelation(@RequestBody SmsFlashPromotionProductRelation entity) {
         try {
             if (ISmsFlashPromotionProductRelationService.updateById(entity)) {
@@ -129,7 +126,6 @@ public class SmsFlashPromotionProductRelationController {
     @SysLog(MODULE = "sms", REMARK = "删除商品限时购与商品关系表")
     @ApiOperation("删除商品限时购与商品关系表")
     @GetMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:delete')")
     public Object deleteSmsFlashPromotionProductRelation(@ApiParam("商品限时购与商品关系表id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
@@ -148,7 +144,6 @@ public class SmsFlashPromotionProductRelationController {
     @SysLog(MODULE = "sms", REMARK = "给商品限时购与商品关系表分配商品限时购与商品关系表")
     @ApiOperation("查询商品限时购与商品关系表明细")
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:read')")
     public Object getSmsFlashPromotionProductRelationById(@ApiParam("商品限时购与商品关系表id") @PathVariable Long id) {
         try {
             if (ValidatorUtils.empty(id)) {
@@ -167,7 +162,6 @@ public class SmsFlashPromotionProductRelationController {
     @RequestMapping(value = "/delete/batch", method = RequestMethod.GET)
     @ResponseBody
     @SysLog(MODULE = "pms", REMARK = "批量删除商品限时购与商品关系表")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotionProductRelation:delete')")
     public Object deleteBatch(@RequestParam("ids") List<Long> ids) {
         boolean count = ISmsFlashPromotionProductRelationService.removeByIds(ids);
         if (count) {

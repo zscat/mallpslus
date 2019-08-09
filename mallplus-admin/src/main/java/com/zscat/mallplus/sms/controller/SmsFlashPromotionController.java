@@ -36,7 +36,6 @@ public class SmsFlashPromotionController {
     @SysLog(MODULE = "sms", REMARK = "查询sms_flash_promotion表")
     @ApiOperation("查询sms_flash_promotion表")
     @GetMapping(value = "/list")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:read')")
     public Object getSmsFlashPromotionByPage(SmsFlashPromotion entity,
                                              @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                              @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
@@ -68,7 +67,6 @@ public class SmsFlashPromotionController {
     @SysLog(MODULE = "sms", REMARK = "更新sms_flash_promotion")
     @ApiOperation("更新sms_flash_promotion")
     @PostMapping(value = "/update/{id}")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:update')")
     public Object updateFlashPromotion(@RequestBody SmsFlashPromotion entity) {
         try {
             if (ISmsFlashPromotionService.updateById(entity)) {
@@ -84,7 +82,6 @@ public class SmsFlashPromotionController {
     @SysLog(MODULE = "sms", REMARK = "更新sms_flash_promotion")
     @ApiOperation("更新sms_flash_promotion")
     @PostMapping(value = "/update/status")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:update')")
     public Object updateFlashStatus(@RequestParam("ids") Long ids, @RequestParam("status") Integer status) {
         try {
             SmsFlashPromotion entity = new SmsFlashPromotion();
@@ -103,7 +100,6 @@ public class SmsFlashPromotionController {
     @SysLog(MODULE = "sms", REMARK = "更新sms_flash_promotion")
     @ApiOperation("更新sms_flash_promotion")
     @PostMapping(value = "/update/isIndex")
-    @PreAuthorize("hasAuthority('sms:SmsFlashPromotion:update')")
     public Object updateFlashIsIndex(@RequestParam("ids") Long ids, @RequestParam("isIndex") Integer isIndex) {
         try {
             SmsFlashPromotion entity = new SmsFlashPromotion();
