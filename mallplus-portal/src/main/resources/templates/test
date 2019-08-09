@@ -200,4 +200,7 @@ npm install
 
           禁止nginx   systemctl disable nginx
 
+          cd /usr/local/nginx
+          nginx -s reload
+
 
