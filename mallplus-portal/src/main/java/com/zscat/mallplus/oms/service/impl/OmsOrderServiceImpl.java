@@ -189,6 +189,9 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
                 throw new ApiMallPlusException("参数为空");
             }
             OmsCartItem omsCartItem = cartItemService.selectById(Long.valueOf(cartId));
+            if (omsCartItem==null){
+                return  null;
+            }
             list.add(omsCartItem);
 
         } else if ("2".equals(type)) {
@@ -225,10 +228,13 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         UmsIntegrationConsumeSetting integrationConsumeSetting = integrationConsumeSettingMapper.selectById(1L);
         result.setIntegrationConsumeSetting(integrationConsumeSetting);
         //计算总金额、活动优惠、应付金额
-        ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(list);
-        result.setCalcAmount(calcAmount);
-        result.setAddress(address);
-        return result;
+        if (list!=null && list.size()>0){
+            ConfirmOrderResult.CalcAmount calcAmount = calcCartAmount(list);
+            result.setCalcAmount(calcAmount);
+            result.setAddress(address);
+            return result;
+        }
+        return null;
 
     }
 
@@ -690,7 +696,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder> i
         OmsOrderSetting orderSetting = orderSettingMapper.selectOne(new QueryWrapper<>());
         if (orderSetting!=null){
             //查询超时、未支付的订单及订单详情
-            List<OmsOrderDetail> timeOutOrders = orderMapper.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
+            List<OmsOrderDetail> timeOutOrders = null;
+                    //orderMapper.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
             if (CollectionUtils.isEmpty(timeOutOrders)) {
                 return new CommonResult().failed("暂无超时订单");
             }
