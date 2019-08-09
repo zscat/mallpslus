@@ -288,8 +288,12 @@ public class SingePmsController extends ApiBaseAction {
             Long nowT = System.currentTimeMillis();
             Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
             if (nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
-                group.setGoods(GoodsUtils.sampleGoods(pmsProductService.getById(group.getGoodsId())));
-                result.add(group);
+                PmsProduct g =pmsProductService.getById(group.getGoodsId());
+                if(g!=null){
+                    group.setGoods(GoodsUtils.sampleGoods(g));
+                    result.add(group);
+                }
+
             }
         }
         return new CommonResult().success(result);

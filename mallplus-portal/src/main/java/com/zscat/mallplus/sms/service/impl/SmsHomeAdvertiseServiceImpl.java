@@ -187,7 +187,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     @Override
     public List<PmsBrand> getRecommendBrandList(int pageNum, int pageSize) {
         List<SmsHomeBrand> brands = homeBrandService.list(new QueryWrapper<>());
-        if(brands==null){
+        if(brands==null || brands.size()==0){
             return new ArrayList<>();
         }
         List<Long> ids = brands.stream()
@@ -221,7 +221,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     @Override
     public List<PmsProduct> getHotProductList(int pageNum, int pageSize) {
         List<SmsHomeRecommendProduct> brands = homeRecommendProductService.list(new QueryWrapper<>());
-        if(brands==null){
+        if(brands==null || brands.size()==0){
             return new ArrayList<>();
         }
         List<Long> ids = brands.stream()
@@ -232,7 +232,7 @@ public class SmsHomeAdvertiseServiceImpl extends ServiceImpl<SmsHomeAdvertiseMap
     @Override
     public List<CmsSubject> getRecommendSubjectList(int pageNum, int pageSize) {
         List<SmsHomeRecommendSubject> brands = homeRecommendSubjectService.list(new QueryWrapper<>());
-        if(brands==null){
+        if(brands==null || brands.size()==0){
             return new ArrayList<>();
         }
 
