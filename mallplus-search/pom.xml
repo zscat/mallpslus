@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zscat.mallplus</groupId>
-    <artifactId>mall-search</artifactId>
+    <artifactId>mallplus-search</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
