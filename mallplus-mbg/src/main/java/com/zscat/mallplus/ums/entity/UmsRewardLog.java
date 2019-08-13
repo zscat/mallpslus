@@ -26,6 +26,18 @@ public class UmsRewardLog implements Serializable {
     private Long objid;
     @TableField("send_member_id")
     private Long sendMemberId;
+    /**
+     * 用户名
+     */
+    @TableField("member_nick_name")
+    private String memberNickName;
+
+    /**
+     * 用户图标
+     */
+    @TableField("member_icon")
+    private String memberIcon;
+
 
     @TableField("rec_member_id")
     private Long recMemberId;

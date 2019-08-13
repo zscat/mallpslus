@@ -23,7 +23,9 @@ import com.zscat.mallplus.ums.entity.UmsRewardLog;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.mapper.UmsRewardLogMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberLevelService;
+import com.zscat.mallplus.ums.service.IUmsRewardLogService;
 import com.zscat.mallplus.ums.service.impl.RedisUtil;
+import com.zscat.mallplus.ums.service.impl.UmsRewardLogServiceImpl;
 import com.zscat.mallplus.util.UserUtils;
 import com.zscat.mallplus.utils.CommonResult;
 import com.zscat.mallplus.utils.ValidatorUtils;
@@ -72,7 +74,20 @@ public class SingeCmsController extends ApiBaseAction {
     @Resource
     private UmsRewardLogMapper rewardLogMapper;
     @Resource
+    private IUmsRewardLogService rewardLogService;
+    @Resource
     private RedisUtil redisUtil;
+
+    @IgnoreAuth
+    @SysLog(MODULE = "cms", REMARK = "查询打赏列表")
+    @ApiOperation(value = "查询打赏列表")
+    @GetMapping(value = "/reward/list")
+    public Object rewardList(UmsRewardLog subject,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                              @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+        return new CommonResult().success(rewardLogService.page(new Page<UmsRewardLog>(pageNum, pageSize), new QueryWrapper<>(subject).orderByDesc("create_time")));
+    }
+
     @IgnoreAuth
     @SysLog(MODULE = "cms", REMARK = "查询文章列表")
     @ApiOperation(value = "查询文章列表")
@@ -219,31 +234,7 @@ public class SingeCmsController extends ApiBaseAction {
     @SysLog(MODULE = "ums", REMARK = "打赏文章")
     public Object reward(@RequestParam(value = "articlelId", required = true) Long articlelId,
                          @RequestParam(value = "coin", required = true) int coin) {
-        try {
-            UmsMember member = UserUtils.getCurrentMember();
-            if (member.getBlance().compareTo(new BigDecimal(coin))<0){
-                return new CommonResult().failed("余额不够");
-            }
-            member.setBlance(member.getBlance().subtract(new BigDecimal(coin)));
-            memberMapper.updateById(member);
-            CmsSubject subject = subjectService.getById(articlelId);
-            UmsMember remember = memberMapper.selectById(subject.getMemberId());
-            if (remember!=null){
-                subject.setReward(subject.getReward()+coin);
-                subjectService.updateById(subject);
-                remember.setBlance(remember.getBlance().add(new BigDecimal(coin)));
-                memberMapper.updateById(remember);
-                UmsRewardLog log = new UmsRewardLog();
-                log.setCoin(coin);log.setSendMemberId(member.getId());
-                log.setRecMemberId(remember.getId());log.setCreateTime(new Date());
-                log.setObjid(articlelId);
-                rewardLogMapper.insert(log);
-            }
-            return new CommonResult().success("打赏文章成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new CommonResult().failed("打赏文章失败");
-        }
+        return subjectService.reward(articlelId,coin);
     }
 
 }

@@ -1,0 +1,3 @@
+-- 0814
+alter table ums_reward_log add member_nick_name varchar(36) not null  COMMENT '昵称'; 
+alter table ums_reward_log add member_icon varchar(36) not null  COMMENT '图像'; 
