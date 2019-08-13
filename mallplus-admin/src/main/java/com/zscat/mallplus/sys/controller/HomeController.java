@@ -3,13 +3,22 @@ package com.zscat.mallplus.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.ExportGoods;
+import com.zscat.mallplus.ExportSubject;
 import com.zscat.mallplus.ExportUser;
 import com.zscat.mallplus.annotation.SysLog;
 import com.zscat.mallplus.bo.HomeOrderData;
+import com.zscat.mallplus.cms.entity.CmsSubject;
+import com.zscat.mallplus.cms.entity.CmsSubjectCategory;
+import com.zscat.mallplus.cms.mapper.CmsSubjectCategoryMapper;
+import com.zscat.mallplus.cms.mapper.CmsSubjectMapper;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.pms.entity.PmsProduct;
 import com.zscat.mallplus.pms.service.IPmsProductService;
+import com.zscat.mallplus.sys.entity.SysArea;
+import com.zscat.mallplus.sys.entity.SysSchool;
+import com.zscat.mallplus.sys.mapper.SysAreaMapper;
+import com.zscat.mallplus.sys.mapper.SysSchoolMapper;
 import com.zscat.mallplus.ums.entity.UmsMember;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.DateUtils;
@@ -223,6 +232,73 @@ public class HomeController extends BaseController {
         List<ExportGoods> list = EasyPoiUtils.importExcel(file, ExportGoods.class);
         for (ExportGoods gg : list){
             createG(gg);
+        }
+    }
+
+    @Resource
+    CmsSubjectCategoryMapper categoryMapper;
+    @Resource
+    CmsSubjectMapper subjectMapper;
+    @Resource
+    SysSchoolMapper schoolMapper;
+    @Resource
+    SysAreaMapper sysAreaMapper;
+    @RequestMapping("/import/subject")
+    @ResponseBody
+    public void importSubject(@RequestParam MultipartFile file) {
+        List<SysArea> areas = sysAreaMapper.selectList(new QueryWrapper<>());
+        List<SysSchool> schools = schoolMapper.selectList(new QueryWrapper<>());
+        List<ExportSubject> list = EasyPoiUtils.importExcel(file, ExportSubject.class);
+        for (ExportSubject subject1 : list){
+            try {
+                CmsSubject subject = new CmsSubject();
+                subject.setTitle(subject1.getTitle());
+                subject.setContent(subject1.getContent());
+                subject.setPic(subject1.getPic());
+                subject.setAlbumPics(subject1.getPic());
+
+
+                Random r = new Random();  Integer a = r.nextInt(100);
+                Integer c = r.nextInt(3);
+                Integer d = r.nextInt(5);
+                subject.setCollectCount(r.nextInt(100));
+                subject.setReadCount(r.nextInt(100));
+                subject.setForwardCount(r.nextInt(100));
+
+                    subject.setCategoryName("游戏专题");
+                    subject.setCategoryId(2L);
+
+
+                subject.setType(c);
+                Integer b = r.nextInt(100);
+                SysSchool school =  schools.get(a);
+                if (school!=null){
+                    subject.setSchoolId(school.getId());
+                    subject.setSchoolName(school.getName());
+                }else{
+                    SysSchool school1 =   schools.get(b);
+                    if (school1!=null){
+                        subject.setSchoolId(school1.getId());
+                        subject.setSchoolName(school1.getName());
+                    }
+                }
+
+                SysArea area =  areas.get(b);
+                if (area!=null){
+                    subject.setAreaId(area.getId());
+                    subject.setAreaName(area.getName());
+                }else{
+                    SysArea area1 =    areas.get(a);
+                    if (area1!=null){
+                        subject.setAreaId(area1.getId());
+                        subject.setAreaName(area1.getName());
+                    }
+                }
+                subjectMapper.insert(subject);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
         }
     }
     void createG(ExportGoods gg){

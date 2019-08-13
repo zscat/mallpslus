@@ -5,10 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import com.zscat.mallplus.utils.ValidatorUtils;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -137,4 +140,25 @@ public class CmsSubject extends BaseEntity implements Serializable {
     @TableField(exist = false)
     private int qsType;
 
+    @TableField("member_name")
+    private String memberName;
+
+    @TableField("video_src")
+    private String videoSrc;
+    private Integer type;
+    @TableField(exist = false)
+    private List pics;
+
+    public List getPics() {
+        if (ValidatorUtils.notEmpty(albumPics)){
+            this.pics = Arrays.asList(albumPics.split(",,"));
+        }
+        return pics;
+    }
+
+    public void setPics(List pics) {
+        if (ValidatorUtils.notEmpty(albumPics)){
+            this.pics = Arrays.asList(albumPics.split(",,"));
+        }
+    }
 }
