@@ -285,6 +285,9 @@ public class SingePmsController extends ApiBaseAction {
         List<SmsGroup> groupList =  groupService.list(new QueryWrapper<>());
         List<SmsGroup> result = new ArrayList<>();
         for (SmsGroup group :groupList){
+            if (ValidatorUtils.empty(group.getHours())){
+                continue;
+            }
             Long nowT = System.currentTimeMillis();
             Date endTime = DateUtils.convertStringToDate(DateUtils.addHours(group.getEndTime(), group.getHours()), "yyyy-MM-dd HH:mm:ss");
             if (nowT > group.getStartTime().getTime() && nowT < endTime.getTime()) {
