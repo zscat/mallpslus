@@ -115,7 +115,7 @@ public class SingeCmsController extends ApiBaseAction {
     public Object subjectList(CmsSubjectComment subjectComment,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-        return new CommonResult().success(commentService.page(new Page<CmsSubjectComment>(pageNum, pageSize), new QueryWrapper<>(subjectComment)));
+        return new CommonResult().success(commentService.page(new Page<CmsSubjectComment>(pageNum, pageSize), new QueryWrapper<>(subjectComment).orderByDesc("create_time")));
     }
 
     @SysLog(MODULE = "pms", REMARK = "查询首页推荐文章")
@@ -135,7 +135,7 @@ public class SingeCmsController extends ApiBaseAction {
     public Object subjectList(CmsTopic topic,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
                               @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
-        return new CommonResult().success(topicService.page(new Page<CmsTopic>(pageNum, pageSize), new QueryWrapper<>(topic)));
+        return new CommonResult().success(topicService.page(new Page<CmsTopic>(pageNum, pageSize), new QueryWrapper<>(topic).orderByDesc("create_time")));
     }
     @SysLog(MODULE = "pms", REMARK = "查询专题详情信息")
     @IgnoreAuth
