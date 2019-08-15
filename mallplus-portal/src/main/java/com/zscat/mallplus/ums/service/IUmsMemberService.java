@@ -72,5 +72,12 @@ public interface IUmsMemberService extends IService<UmsMember> {
     Map<String, Object> loginByCode(String phone, String authCode);
 
     Object simpleReg(String phone, String password, String confimpassword);
+
+    /**
+     * 添加积分
+     * @param id
+     * @param integration
+     */
+    void addIntegration(Long id, Integer integration);
 }
 

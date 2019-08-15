@@ -31,7 +31,7 @@ public class MpGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("F:\\config\\gencode");
+        gc.setOutputDir("/Users/java/gen");
         gc.setFileOverride(true);
         gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
@@ -72,27 +72,6 @@ public class MpGenerator {
                 // to do nothing
             }
         };
-        List<FileOutConfig> focList = new ArrayList<>();
-        // 调整 xml 生成目录演示
-        focList.add(new FileOutConfig("/templates/mapper.xml.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return "/Users/shenzhuan/gen/" + tableInfo.getEntityName() + "Mapper.xml";
-            }
-        });
-
-        cfg.setFileOutConfigList(focList);
-        mpg.setCfg(cfg);
-
-        focList.add(new FileOutConfig("/templates/controller.java.vm") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                return "/Users/shenzhuan/gen/" + tableInfo.getEntityName() + "Controller.java";
-            }
-        });
-
-        cfg.setFileOutConfigList(focList);
-        mpg.setCfg(cfg);
 
         //  mpg.setTemplate(new TemplateConfig().setXml(null));
         // 策略配置
@@ -132,7 +111,7 @@ public class MpGenerator {
 //                    "ums_member_member_tag_relation","ums_member_product_category_relation",
 //                    "ums_member_receive_address", "ums_member_rule_setting","ums_member_statistics_info","ums_member_tag",
 //            "ums_member_task","ums_growth_change_history","ums_integration_change_history","ums_integration_consume_setting"}); // 需要生成的表
-        strategy.setInclude(new String[]{"pms_gifts","pms_gifts_category"});        // strategy.setExclude(new String[]{"test"}); // 排除生成的表
+        strategy.setInclude(new String[]{"sys_applet_set"});        // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
         // 自定义实体，公共字段
@@ -156,7 +135,7 @@ public class MpGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setParent("com.zscat.mallplus");
-        pc.setModuleName("pms");
+        pc.setModuleName("oms");
         mpg.setPackageInfo(pc);
 
 

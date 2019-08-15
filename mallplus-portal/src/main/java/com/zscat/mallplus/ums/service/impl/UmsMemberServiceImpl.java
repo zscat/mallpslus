@@ -7,7 +7,9 @@ import com.zscat.mallplus.exception.ApiMallPlusException;
 import com.zscat.mallplus.single.ApiBaseAction;
 import com.zscat.mallplus.sys.mapper.SysAreaMapper;
 import com.zscat.mallplus.ums.entity.Sms;
+import com.zscat.mallplus.ums.entity.SysAppletSet;
 import com.zscat.mallplus.ums.entity.UmsMember;
+import com.zscat.mallplus.ums.mapper.SysAppletSetMapper;
 import com.zscat.mallplus.ums.mapper.UmsMemberMapper;
 import com.zscat.mallplus.ums.mapper.UmsMemberMemberTagRelationMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
@@ -87,8 +89,21 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     private Integer dayCount;
     @Resource
     private UmsMemberMemberTagRelationMapper umsMemberMemberTagRelationMapper;
-    @Autowired
-    private WxAppletProperties wxAppletProperties;
+
+    @Resource
+    private SysAppletSetMapper appletSetMapper;
+
+
+    /**
+     * 添加积分
+     *
+     * @param id
+     * @param integration
+     */
+    @Override
+    public void addIntegration(Long id, Integer integration) {
+
+    }
 
     @Override
     public UmsMember getByUsername(String username) {
@@ -113,7 +128,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         umsMember.setPassword(password);
         umsMember.setConfimpassword(confim);
         umsMember.setPhonecode(authCode);
-        return  this.register(umsMember);
+        return this.register(umsMember);
     }
 
     @Override
@@ -232,7 +247,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public Object simpleReg(String phone, String password, String confimpassword){
+    public Object simpleReg(String phone, String password, String confimpassword) {
         //没有该用户进行添加操作
         UmsMember user = new UmsMember();
         user.setUsername(phone);
@@ -267,6 +282,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         umsMember.setPassword(null);
         return new CommonResult().success("注册成功", "注册成功");
     }
+
     @Override
     public CommonResult generateAuthCode(String telephone) {
         StringBuilder sb = new StringBuilder();
@@ -299,7 +315,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
 
-
     @Override
     public void updateIntegration(Long id, Integer integration) {
         UmsMember record = new UmsMember();
@@ -327,6 +342,12 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     @Override
     public Object loginByWeixin(AppletLoginParam req) {
         try {
+            SysAppletSet appletSet = appletSetMapper.selectOne(new QueryWrapper<>());
+            if (null == appletSet) {
+                return ApiBaseAction.toResponsFail("没有设置支付配置");
+            }
+            String codeH = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=STAT#wechat_redirect";
+
             String code = req.getCode();
             if (StringUtils.isEmpty(code)) {
                 log.error("code ie empty");
@@ -342,9 +363,14 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
             }
 
             Map<String, Object> resultObj = new HashMap<String, Object>();
-            //
+
+            String webAccessTokenhttps = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
             //获取openid
-            String requestUrl = this.getWebAccess(code);
+            String requestUrl = String.format(webAccessTokenhttps,
+                    appletSet.getAppid(),
+                    appletSet.getAppsecret(),
+                    code);
 
             JSONObject sessionData = CommonUtil.httpsRequest(requestUrl, "GET", null);
 
@@ -369,7 +395,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
                 umsMember.setIntegration(0);
                 umsMember.setMemberLevelId(4L);
                 umsMember.setAvatar(req.getCloudID());
-                umsMember.setCity(me.get("country").toString()+"-"+me.get("province").toString()+"-"+me.get("city").toString());
+                umsMember.setCity(me.get("country").toString() + "-" + me.get("province").toString() + "-" + me.get("city").toString());
 
                 umsMember.setGender((Integer) me.get("gender"));
                 umsMember.setHistoryIntegration(0);
@@ -422,24 +448,6 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return null;
     }
 
-    //替换字符串
-    public String getCode(String appid, String uri, String scope) {
-        return String.format(wxAppletProperties.getGetCode(), appid, uri, scope);
-    }
-
-    //替换字符串
-    public String getWebAccess(String code) {
-
-        return String.format(wxAppletProperties.getWebAccessTokenhttps(),
-                wxAppletProperties.getAppId(),
-                wxAppletProperties.getSecret(),
-                code);
-    }
-
-    //替换字符串
-    public String getUserMessage(String accessToken, String openid) {
-        return String.format(wxAppletProperties.getUserMessage(), accessToken, openid);
-    }
 
     @Override
     public Map<String, Object> loginByCode(String phone, String authCode) {

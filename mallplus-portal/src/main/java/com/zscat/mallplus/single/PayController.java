@@ -3,18 +3,17 @@ package com.zscat.mallplus.single;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zscat.mallplus.annotation.SysLog;
-import com.zscat.mallplus.config.WxAppletProperties;
 import com.zscat.mallplus.enums.OrderStatus;
 import com.zscat.mallplus.oms.entity.OmsOrder;
 import com.zscat.mallplus.oms.entity.OmsOrderItem;
-import com.zscat.mallplus.oms.entity.SysAppletSet;
-import com.zscat.mallplus.oms.mapper.SysAppletSetMapper;
 import com.zscat.mallplus.oms.service.IOmsOrderItemService;
 import com.zscat.mallplus.oms.service.IOmsOrderService;
 import com.zscat.mallplus.oms.vo.OrderParam;
 import com.zscat.mallplus.sms.entity.SmsGroup;
 import com.zscat.mallplus.sms.mapper.SmsGroupMapper;
+import com.zscat.mallplus.ums.entity.SysAppletSet;
 import com.zscat.mallplus.ums.entity.UmsMember;
+import com.zscat.mallplus.ums.mapper.SysAppletSetMapper;
 import com.zscat.mallplus.ums.service.IUmsMemberService;
 import com.zscat.mallplus.util.*;
 import com.zscat.mallplus.util.applet.WechatRefundApiResult;
@@ -27,7 +26,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -168,7 +166,7 @@ public class PayController extends ApiBaseAction {
         //
         OmsOrder orderInfo = orderService.getById(orderId);
 
-        SysAppletSet  appletSet = appletSetMapper.selectOne(new QueryWrapper<>());
+        SysAppletSet appletSet = appletSetMapper.selectOne(new QueryWrapper<>());
         if (null == appletSet) {
             return toResponsObject(400, "没有设置支付配置", "");
         }
