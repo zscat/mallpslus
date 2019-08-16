@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zscat.mallplus.utils.BaseEntity;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author zscat
  * @since 2019-04-17
  */
+@Data
 @TableName("cms_topic")
 public class CmsTopic extends BaseEntity implements Serializable {
 
@@ -89,118 +91,30 @@ public class CmsTopic extends BaseEntity implements Serializable {
      */
     private String content;
 
+    private String address;
 
-    public Long getId() {
-        return id;
-    }
+    private String atids;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @TableField("area_id")
+    private Long areaId;
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
+    @TableField("school_id")
+    private Long schoolId;
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
+    @TableField("member_id")
+    private Long memberId;
 
-    public String getName() {
-        return name;
-    }
+    @TableField("area_name")
+    private String areaName;
+    @TableField("school_name")
+    private String schoolName;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /**
+     * 1 學校 2 區域
+     */
+    @TableField(exist = false)
+    private int qsType;
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getAttendCount() {
-        return attendCount;
-    }
-
-    public void setAttendCount(Integer attendCount) {
-        this.attendCount = attendCount;
-    }
-
-    public Integer getAttentionCount() {
-        return attentionCount;
-    }
-
-    public void setAttentionCount(Integer attentionCount) {
-        this.attentionCount = attentionCount;
-    }
-
-    public Integer getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(Integer readCount) {
-        this.readCount = readCount;
-    }
-
-    public String getAwardName() {
-        return awardName;
-    }
-
-    public void setAwardName(String awardName) {
-        this.awardName = awardName;
-    }
-
-    public String getAttendType() {
-        return attendType;
-    }
-
-    public void setAttendType(String attendType) {
-        this.attendType = attendType;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "CmsTopic{" +
-                ", id=" + id +
-                ", categoryId=" + categoryId +
-                ", name=" + name +
-                ", createTime=" + createTime +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", attendCount=" + attendCount +
-                ", attentionCount=" + attentionCount +
-                ", readCount=" + readCount +
-                ", awardName=" + awardName +
-                ", attendType=" + attendType +
-                ", content=" + content +
-                "}";
-    }
+    @TableField("member_name")
+    private String memberName;
 }

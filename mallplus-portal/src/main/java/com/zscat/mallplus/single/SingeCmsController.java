@@ -37,7 +37,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -130,7 +132,7 @@ public class SingeCmsController extends ApiBaseAction {
     }
     @SysLog(MODULE = "cms", REMARK = "查询专题列表")
     @IgnoreAuth
-    @ApiOperation(value = "查询专题列表")
+    @ApiOperation(value = "查询公益列表")
     @GetMapping(value = "/topic/list")
     public Object subjectList(CmsTopic topic,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
@@ -140,9 +142,11 @@ public class SingeCmsController extends ApiBaseAction {
     @SysLog(MODULE = "pms", REMARK = "查询专题详情信息")
     @IgnoreAuth
     @GetMapping(value = "/topic/detail")
-    @ApiOperation(value = "查询专题详情信息")
+    @ApiOperation(value = "查询公益详情信息")
     public Object topicDetail(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
         CmsTopic productResult = topicService.getById(id);
+        productResult.setReadCount(productResult.getReadCount()+1);
+        topicService.updateById(productResult);
         return new CommonResult().success(productResult);
     }
     @SysLog(MODULE = "pms", REMARK = "查询文章详情信息")
@@ -178,6 +182,12 @@ public class SingeCmsController extends ApiBaseAction {
     public Object createSubject(CmsSubject subject, BindingResult result) {
         CommonResult commonResult;
         UmsMember member = UserUtils.getCurrentMember();
+        if (member!=null){
+            subject.setMemberId(member.getId());
+            subject.setMemberName(member.getNickname());
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
         if (member.getMemberLevelId() > 0) {
             UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
 
@@ -198,11 +208,145 @@ public class SingeCmsController extends ApiBaseAction {
             subject.setAreaId(member.getAreaId());
         }
 
-        subject.setMemberId(member.getId());
         subject.setReadCount(0);
         subject.setForwardCount(0);
         subject.setCollectCount(0);
+        subject.setCreateTime(new Date());
+
         boolean count = subjectService.save(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
+    @SysLog(MODULE = "cms", REMARK = "创建公益")
+    @ApiOperation(value = "发布公益")
+    @PostMapping(value = "/createTopic")
+    public Object createTopic(CmsTopic subject, BindingResult result) {
+        CommonResult commonResult;
+        UmsMember member = UserUtils.getCurrentMember();
+        if (member!=null){
+            subject.setMemberId(member.getId());
+            subject.setMemberName(member.getNickname());
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
+        /*if (member.getMemberLevelId() > 0) {
+            UmsMemberLevel memberLevel = memberLevelService.getById(member.getMemberLevelId());
+
+            int subjectCounts = subjectService.countByToday(member.getId());
+            if (ValidatorUtils.empty(subjectCounts)){
+                subjectCounts=0;
+            }
+            if (subjectCounts > memberLevel.getArticlecount()) {
+                commonResult = new CommonResult().failed("你今天已经有发" + memberLevel.getArticlecount() + "篇公益");
+                return commonResult;
+            }
+        }*/
+        if (subject.getQsType()==1){
+            subject.setSchoolName(member.getSchoolName());
+            subject.setSchoolId(member.getSchoolId());
+        }else {
+            subject.setAreaName(member.getAreaName());
+            subject.setAreaId(member.getAreaId());
+        }
+
+        subject.setReadCount(0);
+        subject.setAttendCount(0);
+        subject.setAttentionCount(0);
+        subject.setCreateTime(new Date());
+        boolean count = topicService.save(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
+    @SysLog(MODULE = "cms", REMARK = "参加公益")
+    @ApiOperation(value = "参加公益 公益id")
+    @PostMapping(value = "/attendTopic")
+    public Object attendTopic(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        CommonResult commonResult;
+        UmsMember member = UserUtils.getCurrentMember();
+
+        CmsTopic subject = topicService.getById(id);
+        Date now = new Date();
+        if (now.getTime()>subject.getEndTime().getTime() || now.getTime()<subject.getStartTime().getTime()){
+            return new CommonResult().failed("未开始或者已过期");
+        }
+        if (member!=null){
+            if (ValidatorUtils.notEmpty(subject.getAtids())){
+                String[] values = subject.getAtids().split(",");
+                List<String> list = Arrays.asList(values);
+                if(list.contains(member.getId()+"")){
+                    return new CommonResult().failed("你已参加该活动");
+                }else{
+                    list.add(member.getId()+"");
+                    subject.setAtids(Arrays.toString(list.toArray()));
+                }
+            }
+
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
+        subject.setReadCount(subject.getReadCount()+1);
+        subject.setAttendCount(subject.getAttendCount()+1);
+
+        boolean count = topicService.updateById(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
+    @SysLog(MODULE = "cms", REMARK = "参加公益")
+    @ApiOperation(value = "取消参加公益 公益id")
+    @PostMapping(value = "/canceTopic")
+    public Object canceTopic(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        CommonResult commonResult;
+        UmsMember member = UserUtils.getCurrentMember();
+        CmsTopic subject = topicService.getById(id);
+
+        if (member!=null){
+            if (ValidatorUtils.notEmpty(subject.getAtids())){
+                String[] values = subject.getAtids().split(",");
+                List<String> list = Arrays.asList(values);
+                if(list.contains(member.getId()+"")){
+                    list.remove(member.getId()+"");
+                    subject.setAtids(Arrays.toString(list.toArray()));
+                }
+            }
+
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
+        subject.setReadCount(subject.getReadCount()-1);
+        subject.setAttendCount(subject.getAttendCount()-1);
+
+        boolean count = topicService.updateById(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
+    @SysLog(MODULE = "cms", REMARK = "参加公益")
+    @ApiOperation(value = "关注公益 公益id，点一次关注按钮，记录一下关注数量，不去重 不需要登录")
+    @PostMapping(value = "/favoriteTopic")
+    public Object favoriteTopic(@RequestParam(value = "id", required = false, defaultValue = "0") Long id) {
+        CommonResult commonResult;
+        CmsTopic subject = topicService.getById(id);
+        subject.setAttentionCount(subject.getAttentionCount()+1);
+        boolean count = topicService.updateById(subject);
         if (count) {
             commonResult = new CommonResult().success(count);
         } else {

@@ -10,7 +10,7 @@ nohup java -jar /root/jm/mallplus-admin-0.0.1-SNAPSHOT.jar >admin.log 2>&1 &
 
 ps -ef|grep java
 
-nohup java -jar snailmall-user-service.8081 > user-service.out &
+
 
 
 
@@ -24,21 +24,11 @@ put -r /Users/shenzhuan/Documents/tools/apache-tomcat-8.0.52 /root/jm
 
 
 
-put -r /Users/shenzhuan/zhuan/mallplus/mall-admin/target/mall-admin-0.0.1-SNAPSHOT.jar  /root/jm
+put -r /Users/java/test/git/mallplus/mallplus-admin/target/mallplus-admin-0.0.1-SNAPSHOT.jar  /root/jm
 
-put -r /Users/shenzhuan/zhuan/mallplus/mall-portal/target/mall-portal-0.0.1-SNAPSHOT.jar  /root/jm
+put -r /Users/java/test/git/mallplus/mallplus-portal/target/mallplus-portal-0.0.1-SNAPSHOT.jar  /root/jm
 
 put -r /Users/shenzhuan/zhuan/vue/mall-admin-web/dist  /root/jm
-
-
-
-put -r /Users/shenzhuan/zhuan/mall/mall-admin/target/mall-admin-0.0.1-SNAPSHOT.jar  /root/jm
-
-put -r /Users/shenzhuan/zhuan/mall/mall-portal/target/mall-portal-0.0.1-SNAPSHOT.jar  /root/jm
-
-put -r /Users/shenzhuan/zhuan/mall/vue/mall-admin-web/dist  /root/jm
-
-put -r /Users/shenzhuan/zhuan/html/mall-front-vue/pc  /root/jm
 
 
 
