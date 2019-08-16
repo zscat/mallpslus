@@ -361,9 +361,14 @@ public class SingeCmsController extends ApiBaseAction {
     public Object addSubjectCom(CmsSubjectComment subject, BindingResult result) {
         CommonResult commonResult;
         UmsMember member = UserUtils.getCurrentMember();
+        if (member!=null){
+            subject.setMemberIcon(member.getIcon());
+            subject.setMemberNickName(member.getNickname());
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
         subject.setCreateTime(new Date());
-        subject.setMemberIcon(member.getIcon());
-        subject.setMemberNickName(member.getNickname());
+
         boolean count = commentService.save(subject);
         if (count) {
             commonResult = new CommonResult().success(count);

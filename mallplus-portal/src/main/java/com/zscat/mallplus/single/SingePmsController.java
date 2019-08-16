@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zscat.mallplus.annotation.IgnoreAuth;
 import com.zscat.mallplus.annotation.SysLog;
+import com.zscat.mallplus.cms.entity.CmsSubjectComment;
 import com.zscat.mallplus.cms.service.ICmsSubjectCategoryService;
 import com.zscat.mallplus.cms.service.ICmsSubjectCommentService;
 import com.zscat.mallplus.cms.service.ICmsSubjectService;
@@ -39,6 +40,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -232,6 +234,30 @@ public class SingePmsController extends ApiBaseAction {
         }
         return new CommonResult().failed();
     }
+
+    @SysLog(MODULE = "cms", REMARK = "添加商品评论")
+    @ApiOperation(value = "添加商品评论")
+    @PostMapping(value = "/addGoodsConsult")
+    public Object addGoodsConsult(PmsProductConsult subject, BindingResult result) {
+        CommonResult commonResult;
+        UmsMember member = UserUtils.getCurrentMember();
+        if (member!=null){
+            subject.setPic(member.getIcon());
+            subject.setMemberName(member.getNickname());
+            subject.setMemberId(member.getId());
+        }else {
+            return new CommonResult().failed("请先登录");
+        }
+        subject.setConsultAddtime(new Date());
+        boolean count = pmsProductConsultService.save(subject);
+        if (count) {
+            commonResult = new CommonResult().success(count);
+        } else {
+            commonResult = new CommonResult().failed();
+        }
+        return commonResult;
+    }
+
     @IgnoreAuth
     @ApiOperation("获取某个商品的评价")
     @RequestMapping(value = "/consult/list", method = RequestMethod.GET)
